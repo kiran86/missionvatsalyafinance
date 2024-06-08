@@ -3,6 +3,7 @@ session_start();
 if(isset($_POST['submit'])){
 	 include('../config/DbFunction.php');
 	 $obj=new DbFunction();
+     
 	 $_SESSION['login']=$_POST['id'];
 	 $obj->login($_POST['id'],$_POST['password']);
 }
@@ -40,7 +41,7 @@ if(isset($_POST['submit'])){
     <![endif]-->
 </head>
 
-<body>
+<body><?php ?>
  <h2 align="center">Mission Vatsalya Finance Management</h2>
     <div class="container">
         <br><br><br><br>
@@ -53,12 +54,17 @@ if(isset($_POST['submit'])){
                         <form method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Login Id"  id="id"name="id" type="text" autofocus autocomplete="off">
+                                    <select class="form-control" placeholder="Login Id"  id="id" name="id" autofocus >
+                                        <option VALUE="" selected>Select User</option>
+                                        <?php echo htmlentities('<p>Help<\p>') ?>
+                                        <?php while($res=$rs->fetch_object()){?>
+                                        <option VALUE="<?php echo htmlentities($res->id);?>"><?php echo htmlentities($res->user_type);?></option>
+                                        <?php }?>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" id="password"name="password" type="password" value="">
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="login" name="submit" class="btn btn-lg btn-success btn-block">
                             </fieldset>
                         </form>

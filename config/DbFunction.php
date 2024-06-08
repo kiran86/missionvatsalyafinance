@@ -3,6 +3,17 @@ require('Database.php');
 //$db = Database::getInstance();
 //$mysqli = $db->getConnection();
 class DbFunction{
+	function get_login(){
+		$db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $query = "SELECT * FROM login";
+		echo $query;
+        $stmt= $mysqli->query($query);
+		if(false===$stmt){
+			trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
+		}
+        return $stmt;
+	}	
 	function login($loginid,$password){
 		if(!ctype_alpha($loginid) || !ctype_alpha($password)){
 			echo "<script>alert('Either Login Id or Password is Missing')</script>";
@@ -229,4 +240,3 @@ class DbFunction{
 		return $stmt;
 	}
 }
-?>
