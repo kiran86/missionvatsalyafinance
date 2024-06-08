@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 06, 2024 at 04:16 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jun 08, 2024 at 12:19 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -248,7 +248,8 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id`, `user_type`, `password`) VALUES
-(1, 'DEO', 'mastermind');
+(1, 'DEO', 'mastermind'),
+(2, 'AO SCPS', 'mastermind');
 
 --
 -- Indexes for dumped tables
