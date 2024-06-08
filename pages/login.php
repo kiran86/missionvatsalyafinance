@@ -1,9 +1,9 @@
 <?php 
 session_start();
+include('../config/DbFunction.php');
+$obj=new DbFunction();
+$rs=$obj->get_login();
 if(isset($_POST['submit'])){
-	 include('../config/DbFunction.php');
-	 $obj=new DbFunction();
-     
 	 $_SESSION['login']=$_POST['id'];
 	 $obj->login($_POST['id'],$_POST['password']);
 }
@@ -56,7 +56,6 @@ if(isset($_POST['submit'])){
                                 <div class="form-group">
                                     <select class="form-control" placeholder="Login Id"  id="id" name="id" autofocus >
                                         <option VALUE="" selected>Select User</option>
-                                        <?php echo htmlentities('<p>Help<\p>') ?>
                                         <?php while($res=$rs->fetch_object()){?>
                                         <option VALUE="<?php echo htmlentities($res->id);?>"><?php echo htmlentities($res->user_type);?></option>
                                         <?php }?>

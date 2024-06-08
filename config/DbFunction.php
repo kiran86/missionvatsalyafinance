@@ -7,7 +7,6 @@ class DbFunction{
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
         $query = "SELECT * FROM login";
-		echo $query;
         $stmt= $mysqli->query($query);
 		if(false===$stmt){
 			trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
@@ -15,27 +14,24 @@ class DbFunction{
         return $stmt;
 	}	
 	function login($loginid,$password){
-		if(!ctype_alpha($loginid) || !ctype_alpha($password)){
-			echo "<script>alert('Either Login Id or Password is Missing')</script>";
+		echo "<script>alert('".$password."')</script>";
+		$db = Database::getInstance();
+		$mysqli = $db->getConnection();
+		$query = "SELECT id, password FROM login where id=? and password=? ";
+		$stmt= $mysqli->prepare($query);
+		if(false===$stmt){
+			trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
 		} else {
-			$db = Database::getInstance();
-			$mysqli = $db->getConnection();
-			$query = "SELECT user_type, password FROM login where user_type=? and password=? ";
-			$stmt= $mysqli->prepare($query);
-			if(false===$stmt){
-				trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
+			$stmt->bind_param('ss',$loginid,$password);
+			$stmt->execute();
+			$stmt->bind_result($loginid,$password);
+			$rs=$stmt->fetch();
+			if(!$rs)
+			{
+				echo "<script>alert('Invalid Details')</script>";
+				header('location:login.php');
 			} else {
-				$stmt->bind_param('ss',$loginid,$password);
-				$stmt->execute();
-				$stmt->bind_result($loginid,$password);
-				$rs=$stmt->fetch();
-				if(!$rs)
-				{
-					echo "<script>alert('Invalid Details')</script>";
-					header('location:login.php');
-				} else {
-					header('location:view.php');
-				}
+				header('location:view.php');
 			}
 		}
 	}
