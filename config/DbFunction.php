@@ -14,7 +14,6 @@ class DbFunction{
         return $stmt;
 	}	
 	function login($loginid,$password){
-		echo "<script>alert('".$password."')</script>";
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();
 		$query = "SELECT id, password FROM login where id=? and password=? ";
@@ -28,7 +27,7 @@ class DbFunction{
 			$rs=$stmt->fetch();
 			if(!$rs)
 			{
-				echo "<script>alert('Invalid Details')</script>";
+				echo "<script>alert('Invalid password')</script>";
 				header('location:login.php');
 			} else {
 				header('location:view.php');
