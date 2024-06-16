@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 08, 2024 at 12:19 PM
+-- Generation Time: Jun 16, 2024 at 12:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -222,14 +222,34 @@ INSERT INTO `cci` (`id`, `district`, `cci_name`, `cci_run_by`, `cci_unit_no`, `c
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fund_release`
+--
+
+CREATE TABLE `fund_release` (
+  `id` int(11) NOT NULL,
+  `cci_id` varchar(255) NOT NULL,
+  `fy_id` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `fy_quater`
 --
 
 CREATE TABLE `fy_quater` (
   `fy_id` varchar(10) NOT NULL,
   `fy` varchar(7) NOT NULL,
-  `quater` varchar(255) NOT NULL
+  `quater` varchar(255) NOT NULL,
+  `locked` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `fy_quater`
+--
+
+INSERT INTO `fy_quater` (`fy_id`, `fy`, `quater`, `locked`) VALUES
+('2324Q4', '2023-24', 'January 2024 - March 2024', 0);
 
 -- --------------------------------------------------------
 
@@ -248,8 +268,8 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id`, `user_type`, `password`) VALUES
-(1, 'DEO', 'mastermind'),
-(2, 'AO SCPS', 'mastermind');
+(1, 'DEO', 'Admin@123'),
+(2, 'AO SCPS', 'Admin@123');
 
 --
 -- Indexes for dumped tables
@@ -259,6 +279,12 @@ INSERT INTO `login` (`id`, `user_type`, `password`) VALUES
 -- Indexes for table `cci`
 --
 ALTER TABLE `cci`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fund_release`
+--
+ALTER TABLE `fund_release`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -272,6 +298,16 @@ ALTER TABLE `fy_quater`
 --
 ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `fund_release`
+--
+ALTER TABLE `fund_release`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
