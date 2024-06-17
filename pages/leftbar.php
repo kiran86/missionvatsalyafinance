@@ -7,25 +7,25 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="../index.php">Infrastructure Development</a>
+				<a class="navbar-brand" href="../index.php">Mission Vatsalya Finance Management</a>
 			</div>
 			<div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="view.php"><i class="fa fa-bar-chart-o fa-fw"></i>Work Listing<span class="fa arrow"></span></a>
+                            <a href="view.php"><i class="fa fa-bar-chart-o fa-fw"></i>Dashboard<span class="fa arrow"></span></a>
                         </li>
-                        <!--<li>
-                            <a href="?"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>-->
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Works<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Sub-allotment<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="add-work.php">Add New Work</a>
+                                    <a href="add-work.php">Generate File</a>
                                 </li>
                                 <li>
-                                    <a href="view.php">View Works</a>
+                                    <a href="#">Upload File</a>
+                                </li>
+                                <li>
+                                    <a href="#">Pending Sub-allotment</a>
                                 </li>
                             </ul>
                         </li>
