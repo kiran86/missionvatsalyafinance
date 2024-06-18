@@ -18,14 +18,16 @@
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Sub-allotment<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                <?php if (isset ( $_SESSION ['login'] )  && ($_SESSION['login'] == 1)) { ?>
                                 <li>
-                                    <a href="add-work.php">Generate File</a>
+                                    <a href="csv-generate.php">Generate File</a>
                                 </li>
                                 <li>
                                     <a href="#">Upload File</a>
                                 </li>
+                                <?php } ?>
                                 <li>
-                                    <a href="#">Pending Sub-allotment</a>
+                                    <a href="#">Sub-allotment Status</a>
                                 </li>
                             </ul>
                         </li>

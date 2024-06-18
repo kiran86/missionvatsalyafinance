@@ -35,6 +35,18 @@ class DbFunction{
 		}
 	}
 
+	function get_fys() {
+		$db = Database::getInstance();
+		$mysqli = $db->getConnection();
+		$query = "SELECT DISTINCT(fy) FROM fy_quarter";
+		$stmt= $mysqli->query($query);
+		return $stmt;
+	}
+
+	function generate_csv($fy_qtr) {
+		// TO DO
+	}
+
 	function show_jobs() {
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();

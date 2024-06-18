@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 17, 2024 at 06:12 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jun 18, 2024 at 04:43 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -234,21 +234,21 @@ CREATE TABLE `fund_release` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fy_quater`
+-- Table structure for table `fy_quarter`
 --
 
-CREATE TABLE `fy_quater` (
+CREATE TABLE `fy_quarter` (
   `fy_id` varchar(10) NOT NULL,
   `fy` varchar(7) NOT NULL,
-  `quater` varchar(255) NOT NULL,
+  `quarter` varchar(255) NOT NULL,
   `locked` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `fy_quater`
+-- Dumping data for table `fy_quarter`
 --
 
-INSERT INTO `fy_quater` (`fy_id`, `fy`, `quater`, `locked`) VALUES
+INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `locked`) VALUES
 ('2324Q4', '2023-24', 'January 2024 - March 2024', 0);
 
 -- --------------------------------------------------------
@@ -289,9 +289,9 @@ ALTER TABLE `fund_release`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `fy_quater`
+-- Indexes for table `fy_quarter`
 --
-ALTER TABLE `fy_quater`
+ALTER TABLE `fy_quarter`
   ADD PRIMARY KEY (`fy_id`);
 
 --
