@@ -1,11 +1,13 @@
 <?php
 session_start ();
-include('../config/DbFunction.php');
-$obj=new DbFunction();
-$rs_fy = $obj->get_fys() ;
+
 if (!(isset( $_SESSION ['login']))) {
 	header ( 'location:../index.php' );
 }
+
+include('../config/DbFunction.php');
+$obj=new DbFunction();
+$rs_fy = $obj->get_fys() ;
 
 if(isset($_POST['submit'])){
 	$obj->generate_csv($_POST['fy-qtr']);

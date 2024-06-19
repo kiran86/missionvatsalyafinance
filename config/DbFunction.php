@@ -44,7 +44,14 @@ class DbFunction{
 	}
 
 	function generate_csv($fy_qtr) {
-		// TO DO
+		$db = Database::getInstance();
+		$mysqli = $db->getConnection();
+		$query = "SELECT DISTINCT(category) FROM cci";
+		$stmt= $mysqli->query($query);
+		$cci_cat = $stmt->fetch_all(MYSQLI_ASSOC);
+		foreach($cci_cat as $row) {
+			echo "<script>alert('".$row["category"]."')</script>";
+		}
 	}
 
 	function show_jobs() {

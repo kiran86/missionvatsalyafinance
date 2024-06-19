@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 18, 2024 at 04:43 AM
+-- Generation Time: Jun 19, 2024 at 03:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -228,7 +228,8 @@ INSERT INTO `cci` (`id`, `district`, `cci_name`, `cci_run_by`, `cci_unit_no`, `c
 CREATE TABLE `fund_release` (
   `id` int(11) NOT NULL,
   `cci_id` varchar(255) NOT NULL,
-  `fy_id` varchar(255) NOT NULL
+  `fy_id` varchar(255) NOT NULL,
+  `children_days` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
