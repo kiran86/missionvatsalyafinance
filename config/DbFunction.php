@@ -46,11 +46,19 @@ class DbFunction{
 	function generate_csv($fy_qtr) {
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();
-		$query = "SELECT DISTINCT(category) FROM cci";
+		$query = "SELECT cci.id, cci.district, cci.cci_name, cci.cci_run_by, cci.cci_unit_no, cci.category, cci.cci_gender
+FROM cci LEFT JOIN fund_release
+ON cci.id = fund_release.cci_id
+WHERE fund_release.fy_id IS NULL OR fund_release.fy_id != '2324Q4'
+ORDER BY cci.district, cci.cci_name, cci.cci_unit_no;";
 		$stmt= $mysqli->query($query);
 		$cci_cat = $stmt->fetch_all(MYSQLI_ASSOC);
 		foreach($cci_cat as $row) {
-			echo "<script>alert('".$row["category"]."')</script>";
+			switch($row["category"]) {
+				case "Children Home" || "Children Home CWSN" || "Observation Home":
+					;
+				case
+			}
 		}
 	}
 
