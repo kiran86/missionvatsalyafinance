@@ -46,20 +46,23 @@ class DbFunction{
 	function generate_csv($fy_qtr) {
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();
-		$query = "SELECT cci.id, cci.district, cci.cci_name, cci.cci_run_by, cci.cci_unit_no, cci.category, cci.cci_gender
-FROM cci LEFT JOIN fund_release
-ON cci.id = fund_release.cci_id
-WHERE fund_release.fy_id IS NULL OR fund_release.fy_id != '2324Q4'
-ORDER BY cci.district, cci.cci_name, cci.cci_unit_no;";
+		$query = "SELECT cci.id, cci.district, cci.cci_name, cci.cci_run_by, cci.cci_unit_no, cci.category, cci.cci_gender ".
+					"FROM cci LEFT JOIN fund_release ".
+					"ON cci.id = fund_release.cci_id ".
+					"WHERE fund_release.fy_id IS NULL OR fund_release.fy_id != '". $fy_qtr ."' ".
+					"ORDER BY cci.district, cci.cci_name, cci.cci_unit_no";
 		$stmt= $mysqli->query($query);
 		$cci_cat = $stmt->fetch_all(MYSQLI_ASSOC);
+		$output = fopen("php://output",'w') or die("Can't open php://output");
+		header("Content-Type:application/csv"); 
+		header("Content-Disposition:attachment;filename=". $fy_qtr .".csv"); 
+		fputcsv($output, array('id', 'district', 'cci_name', 'cci_run_by', 'cci_unit_no', 'category', 'cci_gender', 'fy_id', 'children_days'));
 		foreach($cci_cat as $row) {
-			switch($row["category"]) {
-				case "Children Home" || "Children Home CWSN" || "Observation Home":
-					;
-				case
-			}
+			$row['fy_id'] = $fy_qtr;
+			//echo "<script>alert('". $row['fy_id'] ."')</script>";
+			fputcsv($output, $row);
 		}
+		fclose($output) or die("Can't close php://output");
 	}
 
 	function show_jobs() {
