@@ -19,6 +19,8 @@ include('../config/utilityfunc.php');
     <meta name="author" content="">
     <title>View Work Listing</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../css/sidebars.css" rel="stylesheet">
     
 </head>
 
@@ -37,6 +39,6 @@ include('../config/utilityfunc.php');
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
-
+    <script src="../js/sidebars.js"></script></body>
 </body>
 </html>
