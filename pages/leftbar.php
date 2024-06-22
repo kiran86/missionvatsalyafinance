@@ -23,7 +23,7 @@
                                     <a href="csv-generate.php">Generate File</a>
                                 </li>
                                 <li>
-                                    <a href="#">Upload File</a>
+                                    <a href="csv-upload.php">Upload File</a>
                                 </li>
                                 <?php } ?>
                                 <li>
@@ -60,20 +60,6 @@
                                 <li>
                                     <a href="mis-wrkpndcy.php">Work Pendency Status</a>
                                 </li>
-                                <!--
-                                <li>
-                                    <a href="view-subject.php">CWC</a>
-                                </li>
-                                <li>
-                                    <a href="view-subject.php">JJB</a>
-                                </li>
-                                <li>
-                                    <a href="view-subject.php">DCPU</a>
-                                </li>
-                                <li>
-                                    <a href="view-subject.php">Others</a>
-                                </li>
-                                -->
                             </ul>
                         </li>
                         <li>

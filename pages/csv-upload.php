@@ -23,7 +23,7 @@ if(isset($_POST['submit'])){
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Generate Sub-allotment CSV</title>
+<title>Upload Sub-allotment CSV</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css"
@@ -58,7 +58,7 @@ if(isset($_POST['submit'])){
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						<div class="panel-heading">Generate CSV for CCIs Sub-allotment Data Upload</div>
+						<div class="panel-heading">Upload CSV for CCIs Sub-allotment Data Upload</div>
 						<div class="panel-body">
 							<div class="row">
 						 	<div class="col-lg-10">
@@ -85,7 +85,16 @@ if(isset($_POST['submit'])){
 											<option VALUE="">SELECT</option>
 										</select>
 									</div>
-	 							</div>
+	 							</div>								
+								<br><br>
+								<div class="form-group">
+									<div class="col-lg-4">
+										<label>Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
+									</div>
+									<div class="col-lg-6">
+										<input class="form-control" type="file" id="formFile">
+									</div>
+								</div>
 								<br><br>
 								<div class="form-group">
 									<div class="col-lg-4">				
