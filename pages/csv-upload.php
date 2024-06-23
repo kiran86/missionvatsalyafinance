@@ -128,6 +128,14 @@ if(isset($_POST['submit'])){
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	<script>
+	$(document).ready(function() {
+		$('#side-menu a').each(function() {
+			if (this.href == window.location.href) {
+				$(this).addClass('active');
+			}
+		});
+	});
+	
 	function get_quarter() {
 		var fy = $("#fy").find(":selected").text();
 		if(fy != "SELECT") {

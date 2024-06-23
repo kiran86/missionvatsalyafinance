@@ -25,20 +25,30 @@ include('../config/utilityfunc.php');
 </head>
 
 <body>
-
-    <div id="wrapper">
-
-        <!-- Navigation -->
-      
-     <?php include('leftbar.php')?>;           
-        <nav>
-        
-        <!-- /#page-wrapper -->
-    </div>
-    <!-- /#wrapper -->
-
+    <main class="main" id="top">
+        <div class="container-fluid">
+            <div class="row flex-nowrap">
+                <?php include('leftbar.php');?>
+                <div class="col">
+                    <h2>Dashboard</h2>
+                </div>
+            </div>
+        </div>
+    </main>
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/sidebars.js"></script></body>
+    <!-- JQuery UI -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#side-menu a').each(function() {
+                if (this.href == window.location.href) {
+                    $(this).removeClass('link-body-emphasis');
+                    $(this).addClass('active').attr('aria-current', 'page');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
