@@ -10,22 +10,13 @@ $obj=new DbFunction();
 $rs_fy = $obj->get_fys() ;
 
 if(isset($_POST['submit'])){
-	$uploaddir = $_POST["dirname"]."/csv/";;
+	//$uploaddir = "/opt/lampp/htdocs/csv/";
+	$uploaddir = "../csv/";
 	$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
-	$upload_flag = true;
 
-	// To check whether directory exist or not 
-    
-	if(!is_dir($uploaddir)) {     
-		mkdir($uploaddir);     
-		$upload_flag = true;
-    } else {
-		echo '<script>alert( "Directory not found!" );</script>';
-		$upload_flag = false;
-		exit;
-	}
+	echo '<script>alert("'. $uploaddir .'");</script>'; 
 
-	if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] == 0) {
+	if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
 		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
 			echo '<script>alert( "' . $uploadfile . ' uploaded!" );</script>';
 		} else {
