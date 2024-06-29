@@ -14,11 +14,10 @@ if(isset($_POST['submit'])){
 	$uploaddir = "../csv/";
 	$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
 
-	echo '<script>alert("'. $uploaddir .'");</script>'; 
-
 	if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
 		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
 			echo '<script>alert( "' . $uploadfile . ' uploaded!" );</script>';
+			chmod($uploadfile, 0777);
 		} else {
 			echo '<script>alert( "There was an error occured during upload!" );</script>';
 		}
