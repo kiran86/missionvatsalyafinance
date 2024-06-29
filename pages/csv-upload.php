@@ -10,7 +10,30 @@ $obj=new DbFunction();
 $rs_fy = $obj->get_fys() ;
 
 if(isset($_POST['submit'])){
-	//$obj->generate_csv($_POST['fy-qtr']);
+	$uploaddir = $_POST["dirname"]."/csv/";;
+	$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
+	$upload_flag = true;
+
+	// To check whether directory exist or not 
+    
+	if(!is_dir($uploaddir)) {     
+		mkdir($uploaddir);     
+		$upload_flag = true;
+    } else {
+		echo '<script>alert( "Directory not found!" );</script>';
+		$upload_flag = false;
+		exit;
+	}
+
+	if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] == 0) {
+		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
+			echo '<script>alert( "' . $uploadfile . ' uploaded!" );</script>';
+		} else {
+			echo '<script>alert( "There was an error occured during upload!" );</script>';
+		}
+	} else { 
+        echo '<script>alert("Error: "'. $_FILES["csvfile"]["error"] .'");</script>'; 
+    } 
 }
 ?>
 <!DOCTYPE html>
@@ -28,7 +51,7 @@ if(isset($_POST['submit'])){
 </head>
 
 <body>
-<form class="needs-validation" novalidate="" method="post" >
+<form class="needs-validation" novalidate="" method="post" enctype="multipart/form-data">
 	<main class="main" id="top">
 	<div class="container-fluid">
 		<div class="row flex-nowrap">
@@ -75,7 +98,7 @@ if(isset($_POST['submit'])){
 				<div class="row mb-3">
 					<label for="formFile" class="col-sm-2 col-form-label">Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
 					<div class="col-lg-6">
-						<input class="form-control" type="file" accept=".csv" id="formFile" required>
+						<input class="form-control" type="file" accept=".csv" name="csvfile" id="csvfile" required>
 					</div>
 				</div>
 				<div class="row mb-3">
