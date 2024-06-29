@@ -44,7 +44,7 @@ if(isset($_POST['submit'])){
 						<div class="card-header p-4 border-bottom bg-body">
 							<div class="row g-3 justify-content-between align-items-center">
 							<div class="col-12 col-md">
-								<h4 class="text-body mb-0" data-anchor="data-anchor">Upload CSV for CCIs Sub-allotment Data Upload</h4>
+								<h4 class="text-body mb-0" data-anchor="data-anchor">Upload CSV for CCIs Sub-allotment Data Population</h4>
 							</div>
 							</div>
 						</div>
@@ -75,7 +75,7 @@ if(isset($_POST['submit'])){
 				<div class="row mb-3">
 					<label for="formFile" class="col-sm-2 col-form-label">Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
 					<div class="col-lg-6">
-						<input class="form-control" type="file" id="formFile" required>
+						<input class="form-control" type="file" accept=".csv" id="formFile" required>
 					</div>
 				</div>
 				<div class="row mb-3">
