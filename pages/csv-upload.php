@@ -10,7 +10,7 @@ $obj=new DbFunction();
 $rs_fy = $obj->get_fys() ;
 
 if(isset($_POST['submit'])){
-	$obj->generate_csv($_POST['fy-qtr']);
+	//$obj->generate_csv($_POST['fy-qtr']);
 }
 ?>
 <!DOCTYPE html>
@@ -75,7 +75,7 @@ if(isset($_POST['submit'])){
 				<div class="row mb-3">
 					<label for="formFile" class="col-sm-2 col-form-label">Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
 					<div class="col-lg-6">
-						<input class="form-control" type="file" id="formFile">
+						<input class="form-control" type="file" id="formFile" required>
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -105,10 +105,31 @@ if(isset($_POST['submit'])){
 	$(document).ready(function() {
 		$('#side-menu a').each(function() {
 			if (this.href == window.location.href) {
-				$(this).addClass('active');
+				$(this).removeClass('link-body-emphasis');
+				$(this).addClass('active').attr('aria-current', 'page');
 			}
 		});
 	});
+
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(() => {
+	'use strict'
+
+	// Fetch all the forms we want to apply custom Bootstrap validation styles to
+	const forms = document.querySelectorAll('.needs-validation')
+
+	// Loop over them and prevent submission
+	Array.from(forms).forEach(form => {
+		form.addEventListener('submit', event => {
+		if (!form.checkValidity()) {
+			event.preventDefault()
+			event.stopPropagation()
+		}
+
+		form.classList.add('was-validated')
+		}, false)
+	})
+	})()
 	
 	function get_quarter() {
 		var fy = $("#fy").find(":selected").text();
