@@ -15,7 +15,7 @@
         <?php if (isset ( $_SESSION ['login'] )  && ($_SESSION['login'] == 1)) { ?>
         <li class="nav-item">
             <a href="csv-generate.php" class="nav-link link-body-emphasis">
-            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="../assets/icons.svg#file-download"/></svg>
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="../assets/icons.svg#file-download"/></svg>
                 Generate Allotment File
             </a>
         </li>
