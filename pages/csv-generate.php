@@ -20,7 +20,8 @@ if(isset($_POST['submit'])){
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Generate Sub-allotment CSV</title><!-- Fonts and icons -->
+	<title>Generate Sub-allotment CSV</title>
+	<!-- Fonts and icons -->
     <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
@@ -47,15 +48,13 @@ if(isset($_POST['submit'])){
 </head>
 
 <body>
-	< class="wrapper">
-	<?php include('sidebar.php');?>
+	<div class="wrapper">
+		<?php include('sidebar.php');?>
 		<div class="container">
 			<form class="needs-validation" novalidate="" method="post" >
 				<main class="main" id="top">
 					<div class="container-fluid">
 						<div class="row flex-nowrap">
-							<!-- Navigation -->
-							
 							<div class="content">
 								<div class="mt-4">
 									<div class="row g-4">
@@ -110,94 +109,94 @@ if(isset($_POST['submit'])){
 						</div>
 					</div>
 				</main>
-				<!--   Core JS Files   -->
-				<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-				<script src="../assets/js/core/popper.min.js"></script>
-				<script src="../assets/js/core/bootstrap.min.js"></script>
-
-				<!-- jQuery Scrollbar -->
-				<script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-				<!-- Chart JS -->
-				<script src="../assets/js/plugin/chart.js/chart.min.js"></script>
-
-				<!-- jQuery Sparkline -->
-				<script src="../assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-				<!-- Chart Circle -->
-				<script src="../assets/js/plugin/chart-circle/circles.min.js"></script>
-
-				<!-- Datatables -->
-				<script src="../assets/js/plugin/datatables/datatables.min.js"></script>
-
-				<!-- Bootstrap Notify -->
-				<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-				<!-- jQuery Vector Maps -->
-				<script src="../assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-				<script src="../assets/js/plugin/jsvectormap/world.js"></script>
-
-				<!-- Sweet Alert -->
-				<script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-
-				<!-- Kaiadmin JS -->
-				<script src="../assets/js/kaiadmin.min.js"></script>
-				<script>
-					$(document).ready(function() {
-						$('li.nav-item').each(function() {
-							if (window.location.pathname.includes($(this).children('a').attr('href'))) {
-								$(this).addClass('active');
-							}
-						});
-					});
-
-				// Example starter JavaScript for disabling form submissions if there are invalid fields
-				(() => {
-				'use strict'
-
-				// Fetch all the forms we want to apply custom Bootstrap validation styles to
-				const forms = document.querySelectorAll('.needs-validation')
-
-				// Loop over them and prevent submission
-				Array.from(forms).forEach(form => {
-					form.addEventListener('submit', event => {
-					if (!form.checkValidity()) {
-						event.preventDefault()
-						event.stopPropagation()
-					}
-
-					form.classList.add('was-validated')
-					}, false)
-				})
-				})()
-
-				function get_quarter() {
-					var fy = $("#fy").find(":selected").text();
-					if(fy != "SELECT") {
-						$("#fy-qtr").attr("disabled", false); {
-							listquarter(fy);
-							$("#fy-qtr").attr("required", true);
-						}
-					}
-					else {
-						$("#fy-qtr").attr("disabled", true);
-					}
-				}
-				
-				function listquarter(fy) {
-					$.ajax({
-						url: "fy_qtr.php",
-						type: "POST",
-						data:{f:fy},
-						success: function(data){
-							//alert(data);
-							$("#fy-qtr").html(data);
-						}
-					});
-				}
-				</script>
 			</form>
 		</div>
+		<!--   Core JS Files   -->
+		<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
+		<script src="../assets/js/core/popper.min.js"></script>
+		<script src="../assets/js/core/bootstrap.min.js"></script>
+
+		<!-- jQuery Scrollbar -->
+		<script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+		<!-- Chart JS -->
+		<script src="../assets/js/plugin/chart.js/chart.min.js"></script>
+
+		<!-- jQuery Sparkline -->
+		<script src="../assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+		<!-- Chart Circle -->
+		<script src="../assets/js/plugin/chart-circle/circles.min.js"></script>
+
+		<!-- Datatables -->
+		<script src="../assets/js/plugin/datatables/datatables.min.js"></script>
+
+		<!-- Bootstrap Notify -->
+		<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+		<!-- jQuery Vector Maps -->
+		<script src="../assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+		<script src="../assets/js/plugin/jsvectormap/world.js"></script>
+
+		<!-- Sweet Alert -->
+		<script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+		<!-- Kaiadmin JS -->
+		<script src="../assets/js/kaiadmin.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('li.nav-item').each(function() {
+					if (window.location.pathname.includes($(this).children('a').attr('href'))) {
+						$(this).addClass('active');
+					}
+				});
+			});
+
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(() => {
+		'use strict'
+
+		// Fetch all the forms we want to apply custom Bootstrap validation styles to
+		const forms = document.querySelectorAll('.needs-validation')
+
+		// Loop over them and prevent submission
+		Array.from(forms).forEach(form => {
+			form.addEventListener('submit', event => {
+			if (!form.checkValidity()) {
+				event.preventDefault()
+				event.stopPropagation()
+			}
+
+			form.classList.add('was-validated')
+			}, false)
+		})
+		})()
+
+		function get_quarter() {
+			var fy = $("#fy").find(":selected").text();
+			if(fy != "SELECT") {
+				$("#fy-qtr").attr("disabled", false); {
+					listquarter(fy);
+					$("#fy-qtr").attr("required", true);
+				}
+			}
+			else {
+				$("#fy-qtr").attr("disabled", true);
+			}
+		}
+		
+		function listquarter(fy) {
+			$.ajax({
+				url: "fy_qtr.php",
+				type: "POST",
+				data:{f:fy},
+				success: function(data){
+					//alert(data);
+					$("#fy-qtr").html(data);
+				}
+			});
+		}
+		</script>
 	</div>
 </body>
 
