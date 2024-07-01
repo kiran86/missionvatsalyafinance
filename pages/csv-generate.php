@@ -50,66 +50,72 @@ if(isset($_POST['submit'])){
 <body>
 	<div class="wrapper">
 		<?php include('sidebar.php');?>
-		<div class="container">
-			<form class="needs-validation" novalidate="" method="post" >
-				<main class="main" id="top">
-					<div class="container-fluid">
-						<div class="row flex-nowrap">
-							<div class="content">
-								<div class="mt-4">
-									<div class="row g-4">
-										<div class="col-12 col-xl-10 order-1 order-xl-0">
-											<div class="mb-9">
-												<div class="card shadow-none border my-4" data-component-card="data-component-card">
-													<div class="card-header p-4 border-bottom bg-body">
-														<div class="row g-3 justify-content-between align-items-center">
-															<div class="col-12 col-md">
-																<h4 class="text-body mb-0" data-anchor="data-anchor">Generate CSV for CCIs Sub-allotment Data Upload</h4>
-															</div>
-														</div>
-													</div>
-												</div>
+		<div class="main-panel">
+			<div class="main-header"></div>
+			<div class="container">
+				<div class="page-inner">
+					<div class="page-header">
+						<ul class="breadcrumbs mb-3">
+							<li class="nav-home">
+								<a href="view.php">
+									<i class="icon-home"></i>
+								</a>
+							</li>
+							<li class="separator">
+								<i class="icon-arrow-right"></i>
+							</li>
+							<li class="nav-item">
+								<a href="#">Generate Allotment File</a>
+							</li>
+						</ul>
+					</div>
+					<form class="needs-validation" novalidate="" method="post" >
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="card-header">
+										<h4 class="card-title">CSV File Download</h4>
+										<p class="card-subtitle">Download the formatted CSV file for entering CCIs sub-allotment data.</p>
+									</div>
+									<div class="card-body">
+										<div class="row mb-3">
+											<label for="fy" class="col-sm-2 col-form-label">Select Financial Year: <span id="" style="font-size:11px;color:red">*</span></label>
+											<div class="col-lg-6">
+												<select class="form-control" name="fy" id="fy" onchange="get_quarter()" required >
+													<option VALUE="">SELECT</option>
+													<?php while($res=$rs_fy->fetch_object()){?>
+													<option VALUE="<?php echo htmlentities($res->fy);?>"><?php echo htmlentities($res->fy)?></option>
+													<?php }?>
+												</select>
 											</div>
 										</div>
-									</div>
-
-									<div class="row mb-3">
-										<label for="fy" class="col-sm-2 col-form-label">Select Financial Year: <span id="" style="font-size:11px;color:red">*</span></label>
-										<div class="col-lg-6">
-											<select class="form-control" name="fy" id="fy" onchange="get_quarter()" required >
-												<option VALUE="">SELECT</option>
-												<?php while($res=$rs_fy->fetch_object()){?>
-												<option VALUE="<?php echo htmlentities($res->fy);?>"><?php echo htmlentities($res->fy)?></option>
-												<?php }?>
-											</select>
+										<div class="row mb-3">
+											<label for="fy-qtr" class="col-sm-2 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
+											<div class="col-lg-6">
+												<select class="form-control" name="fy-qtr" id="fy-qtr" required disabled>
+													<option VALUE="">SELECT</option>
+												</select>
+											</div>
 										</div>
-									</div>
-									<div class="row mb-3">
-										<label for="fy-qtr" class="col-sm-2 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
-										<div class="col-lg-6">
-											<select class="form-control" name="fy-qtr" id="fy-qtr" required disabled>
-												<option VALUE="">SELECT</option>
-											</select>
-										</div>
-									</div>
-									<div class="row mb-3">
-										<div class="col-sm-2 col-form-label"></div>
-										<div class="col-lg-6">
-											<button type="submit" class="btn btn-primary" name="submit" value="Generate">
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-													<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-													<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
-												</svg>
-												Generate
-											</button>
+										<div class="row mb-3">
+											<div class="col-sm-2 col-form-label"></div>
+											<div class="col-lg-6">
+												<button type="submit" class="btn btn-primary" name="submit" value="Generate">
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+														<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+														<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+													</svg>
+													Generate
+												</button>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</main>
-			</form>
+					</form>
+				</div>
+			</div>
 		</div>
 		<!--   Core JS Files   -->
 		<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
