@@ -3,6 +3,11 @@ session_start();
 include('../config/DbFunction.php');
 $obj=new DbFunction();
 $rs=$obj->get_login();
+
+if (isset ( $_SESSION ['login'] )) {
+	header ( 'location:../pages/view.php' );
+}
+
 if(isset($_POST['submit'])){
 	 $_SESSION['login']=$_POST['id'];
 	 $obj->login($_POST['id'],$_POST['password']);
@@ -111,7 +116,9 @@ if(isset($_POST['submit'])){
 <body  class="d-flex align-items-center py-4 bg-body-tertiary">
     <main class="form-signin w-100 m-auto">
     <form method="post">
-    <img class="mb-4" src="../assets/currency-rupee.svg" alt="" width="72" height="57">
+    <svg xmlns="http://www.w3.org/2000/svg" width="72" height="57" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
+      <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"/>
+    </svg>
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <div class="form-floating">
         <select class="form-control" placeholder="Login Id"  id="id" name="id" autofocus >
