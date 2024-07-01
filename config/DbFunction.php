@@ -54,7 +54,7 @@ class DbFunction{
 		$stmt= $mysqli->query($query);
 		$cci_cat = $stmt->fetch_all(MYSQLI_ASSOC);
 		$output = fopen("php://output",'w') or die("Can't open php://output");
-		header("Content-Type:application/csv"); 
+		header("Content-Type:text/csv"); 
 		header("Content-Disposition:attachment;filename=". $fy_qtr .".csv"); 
 		fputcsv($output, array('id', 'district', 'cci_name', 'cci_run_by', 'cci_unit_no', 'category', 'cci_gender', 'fy_id', 'children_days'));
 		foreach($cci_cat as $row) {
@@ -63,6 +63,7 @@ class DbFunction{
 			fputcsv($output, $row);
 		}
 		fclose($output) or die("Can't close php://output");
+		exit();
 	}
 
 	function show_jobs() {
