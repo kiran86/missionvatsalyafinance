@@ -79,7 +79,7 @@ if(isset($_POST['submit'])){
 									</div>
 									<div class="card-body">
 										<div class="row mb-3">
-											<label for="fy" class="col-sm-2 col-form-label">Select Financial Year: <span id="" style="font-size:11px;color:red">*</span></label>
+											<label for="fy" class="col-sm-3 col-form-label">Select Financial Year: <span id="" style="font-size:11px;color:red">*</span></label>
 											<div class="col-lg-6">
 												<select class="form-control" name="fy" id="fy" onchange="get_quarter()" required >
 													<option VALUE="">SELECT</option>
@@ -90,7 +90,7 @@ if(isset($_POST['submit'])){
 											</div>
 										</div>
 										<div class="row mb-3">
-											<label for="fy-qtr" class="col-sm-2 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
+											<label for="fy-qtr" class="col-sm-3 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
 											<div class="col-lg-6">
 												<select class="form-control" name="fy-qtr" id="fy-qtr" required disabled>
 													<option VALUE="">SELECT</option>
@@ -98,7 +98,7 @@ if(isset($_POST['submit'])){
 											</div>
 										</div>
 										<div class="row mb-3">
-											<div class="col-sm-2 col-form-label"></div>
+											<div class="col-sm-3 col-form-label"></div>
 											<div class="col-lg-6">
 												<button type="submit" class="btn btn-primary" name="submit" value="Generate">
 													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">

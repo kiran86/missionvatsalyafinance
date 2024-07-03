@@ -8,30 +8,6 @@ if (!(isset( $_SESSION ['login']))) {
 include('../config/DbFunction.php');
 $obj=new DbFunction();
 $rs_fy = $obj->get_fys() ;
-
-$data = [];
-if(isset($_POST['submit'])){
-	$uploaddir = "../csv/";
-	$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
-
-	if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
-		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
-			echo '<script>alert( "File uploaded!" );</script>';
-			chmod($uploadfile, 0777);
-		} else {
-			echo '<script>alert( "There was an error occured during upload!" );</script>';
-		}
-	} else { 
-        echo '<script>alert("Error: "'. $_FILES["csvfile"]["error"] .'");</script>'; 
-    }
-
-	$csv_data = file($uploadfile);
-	foreach ($csv_data as $key => $value) {
-        $row = str_getcsv($value);
-        $data[$key] = $row;
-    }
-	//print_r($data);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +64,7 @@ if(isset($_POST['submit'])){
 							</li>
 						</ul>
 					</div>
-					<form class="needs-validation" novalidate="" method="post" enctype="multipart/form-data">
+					<form id="csvform" class="needs-validation" novalidate="">
 					<div class="row">
 						<!-- /.row -->
 						<div class="col-md-12">
@@ -99,7 +75,7 @@ if(isset($_POST['submit'])){
 								</div>
 								<div class="card-body">
 									<div class="row mb-3">
-										<label for="fy" class="col-sm-2 col-form-label">Select Financial Year: <span id="" style="font-size:11px;color:red">*</span></label>
+										<label for="fy" class="col-sm-3 col-form-label">Select Financial Year: <span id="" style="font-size:11px;color:red">*</span></label>
 										<div class="col-lg-6">
 											<select class="form-control" name="fy" id="fy" onchange="get_quarter()" required >
 												<option VALUE="">SELECT</option>
@@ -110,7 +86,7 @@ if(isset($_POST['submit'])){
 										</div>
 									</div>
 									<div class="row mb-3">
-										<label for="fy-qtr" class="col-sm-2 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
+										<label for="fy-qtr" class="col-sm-3 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
 										<div class="col-lg-6">
 											<select class="form-control" name="fy-qtr" id="fy-qtr" required disabled>
 												<option VALUE="">SELECT</option>
@@ -118,13 +94,13 @@ if(isset($_POST['submit'])){
 										</div>
 									</div>
 									<div class="row mb-3">
-										<label for="formFile" class="col-sm-2 col-form-label">Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
+										<label for="formFile" class="col-sm-3 col-form-label">Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
 										<div class="col-lg-6">
 											<input class="form-control" type="file" accept=".csv" name="csvfile" id="csvfile" required>
 										</div>
 									</div>
 									<div class="row mb-3">
-										<div class="col-sm-2 col-form-label"></div>
+										<div class="col-sm-3 col-form-label"></div>
 										<div class="col-lg-6">
 											<button type="submit" class="btn btn-primary" name="submit" value="Upload">
 												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
@@ -148,28 +124,18 @@ if(isset($_POST['submit'])){
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="multi-filter-select" class="display table table-striped table-hover">
-										<?php
-										foreach ($data as $row) {
-											if ($data[0] == $row) {
-												echo "<thead>";
-                                                echo "<tr>";
-                                                foreach ($row as $key => $value) {
-                                                    echo "<th>". $value. "</th>";
-                                                }
-                                                echo "</tr>";
-                                                echo "</thead>";
-											} else {
-												echo "<tbody>";
-                                                echo "<tr>";
-                                                foreach ($row as $key => $value) {
-                                                    echo "<td>". $value. "</td>";
-                                                }
-                                                echo "</tr>";
-                                                echo "</tbody>";
-                                            }
-										}
-										?>
+										<table id="data-table" class="display table table-striped table-hover">
+											<thead>
+												<th>id</th>
+												<th>district</th>
+												<th>cci_name</th>
+												<th>cci_run_by</th>
+												<th>cci_unit_no</th>
+												<th>category</th>
+												<th>cci_gender</th>
+												<th>fy_id</th>
+												<th>children_days</th>
+											</thead>
 										</tbody>
 										</table>
 									</div>
@@ -214,14 +180,6 @@ if(isset($_POST['submit'])){
 	<!-- Kaiadmin JS -->
 	<script src="../assets/js/kaiadmin.min.js"></script>
 	<script>
-		$(document).ready(function() {
-			$('li.nav-item').each(function() {
-				if (window.location.pathname.includes($(this).children('a').attr('href'))) {
-					$(this).addClass('active');
-				}
-			});
-		});
-
 		// Example starter JavaScript for disabling form submissions if there are invalid fields
 		(() => {
 			'use strict'
@@ -267,57 +225,68 @@ if(isset($_POST['submit'])){
 			});
 		}
 
-        $("#multi-filter-select").DataTable({
-          pageLength: 5,
-          initComplete: function () {
-            this.api()
-              .columns()
-              .every(function () {
-                var column = this;
-                var select = $(
-                  '<select class="form-select"><option value=""></option></select>'
-                )
-                  .appendTo($(column.footer()).empty())
-                  .on("change", function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+		// var table = $("#data-table").DataTable({
+        //   pageLength: 5,
+        //   initComplete: function () {
+        //     this.api()
+        //       .columns()
+        //       .every(function () {
+        //         var column = this;
+        //         var select = $(
+        //           '<select class="form-select"><option value=""></option></select>'
+        //         )
+        //           .appendTo($(column.footer()).empty())
+        //           .on("change", function () {
+        //             var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                    column
-                      .search(val ? "^" + val + "$" : "", true, false)
-                      .draw();
-                  });
+        //             column
+        //               .search(val ? "^" + val + "$" : "", true, false)
+        //               .draw();
+        //           });
 
-                column
-                  .data()
-                  .unique()
-                  .sort()
-                  .each(function (d, j) {
-                    select.append(
-                      '<option value="' + d + '">' + d + "</option>"
-                    );
-                  });
-              });
-          },
-        });
+        //         column
+        //           .data()
+        //           .unique()
+        //           .sort()
+        //           .each(function (d, j) {
+        //             select.append(
+        //               '<option value="' + d + '">' + d + "</option>"
+        //             );
+        //           });
+        //       });
+        //   },
+        // });
 
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-	(() => {
-	'use strict'
-
-	// Fetch all the forms we want to apply custom Bootstrap validation styles to
-	const forms = document.querySelectorAll('.needs-validation')
-
-	// Loop over them and prevent submission
-	Array.from(forms).forEach(form => {
-		form.addEventListener('submit', event => {
-		if (!form.checkValidity()) {
-			event.preventDefault()
-			event.stopPropagation()
-		}
-
-		form.classList.add('was-validated')
-		}, false)
-	})
-	})()
+	$(document).ready(function() {
+		$('li.nav-item').each(function() {
+			if (window.location.pathname.includes($(this).children('a').attr('href'))) {
+				$(this).addClass('active');
+			}
+		});
+		// var data = [["CCI_1","ALIPURDUAR","ALIPURDUAR GOVT RUN SPECIALIZED ADOPTION AGENCY","Government","1","Specialized Adoption Agency","Combined","2324Q4","0"],["CCI_2","ALIPURDUAR","Khagrabari Rural Energy Development Association (KREDA)","Non-Government Organisation","1","Children Home CWSN","Male","2324Q4", "0"]];
+		var table = $('#data-table').DataTable();
+		$('#csvform').on('submit', function(e) {
+			e.preventDefault();
+			var formData = new FormData(this);
+            $.ajax({
+                url: "get_csv_data.php",
+                type: "POST",
+                data: formData,
+				dataType: 'json',
+                success: function(response){
+					console.log(response.data);
+					table.clear().rows.add(response.data).draw();
+					// table.clear().rows.add(data).draw();
+                },
+				error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+				cache: false,
+                contentType: false,
+                processData: false
+            });
+		});
+	});
 	</script>
 </body>
 </html>
