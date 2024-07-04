@@ -276,7 +276,6 @@ $rs_fy = $obj->get_fys() ;
                 success: function(response){
 					console.log(response.data);
 					table.clear().rows.add(response.data).draw();
-					// table.clear().rows.add(data).draw();
                 },
 				error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + status + error);
