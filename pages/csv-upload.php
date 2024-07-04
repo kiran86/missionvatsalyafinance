@@ -121,17 +121,53 @@ $rs_fy = $obj->get_fys() ;
 							<div class="card">
 								<div class="card-header">
 									<h4 class="card-title">Sub Allotment Data</h4>
+									<ul class="nav nav-tabs card-header-tabs" role="tablist">
+										<li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
+										<li><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
+									</ul>
 								</div>
-								<div class="card-body">
-									<div class="table-responsive">
-										<table id="data-table" class="display table table-striped table-hover">
+								<div class="card-body tab-content">
+									<div class="table-responsive tab-pane show active" id="tab-table1">
+										<table id="home-table" class="display table table-striped table-hover">
 											<thead>
-												<th>id</th>
-												<th>district</th>
-												<th>cci_name</th>
-												<th>cci_run_by</th>
-												<th>cci_unit_no</th>
-												<th>category</th>
+												<th>Sl. No.</th>
+												<th>District</th>
+												<th>Name of the CCI</th>
+												<th>Run_by</th>
+												<th>Unit No</th>
+												<th>Category</th>
+												<th>cci_gender</th>
+												<th>fy_id</th>
+												<th>children_days</th>
+											</thead>
+										</tbody>
+										</table>
+									</div>
+									<div class="table-responsive tab-pane" id="tab-table2">
+										<table id="saa-table" class="display table table-striped table-hover">
+											<thead>
+												<th>Sl. No.</th>
+												<th>District</th>
+												<th>Name of the CCI</th>
+												<th>Run_by</th>
+												<th>Unit No</th>
+												<th>Category</th>
+												<th>cci_gender</th>
+												<th>fy_id</th>
+												<th>children_days</th>
+											</thead>
+										</tbody>
+										</table>
+									</div>
+									<div class="table-responsive tab-pane" id="tab-table3">
+										<table id="os-table" class="display table table-striped table-hover">
+											<thead>
+												<th>Sl. No.</th>
+												<th>District</th>
+												<th>Name of the CCI</th>
+												<th>Run_by</th>
+												<th>Unit No</th>
+												<th>Category</th>
 												<th>cci_gender</th>
 												<th>fy_id</th>
 												<th>children_days</th>
@@ -225,37 +261,12 @@ $rs_fy = $obj->get_fys() ;
 			});
 		}
 
-		// var table = $("#data-table").DataTable({
-        //   pageLength: 5,
-        //   initComplete: function () {
-        //     this.api()
-        //       .columns()
-        //       .every(function () {
-        //         var column = this;
-        //         var select = $(
-        //           '<select class="form-select"><option value=""></option></select>'
-        //         )
-        //           .appendTo($(column.footer()).empty())
-        //           .on("change", function () {
-        //             var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-        //             column
-        //               .search(val ? "^" + val + "$" : "", true, false)
-        //               .draw();
-        //           });
-
-        //         column
-        //           .data()
-        //           .unique()
-        //           .sort()
-        //           .each(function (d, j) {
-        //             select.append(
-        //               '<option value="' + d + '">' + d + "</option>"
-        //             );
-        //           });
-        //       });
-        //   },
-        // });
+		// Listen for Bootstrap tab change
+		document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
+			el.addEventListener('shown.bs.tab', () => {
+				DataTable.tables({ visible: true, api: true }).columns.adjust();
+			});
+		});
 
 	$(document).ready(function() {
 		$('li.nav-item').each(function() {
@@ -263,8 +274,10 @@ $rs_fy = $obj->get_fys() ;
 				$(this).addClass('active');
 			}
 		});
-		// var data = [["CCI_1","ALIPURDUAR","ALIPURDUAR GOVT RUN SPECIALIZED ADOPTION AGENCY","Government","1","Specialized Adoption Agency","Combined","2324Q4","0"],["CCI_2","ALIPURDUAR","Khagrabari Rural Energy Development Association (KREDA)","Non-Government Organisation","1","Children Home CWSN","Male","2324Q4", "0"]];
-		var table = $('#data-table').DataTable();
+
+		var home_table = $('#home-table').DataTable();
+		var saa_table = $('#saa-table').DataTable();
+		var os_table = $('#os-table').DataTable();
 		$('#csvform').on('submit', function(e) {
 			e.preventDefault();
 			var formData = new FormData(this);
@@ -274,8 +287,9 @@ $rs_fy = $obj->get_fys() ;
                 data: formData,
 				dataType: 'json',
                 success: function(response){
-					console.log(response.data);
-					table.clear().rows.add(response.data).draw();
+					home_table.clear().rows.add(response.homedata).draw();
+					saa_table.clear().rows.add(response.saadata).draw();
+					os_table.clear().rows.add(response.os_data).draw();
                 },
 				error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + status + error);
