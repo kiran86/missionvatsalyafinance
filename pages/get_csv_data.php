@@ -26,7 +26,7 @@
 			continue;
         $row = str_getcsv($value);
 		// skip rows with empty children days
-		if ($row[8] == "")
+		if (count($row) < 11)
 			continue;
 
 		//Populate each array element
