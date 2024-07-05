@@ -56,6 +56,7 @@
 											+ $home_data[$n_home][14];
 				$home_data[$n_home][16] = (double)$row[11];
 				$home_data[$n_home][17] = $home_data[$n_home][15] > $home_data[$n_home][16] ? $home_data[$n_home][16] : $home_data[$n_home][15]; 
+				error_log(implode(", ", $home_data[$n_home]));
 				$n_home++;
                 break;
             case 'Specialized Adoption Agency':
