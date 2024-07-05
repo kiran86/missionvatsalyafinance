@@ -22,14 +22,10 @@ if(isset($_POST['submit'])){
     <title>Mission Vatsalya Finance Management : Login </title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
-    <!-- Bootstrap Core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <style>
         .bd-placeholder-img {
@@ -110,7 +106,7 @@ if(isset($_POST['submit'])){
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="../css/sign-in.css" rel="stylesheet">
+    <link href="../assets/css/signin.css" rel="stylesheet">
 </head>
 
 <body  class="d-flex align-items-center py-4 bg-body-tertiary">
@@ -138,20 +134,20 @@ if(isset($_POST['submit'])){
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
-        jQuery(function(){
-            jQuery("#id").validate({
-                expression: "if (VAL.match(/^[a-z]$/)) return true; else return false;",
-                message: "Should be a valid id"
-            });
-            jQuery("#password").validate({
-                expression: "if (VAL.match(/^[a-z][0-9]$/)) return true; else return false;",
-                message: "Should be a valid password"
-            });
-            
-        });     
-        </script>
+    jQuery(function(){
+          jQuery("#id").validate({
+              expression: "if (VAL.match(/^[a-z]$/)) return true; else return false;",
+              message: "Should be a valid id"
+          });
+          jQuery("#password").validate({
+              expression: "if (VAL.match(/^[a-z][0-9]$/)) return true; else return false;",
+              message: "Should be a valid password"
+          });
+        
+    });     
+    </script>
 </body>
 </html>

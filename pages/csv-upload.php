@@ -296,7 +296,7 @@ $rs_fy = $obj->get_fys() ;
                 data: formData,
 				dataType: 'json',
                 success: function(response){
-					if (response.homedata
+					// if (response.homedata
 					home_table.clear().rows.add(response.homedata).draw();
 					saa_table.clear().rows.add(response.saadata).draw();
 					os_table.clear().rows.add(response.os_data).draw();
