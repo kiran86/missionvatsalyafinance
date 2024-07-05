@@ -33,8 +33,30 @@
 		switch ($row[5]) {
 			case 'Children Home':
 			case 'Children Home CWSN':
-				$home_data[$n_home++] = $row;
-				$home_data[$n_home - 1][0] = $n_home;
+				$home_data[$n_home][0] = $n_home + 1;
+				$home_data[$n_home][1] = $row[1];
+				$home_data[$n_home][2] = $row[2];
+				$home_data[$n_home][3] = $row[4];
+				$home_data[$n_home][4] = 3;
+				$home_data[$n_home][5] = $row[8];
+				$home_data[$n_home][6] = $row[9];
+				$home_data[$n_home][7] = (int)$row[8] * (int)$home_data[$n_home][4] * 3000.0;
+				$home_data[$n_home][8] = (int)$row[8] * 250.0;
+				$home_data[$n_home][9] = (int)$row[9] * (int)$home_data[$n_home][4] * 4400.0;
+				$home_data[$n_home][10] = (int)$home_data[$n_home][3] * 250000.0;
+				$home_data[$n_home][11] = (int)$home_data[$n_home][3] * 100000.0;
+				$home_data[$n_home][12] = (int)$home_data[$n_home][3] * 657280.0;
+				$home_data[$n_home][13] = (int)$home_data[$n_home][3] * 143191.0;
+				$home_data[$n_home][14] = $home_data[$n_home][12] + $home_data[$n_home][13];
+				$home_data[$n_home][15] = $home_data[$n_home][7] 
+											+ $home_data[$n_home][8]
+											+ $home_data[$n_home][9]
+											+ $home_data[$n_home][10]
+											+ $home_data[$n_home][11]
+											+ $home_data[$n_home][14];
+				$home_data[$n_home][16] = (double)$row[11];
+				$home_data[$n_home][17] = $home_data[$n_home][15] > $home_data[$n_home][16] ? $home_data[$n_home][16] : $home_data[$n_home][15]; 
+				$n_home++;
                 break;
             case 'Specialized Adoption Agency':
 				$saa_data[$n_saa++] = $row;

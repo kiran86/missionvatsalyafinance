@@ -128,17 +128,26 @@ $rs_fy = $obj->get_fys() ;
 								</div>
 								<div class="card-body tab-content">
 									<div class="table-responsive tab-pane show active" id="tab-table1">
-										<table id="home-table" class="display table table-striped table-hover">
+										<table id="home-table" class="display table table-striped table-hover table-bordered">
 											<thead>
 												<th>Sl. No.</th>
 												<th>District</th>
 												<th>Name of the CCI</th>
-												<th>Run_by</th>
-												<th>Unit No</th>
-												<th>Category</th>
-												<th>cci_gender</th>
-												<th>fy_id</th>
-												<th>children_days</th>
+												<th>No. of Units</th>
+												<th>No. of Months</th>
+												<th>Average No of Children days per month</th>
+												<th>Average No of CWSN Children days per month </th>
+												<th>Maintenance and Others Cost @ ₹3,000 per child per month </th>
+												<th>Beadding Cost @ ₹250 per child per quarter</th>
+												<th>CWSN fund @ ₹4,400 per child per month</th>
+												<th>Administrative cost @ ₹2,50,000 per quarter per unit</th>
+												<th>CWSN Equipment @ ₹1,00,000 per unit per quarter</th>
+												<th>Salary of staff @ ₹6,57,280 per quarter per unit</th>
+												<th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit</th>
+												<th>Total Salary</th>
+												<th>Total (Recurring Cost)</th>
+												<th>District Recommendation</th>
+												<th>Amount to be released</th>
 											</thead>
 										</tbody>
 										</table>
