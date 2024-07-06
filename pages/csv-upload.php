@@ -39,6 +39,11 @@ $rs_fy = $obj->get_fys() ;
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+	<style>
+		.text-right {
+			align:right;
+		}
+	</style>
 </head>
 
 <body>
@@ -129,25 +134,27 @@ $rs_fy = $obj->get_fys() ;
 								<div class="card-body tab-content">
 									<div class="table-responsive tab-pane show active" id="tab-table1">
 										<table id="home-table" class="display table table-striped table-hover table-bordered">
-											<thead>
-												<th>Sl. No.</th>
-												<th>District</th>
-												<th>Name of the CCI</th>
-												<th>No. of Units</th>
-												<th>No. of Months</th>
-												<th>Average No of Children days per month</th>
-												<th>Average No of CWSN Children days per month </th>
-												<th>Maintenance and Others Cost @ ₹3,000 per child per month </th>
-												<th>Beadding Cost @ ₹250 per child per quarter</th>
-												<th>CWSN fund @ ₹4,400 per child per month</th>
-												<th>Administrative cost @ ₹2,50,000 per quarter per unit</th>
-												<th>CWSN Equipment @ ₹1,00,000 per unit per quarter</th>
-												<th>Salary of staff @ ₹6,57,280 per quarter per unit</th>
-												<th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit</th>
-												<th>Total Salary</th>
-												<th>Total (Recurring Cost)</th>
-												<th>District Recommendation</th>
-												<th>Amount to be released</th>
+											<thead align="center">
+												<th hidden>CCI_ID</th>
+												<th>Sl. No.<br>(1)</th>
+												<th>District<br>(2)</th>
+												<th>CCI Name<br>(3)</th>
+												<th>Unit No.<br>(4)</th>
+												<th>CCI run by<br>(5)</th>
+												<th>No. of Months<br>(6)</th>
+												<th>Average No of Children days per month<br>(7)</th>
+												<th>Average No of CWSN Children days per month<br>(8)</th>
+												<th>Maintenance and Others Cost @ ₹3,000 per child per month<br>(9)</th>
+												<th>Beadding Cost @ ₹250 per child per quarter<br>(10)</th>
+												<th>CWSN fund @ ₹4,400 per child per month<br>(11)</th>
+												<th>Administrative cost @ ₹2,50,000 per quarter per unit<br>(12)</th>
+												<th>CWSN Equipment @ ₹1,00,000 per unit per quarter<br>(13)</th>
+												<th>Salary of staff @ ₹6,57,280 per quarter per unit<br>(14)</th>
+												<th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit<br>(15)</th>
+												<th>Total Salary<br>(16)</th>
+												<th>Total (Recurring Cost)<br>(17)</th>
+												<th>District Recommendation<br>(18)</th>
+												<th>Amount to be released<br>(19)</th>
 											</thead>
 										</tbody>
 										</table>
@@ -284,7 +291,7 @@ $rs_fy = $obj->get_fys() ;
 			}
 		});
 
-		var home_table = $('#home-table').DataTable();
+		//var home_table = $('#home-table').DataTable();
 		var saa_table = $('#saa-table').DataTable();
 		var os_table = $('#os-table').DataTable();
 		$('#csvform').on('submit', function(e) {
@@ -296,8 +303,14 @@ $rs_fy = $obj->get_fys() ;
                 data: formData,
 				dataType: 'json',
                 success: function(response){
-					// if (response.homedata
-					home_table.clear().rows.add(response.homedata).draw();
+					// home_table.clear().rows.add(response.homedata).draw();
+					$("#home-table").DataTable({
+						data: response.homedata,
+						columnDefs: [
+							{ targets: [0], visible: false },
+							{ targets: [17], className: 'text-right' }
+						]
+					});
 					saa_table.clear().rows.add(response.saadata).draw();
 					os_table.clear().rows.add(response.os_data).draw();
                 },
