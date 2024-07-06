@@ -129,6 +129,7 @@ $rs_fy = $obj->get_fys() ;
 									<ul class="nav nav-tabs card-header-tabs" role="tablist">
 										<li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
 										<li><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
+										<li><button class="nav-link" href="#tab-table3" data-bs-toggle="tab" data-bs-target="#tab-table3">OS</button></li>
 									</ul>
 								</div>
 								<div class="card-body tab-content">
@@ -154,39 +155,49 @@ $rs_fy = $obj->get_fys() ;
 												<th>Total Salary<br>(16)</th>
 												<th>Total (Recurring Cost)<br>(17)</th>
 												<th>District Recommendation<br>(18)</th>
-												<th>Amount to be released<br>(19)</th>
+												<th>Fund to be released<br>(19)</th>
 											</thead>
 										</tbody>
 										</table>
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table2">
-										<table id="saa-table" class="display table table-striped table-hover">
-											<thead>
-												<th>Sl. No.</th>
-												<th>District</th>
-												<th>Name of the CCI</th>
-												<th>Run_by</th>
-												<th>Unit No</th>
-												<th>Category</th>
-												<th>cci_gender</th>
-												<th>fy_id</th>
-												<th>children_days</th>
+										<table id="saa-table" class="display table table-striped table-hover table-bordered">
+										<thead align="center">
+												<th hidden>CCI_ID</th>
+												<th>Sl. No.<br>(1)</th>
+												<th>District<br>(2)</th>
+												<th>CCI Name<br>(3)</th>
+												<th>Unit No.<br>(4)</th>
+												<th>CCI run by<br>(5)</th>
+												<th>No. of Months<br>(6)</th>
+												<th>Average No of Children days per month<br>(7)</th>
+												<th>Maintenance Cost @ ₹2,500 per child per month<br>(8)</th>
+												<th>Administrative cost @ ₹56,250 per quarter per unit<br>(9)</th>
+												<th>Salary of staff @ ₹3,68,204 per quarter per unit<br>(10)</th>
+												<th>Total (Recurring Cost)<br>(11)</th>
+												<th>District Recommendation<br>(12)</th>
+												<th>Fund to be released<br>(13)</th>
 											</thead>
 										</tbody>
 										</table>
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table3">
-										<table id="os-table" class="display table table-striped table-hover">
-											<thead>
-												<th>Sl. No.</th>
-												<th>District</th>
-												<th>Name of the CCI</th>
-												<th>Run_by</th>
-												<th>Unit No</th>
-												<th>Category</th>
-												<th>cci_gender</th>
-												<th>fy_id</th>
-												<th>children_days</th>
+										<table id="os-table" class="display table table-striped table-hover table-bordered">
+										<thead align="center">
+												<th hidden>CCI_ID</th>
+												<th>Sl. No.<br>(1)</th>
+												<th>District<br>(2)</th>
+												<th>CCI Name<br>(3)</th>
+												<th>Unit No.<br>(4)</th>
+												<th>CCI run by<br>(5)</th>
+												<th>No. of Months<br>(6)</th>
+												<th>Average No of Children days per month<br>(7)</th>
+												<th>Maintenance Cost @ ₹2,500 per child per month<br>(8)</th>
+												<th>Administrative cost @ ₹1,25,000 per quarter per unit<br>(9)</th>
+												<th>Salary of staff @ ₹3,25,247 per quarter per unit<br>(10)</th>
+												<th>Total (Recurring Cost)<br>(11)</th>
+												<th>District Recommendation<br>(12)</th>
+												<th>Fund to be released<br>(13)</th>
 											</thead>
 										</tbody>
 										</table>
@@ -291,9 +302,6 @@ $rs_fy = $obj->get_fys() ;
 			}
 		});
 
-		//var home_table = $('#home-table').DataTable();
-		var saa_table = $('#saa-table').DataTable();
-		var os_table = $('#os-table').DataTable();
 		$('#csvform').on('submit', function(e) {
 			e.preventDefault();
 			var formData = new FormData(this);
@@ -303,16 +311,62 @@ $rs_fy = $obj->get_fys() ;
                 data: formData,
 				dataType: 'json',
                 success: function(response){
-					// home_table.clear().rows.add(response.homedata).draw();
 					$("#home-table").DataTable({
 						data: response.homedata,
 						columnDefs: [
 							{ targets: [0], visible: false },
-							{ targets: [17], className: 'text-right' }
+							{ targets: [4, 6, 7, 8], className: 'text-right' },
+							{ 
+								targets: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+								className: 'text-right',
+								render: function(data, type, row) {
+									return Number(data).toLocaleString('en-IN', {
+										maximumFractionDigits: 2,
+										style: 'currency',
+										currency: 'INR'
+									});
+								}
+							}
 						]
 					});
-					saa_table.clear().rows.add(response.saadata).draw();
-					os_table.clear().rows.add(response.os_data).draw();
+
+					$("#saa-table").DataTable({
+						data: response.saadata,
+						columnDefs: [
+							{ targets: [0], visible: false },
+							{ targets: [1, 6, 7], className: 'text-right' },
+							{ 
+								targets: [8, 9, 10, 11, 12, 13],
+								className: 'text-right',
+								render: function(data, type, row) {
+									return Number(data).toLocaleString('en-IN', {
+										maximumFractionDigits: 2,
+										style: 'currency',
+										currency: 'INR'
+									});
+								}
+							}
+						]
+					});
+					
+					$("#os-table").DataTable({
+						data: response.osdata,
+						columnDefs: [
+							{ targets: [0], visible: false },
+							{ targets: [1, 6, 7], className: 'text-right' },
+							{ 
+								targets: [8, 9, 10, 11, 12, 13],
+								className: 'text-right',
+								render: function(data, type, row) {
+									return Number(data).toLocaleString('en-IN', {
+										maximumFractionDigits: 2,
+										style: 'currency',
+										currency: 'INR'
+									});
+								}
+							}
+						]
+					});
                 },
 				error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + status + error);
