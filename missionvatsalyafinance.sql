@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 07, 2024 at 07:03 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jul 07, 2024 at 09:52 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -266,6 +266,7 @@ CREATE TABLE `fund_release` (
   `id` int(11) NOT NULL,
   `cci_id` varchar(255) NOT NULL,
   `fy_id` varchar(255) NOT NULL,
+  `n_months` int(11) NOT NULL,
   `children_days` int(11) DEFAULT NULL,
   `cwsn_child_days` int(11) NOT NULL,
   `amnt_released` double NOT NULL
@@ -281,15 +282,15 @@ CREATE TABLE `fy_quarter` (
   `fy_id` varchar(10) NOT NULL,
   `fy` varchar(7) NOT NULL,
   `quarter` varchar(255) NOT NULL,
-  `locked` tinyint(1) NOT NULL
+  `user_level` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `fy_quarter`
 --
 
-INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `locked`) VALUES
-('2324Q4', '2023-24', 'January 2024 - March 2024', 0);
+INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `user_level`) VALUES
+('2324Q4', '2023-24', 'January 2024 - March 2024', 2);
 
 -- --------------------------------------------------------
 
