@@ -48,7 +48,7 @@
             </li>
             <?php } ?>
             <li class="nav-item">
-                <a href="#" class="">
+                <a href="sub-allotment.php" class="">
                     <i class="far fa-list-alt"></i>
                     Sub-allotment Status
                 </a>
