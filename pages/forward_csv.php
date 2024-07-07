@@ -4,16 +4,16 @@
 		header ( 'location:../index.php' );
 	}
 
+	include('../config/DbFunction.php');
+	$obj=new DbFunction();
+
     switch ($_SESSION['login']) {
 		case 1:
 			$uploaddir = "../csv/";
-			$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
 
 			if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
-				if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
-					if (!chmod($uploadfile, 0555))
-                        error_log('Failed to change permissions of the uploaded file.');
-                    
+				$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
+				if(file_exists($uploadfile) && $obj->set_fy_qtr_user($_POST['fy-qtr'], $_SESSION['login'] + 1)) {
                     echo json_encode(Array('status' => 1, 'message' =>'File forwarded successfully.'));
 				} else {
 					error_log('There was an error occured during upload!');
