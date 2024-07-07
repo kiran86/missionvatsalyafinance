@@ -66,6 +66,14 @@ class DbFunction{
 		exit();
 	}
 
+	function get_fy_qtr($fy_id) {
+		$db = Database::getInstance();
+		$mysqli = $db->getConnection();
+		$query = "SELECT quarter FROM fy_quarter WHERE fy_id = '" . $fy_id . "'";
+		$stmt= $mysqli->query($query);
+		return $stmt;
+	}
+
 	function show_jobs() {
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();

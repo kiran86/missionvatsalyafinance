@@ -7,7 +7,7 @@ if (!(isset( $_SESSION ['login']))) {
 
 include('../config/DbFunction.php');
 $obj=new DbFunction();
-$rs_fy = $obj->get_fys() ;
+$rs_fy = $obj->get_fys();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,11 +39,6 @@ $rs_fy = $obj->get_fys() ;
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
-	<style>
-		.text-right {
-			align:right;
-		}
-	</style>
 </head>
 
 <body>
@@ -93,7 +88,7 @@ $rs_fy = $obj->get_fys() ;
 									<div class="row mb-3">
 										<label for="fy-qtr" class="col-sm-3 col-form-label">Financial Quarter: <span id="" style="font-size:11px;color:red">*</span></label>
 										<div class="col-lg-6">
-											<select class="form-control" name="fy-qtr" id="fy-qtr" required disabled>
+											<select class="form-control" name="fy-qtr" id="fy-qtr" onchange="enable_file()" required disabled>
 												<option VALUE="">SELECT</option>
 											</select>
 										</div>
@@ -101,7 +96,7 @@ $rs_fy = $obj->get_fys() ;
 									<div class="row mb-3">
 										<label for="formFile" class="col-sm-3 col-form-label">Upload Sub-Allotment CSV: <span id="" style="font-size:11px;color:red">*</span></label>
 										<div class="col-lg-6">
-											<input class="form-control" type="file" accept=".csv" name="csvfile" id="csvfile" required>
+											<input class="form-control" type="file" accept=".csv" name="csvfile" id="csvfile" required disabled>
 										</div>
 									</div>
 									<div class="row mb-3">
@@ -125,17 +120,17 @@ $rs_fy = $obj->get_fys() ;
 						<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">Sub Allotment Data</h4>
+									<h4 class="card-title">Sub Allotment Data </h4> <br/>
 									<ul class="nav nav-tabs card-header-tabs" role="tablist">
 										<li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
-										<li><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
-										<li><button class="nav-link" href="#tab-table3" data-bs-toggle="tab" data-bs-target="#tab-table3">OS</button></li>
+										<li class="nav-item"><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
+										<li class="nav-item"><button class="nav-link" href="#tab-table3" data-bs-toggle="tab" data-bs-target="#tab-table3">OS</button></li>
 									</ul>
 								</div>
 								<div class="card-body tab-content">
 									<div class="table-responsive tab-pane show active" id="tab-table1">
 										<table id="home-table" class="display table table-striped table-hover table-bordered">
-											<thead align="center">
+											<thead class="text-center">
 												<th hidden>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
 												<th>District<br>(2)</th>
@@ -162,7 +157,7 @@ $rs_fy = $obj->get_fys() ;
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table2">
 										<table id="saa-table" class="display table table-striped table-hover table-bordered">
-										<thead align="center">
+										<thead class="text-center">
 												<th hidden>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
 												<th>District<br>(2)</th>
@@ -183,7 +178,7 @@ $rs_fy = $obj->get_fys() ;
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table3">
 										<table id="os-table" class="display table table-striped table-hover table-bordered">
-										<thead align="center">
+											<thead class="text-center">
 												<th hidden>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
 												<th>District<br>(2)</th>
@@ -198,9 +193,15 @@ $rs_fy = $obj->get_fys() ;
 												<th>Total (Recurring Cost)<br>(11)</th>
 												<th>District Recommendation<br>(12)</th>
 												<th>Fund to be released<br>(13)</th>
-											</thead>
+											</thea>
 										</tbody>
 										</table>
+									</div>
+									<div class="card-footer">
+										<a href="#" id="forward" class="btn btn-primary" disabled="disabled">
+											Forward
+											<i class="fas fa-arrow-alt-circle-right"></i>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -252,13 +253,13 @@ $rs_fy = $obj->get_fys() ;
 
 			// Loop over them and prevent submission
 			Array.from(forms).forEach(form => {
-				form.addEventListener('submit', event => {
-				if (!form.checkValidity()) {
-					event.preventDefault()
-					event.stopPropagation()
-				}
+					form.addEventListener('submit', event => {
+					if (!form.checkValidity()) {
+						event.preventDefault()
+						event.stopPropagation()
+					}
 
-				form.classList.add('was-validated')
+					form.classList.add('was-validated')
 				}, false)
 			})
 		})()
@@ -275,6 +276,18 @@ $rs_fy = $obj->get_fys() ;
 				$("#fy-qtr").attr("disabled", true);
 			}
 		}
+
+		function enable_file() {
+			var fy = $("#fy-qtr").find(":selected").text();
+			if(fy != "SELECT") {
+				$("#csvfile").attr("disabled", false); {
+					$("#csvfile").attr("required", true);
+				}
+			}
+			else {
+				$("#csvfile").attr("disabled", true);
+			}
+		}
 		
 		function listquarter(fy) {
 			$.ajax({
@@ -288,13 +301,6 @@ $rs_fy = $obj->get_fys() ;
 			});
 		}
 
-		// Listen for Bootstrap tab change
-		document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
-			el.addEventListener('shown.bs.tab', () => {
-				DataTable.tables({ visible: true, api: true }).columns.adjust();
-			});
-		});
-
 	$(document).ready(function() {
 		$('li.nav-item').each(function() {
 			if (window.location.pathname.includes($(this).children('a').attr('href'))) {
@@ -305,55 +311,97 @@ $rs_fy = $obj->get_fys() ;
 		$('#csvform').on('submit', function(e) {
 			e.preventDefault();
 			var formData = new FormData(this);
+
+			// clear old table data
+			$('#home-table').DataTable().clear();
+			$('#home-table').DataTable().destroy();
+			$('#saa-table').DataTable().clear();
+			$('#saa-table').DataTable().destroy();
+			$('#os-table').DataTable().clear();
+			$('#os-table').DataTable().destroy();
+            
             $.ajax({
                 url: "get_csv_data.php",
                 type: "POST",
                 data: formData,
 				dataType: 'json',
                 success: function(response){
+					$('.card-title').text('Sub Allotment Data : '.concat(response.quarter));
 					$("#home-table").DataTable({
 						data: response.homedata,
 						columnDefs: [
-							{ targets: [0], visible: false },
-							{ targets: [4, 6, 7, 8], className: 'text-right' },
+							{ targets: [0], visible: false, searchable: false },
+							{ targets: [1], searchable: false },
+							{ 
+								targets: [4, 6, 7, 8],
+								createdCell: function (td) {
+									$(td).addClass('text-end');
+								},
+								searchable: false
+							},
 							{ 
 								targets: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-								className: 'text-right',
+								searchable: false,
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
 										style: 'currency',
 										currency: 'INR'
 									});
+								},
+								createdCell: function (td) {
+									$(td).addClass('text-end');
 								}
 							}
-						]
+						],
+						paging:false,
+						scrollCollapse: true,
+						scrollX: true,
+						scrollY: '50vh'
 					});
 
 					$("#saa-table").DataTable({
 						data: response.saadata,
 						columnDefs: [
 							{ targets: [0], visible: false },
-							{ targets: [1, 6, 7], className: 'text-right' },
+							{
+								targets: [1, 6, 7],
+								createdCell: function (td) {
+									$(td).addClass('text-end');
+								}
+							},
 							{ 
 								targets: [8, 9, 10, 11, 12, 13],
-								className: 'text-right',
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
 										style: 'currency',
 										currency: 'INR'
 									});
-								}
+								},
+								createdCell: function (td) {
+									$(td).addClass('text-end');
+								},
+								searchable: false
 							}
-						]
+						],
+						paging:false,
+						scrollCollapse: true,
+						scrollX: true,
+						scrollY: '50vh'
 					});
-					
+
 					$("#os-table").DataTable({
 						data: response.osdata,
 						columnDefs: [
 							{ targets: [0], visible: false },
-							{ targets: [1, 6, 7], className: 'text-right' },
+							{
+								targets: [1, 6, 7],
+								createdCell: function (td) {
+									$(td).addClass('text-end');
+								},
+								searchable: false
+							},
 							{ 
 								targets: [8, 9, 10, 11, 12, 13],
 								className: 'text-right',
@@ -363,9 +411,24 @@ $rs_fy = $obj->get_fys() ;
 										style: 'currency',
 										currency: 'INR'
 									});
-								}
+								},
+								searchable: false
 							}
-						]
+						],
+						paging:false,
+						scrollCollapse: true,
+						scrollX: true,                        
+						scrollY: '50vh'
+					});
+
+					// Listen for Bootstrap tab change
+					document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
+						el.addEventListener('shown.bs.tab', () => {
+							DataTable.tables({ visible: true, api: true })
+							.columns.adjust()
+							.responsive().recalc()
+							.scroller.measure();
+						});
 					});
                 },
 				error: function(xhr, status, error) {
@@ -376,6 +439,97 @@ $rs_fy = $obj->get_fys() ;
                 processData: false
             });
 		});
+
+		$("#forward").on("click", function (e) {
+			e.preventDefault();
+			// var table = $("#home-table").DataTable();
+			if (
+				!($.fn.dataTable.isDataTable("#home-table")) &&
+				!($.fn.dataTable.isDataTable("#saa-table")) &&
+				!($.fn.dataTable.isDataTable("#os-table"))
+			) {
+				swal("No Data", "Nothing to forward!", {
+            		icon: "error",
+              		buttons: {
+                		confirm: {
+                  			className: "btn btn-danger",
+                		},
+              		},
+            	});
+				exit();
+			}
+            swal({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              type: "warning",
+              buttons: {
+                confirm: {
+                  text: "Yes, forward it!",
+                  className: "btn btn-success",
+                },
+                cancel: {
+                  visible: true,
+                  className: "btn btn-danger",
+                },
+              },
+            }).then((Forward) => {
+              if (Forward) {
+				// forward csv file
+				$.ajax({
+					url: "forward_csv.php",
+                    type: "POST",
+                    data: new FormData($("#csvform")[0]),
+                    dataType: 'json',
+                    success: function(response){
+                        console.log(response);
+						switch (response.status) {
+							case 0:
+								swal({
+                                    title: "Error!",
+                                    text: "Failed to forward the file. Please try again later.",
+                                    type: "error",
+                                    buttons: {
+                                        confirm: {
+                                            className: "btn btn-danger",
+                                        },
+                                    },
+                                });
+                                break;
+							case 1:
+								// clear form data
+								$("#csvform")[0].reset();
+								// clear table data
+								$('#home-table').DataTable().clear();
+								$('#home-table').DataTable().destroy();
+								$('#saa-table').DataTable().clear();
+								$('#saa-table').DataTable().destroy();
+								$('#os-table').DataTable().clear();
+								$('#os-table').DataTable().destroy();
+								swal({
+								title: "Forwarded!",
+								text: "Your file has been forward for approval.",
+								type: "success",
+								buttons: {
+									confirm: {
+									className: "btn btn-success",
+									},
+								},
+								});
+								break;
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error('AJAX Error: ' + status + error);
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+              } else {
+                swal.close();
+              }
+            });
+		})
 	});
 	</script>
 </body>

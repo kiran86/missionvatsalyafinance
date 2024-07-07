@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 05, 2024 at 04:47 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jul 07, 2024 at 07:03 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -266,7 +266,9 @@ CREATE TABLE `fund_release` (
   `id` int(11) NOT NULL,
   `cci_id` varchar(255) NOT NULL,
   `fy_id` varchar(255) NOT NULL,
-  `children_days` int(11) DEFAULT NULL
+  `children_days` int(11) DEFAULT NULL,
+  `cwsn_child_days` int(11) NOT NULL,
+  `amnt_released` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

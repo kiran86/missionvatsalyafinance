@@ -1,25 +1,43 @@
 <?php
+	session_start ();
+	if (!(isset( $_SESSION ['login']))) {
+		header ( 'location:../index.php' );
+	}
+
+	$quarter = "";
+	$uploaddir = "";
+	$uploadfile ="";
     $home_data = [];
 	$saa_data = [];
 	$os_data = [];
-	
-	$uploaddir = "../csv/";
-	$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
 
-	if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
-		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
-			chmod($uploadfile, 0777);
-		} else {
-			error_log('There was an error occured during upload!');
-		}
-	} else { 
-        error_log('Error: File could not be uploaded!');
-		exit(1);
-    }
+	include('../config/DbFunction.php');
+	$obj=new DbFunction();
+	
+	switch ($_SESSION['login']) {
+		case 1:
+			$uploaddir = "../csv/";
+			$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
+
+			if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
+				if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
+					chmod($uploadfile, 0777);
+				} else {
+					error_log('There was an error occured during upload!');
+				}
+			} else { 
+				error_log('Error: File could not be uploaded!');
+				exit(1);
+			}
+			break;
+		case 2:
+			break;
+	}
 
 	$n_home = 0;
 	$n_saa = 0;
 	$n_os = 0;
+
 	$csv_data = file($uploadfile);
 	foreach ($csv_data as $key => $value) {
 		// skip header line
@@ -29,6 +47,12 @@
 		// skip rows with empty children days
 		if (count($row) < 11 || $row[8] == '' || $row[9] == '' || $row[10] == '')
 			continue;
+
+		$rs_fy = $obj->get_fy_qtr($row[7]);
+		while($res=$rs_fy->fetch_object()) {
+			$quarter = $res->quarter;
+            break;
+		}
 
 		//Populate each array element
 		switch ($row[5]) {
@@ -87,7 +111,7 @@
                 break;
             case 'Open Shelter':
 				$os_data[$n_os][0] = $row[0];
-				$os_data[$n_os][1] = $n_saa + 1;
+				$os_data[$n_os][1] = $n_os + 1;
 				$os_data[$n_os][2] = $row[1];
 				$os_data[$n_os][3] = $row[2] . ' (' . $row[5] . ')';
 				$os_data[$n_os][4] = $row[4];
@@ -106,5 +130,5 @@
                 break;
 		}
     }
-    echo json_encode(Array('homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
+    echo json_encode(Array('quarter' => $quarter, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
 ?>
