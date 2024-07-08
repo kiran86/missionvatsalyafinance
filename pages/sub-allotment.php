@@ -6,6 +6,8 @@ if (! (isset ( $_SESSION ['login'] ))) {
 }
 include('../config/DbFunction.php');
 include('../config/utilityfunc.php');
+
+$obj=new DbFunction();
 ?> 
 
 <!DOCTYPE html>
@@ -78,10 +80,10 @@ include('../config/utilityfunc.php');
                           <table class="table mb-0">
                             <thead class="thead-dark align-items-center">
                               <tr>
-                                <th scope="col">Financial Year</th>
-                                <th scope="col">Quarter</th>
-                                <th scope="col" class="text-end">Amount</th>
-                                <th scope="col" class="text-end">Status</th>
+                                <th scope="col" class="text-center">Financial Year</th>
+                                <th scope="col" class="text-center">Quarter</th>
+                                <th scope="col" class="text-center">Status</th>
+                                <th scope="col" class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody>
