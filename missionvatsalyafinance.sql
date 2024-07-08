@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 08, 2024 at 06:29 AM
+-- Generation Time: Jul 08, 2024 at 09:52 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -282,15 +282,16 @@ CREATE TABLE `fy_quarter` (
   `fy_id` varchar(10) NOT NULL,
   `fy` varchar(7) NOT NULL,
   `quarter` varchar(255) NOT NULL,
-  `user_level` tinyint(1) NOT NULL
+  `at_user_id` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `fy_quarter`
 --
 
-INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `user_level`) VALUES
-('2324Q4', '2023-24', 'January 2024 - March 2024', 2);
+INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `at_user_id`) VALUES
+('2324Q4', '2023-24', 'January 2024 - March 2024', 2),
+('2425Q1', '2024-25', 'April 2024 - June 2024', NULL);
 
 -- --------------------------------------------------------
 
