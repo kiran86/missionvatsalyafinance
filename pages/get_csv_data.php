@@ -17,7 +17,7 @@
 	switch ($_SESSION['login']) {
 		case 1:
 			$uploaddir = "../csv/";
-			$uploadfile = $uploaddir . basename($_FILES['csvfile']['name']);
+			$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 
 			if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
 				if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {

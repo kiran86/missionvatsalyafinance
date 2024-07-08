@@ -1,7 +1,6 @@
 <?php
 require('Database.php');
-//$db = Database::getInstance();
-//$mysqli = $db->getConnection();
+
 class DbFunction{
 	function get_login(){
 		$db = Database::getInstance();
@@ -12,7 +11,20 @@ class DbFunction{
 			trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
 		}
         return $stmt;
-	}	
+	}
+
+	function get_user($user_id) {
+		$db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $query = "SELECT `user_type` FROM `login` WHERE `id` = '$user_id'";
+        $stmt= $mysqli->query($query);
+		if(false===$stmt){
+			trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
+		}
+		$user= $stmt->fetch_column(0);
+        return $user;
+	}
+
 	function login($loginid,$password){
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();
@@ -74,12 +86,38 @@ class DbFunction{
 		return $stmt;
 	}
 
-	function get_fy_all() {
+	function get_fy_allotment() {
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
-        $query = "SELECT * FROM fy_quarter";
+        $query = 'SELECT * FROM `fy_quarter` LEFT JOIN `login` ON `fy_quarter`.`at_user_id` = `login`.`id` ORDER BY `fy_id`;';$query = 'SELECT * FROM `fy_quarter` LEFT JOIN `login` ON `fy_quarter`.`at_user_id` = `login`.`id` ORDER BY `fy_id`;';
         $stmt= $mysqli->query($query);
         return $stmt;
+	}
+
+	function get_fy_status() {
+		$db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $query = "SELECT 
+					`fy_quarter`.*, 
+					`login`.`user_type`, 
+					COUNT(`fund_release`.`cci_id`) AS 'n_cci', 
+					SUM(`fund_release`.`amnt_released`) AS 't_amount'
+					FROM
+						`fy_quarter`
+					LEFT JOIN 
+						`login` ON `fy_quarter`.`at_user_id` = `login`.`id`
+					LEFT JOIN 
+						`fund_release` ON `fy_quarter`.`fy_id` = `fund_release`.`fy_id`
+					GROUP BY 
+						`fy_quarter`.`fy_id`, 
+						`login`.`user_type`;";
+        $rs= $mysqli->query($query);
+		while ($r = $rs->fetch_array()) {
+			// error_log($r[0]);
+			$arr[] = $r;
+		}
+		$rs->close();
+		return $arr;
 	}
 
 	function set_fy_qtr_user($fy_id, $user) {

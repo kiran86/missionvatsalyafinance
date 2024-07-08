@@ -2,7 +2,7 @@
 include('../config/dbcontroller.php');
 if(!empty($_POST['f'])) {
     $fy=$_POST['f'];
-    $stmt = $DB_con->prepare("SELECT * FROM fy_quarter WHERE fy=:fy AND user_level=0");
+    $stmt = $DB_con->prepare("SELECT * FROM fy_quarter WHERE fy=:fy AND (at_user_id IS NULL OR at_user_id=0);");
     $stmt->bindValue(':fy', $fy, PDO::PARAM_STR);
     $chk = $stmt->execute();
 ?>

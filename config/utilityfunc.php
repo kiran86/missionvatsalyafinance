@@ -1,41 +1,26 @@
 <?php
-function numberToCurrency($number)
-{
-    if(setlocale(LC_MONETARY, 'en_IN'))
-      return money_format('%.0n', $number);
-    else {
-      $explrestunits = "" ;
-      $number = explode('.', $number);
-      $num = $number[0];
-      if(strlen($num)>3){
-          $lastthree = substr($num, strlen($num)-3, strlen($num));
-          $restunits = substr($num, 0, strlen($num)-3); // extracts the last three digits
-          $restunits = (strlen($restunits)%2 == 1)?"0".$restunits:$restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
-          $expunit = str_split($restunits, 2);
-          for($i=0; $i<sizeof($expunit); $i++){
-              // creates each of the 2's group and adds a comma to the end
-              if($i==0)
-              {
-                  $explrestunits .= (int)$expunit[$i].","; // if is first value , convert into integer
-              }else{
-                  $explrestunits .= $expunit[$i].",";
-              }
-          }
-          $thecash = $explrestunits.$lastthree;
-      } else {
-          $thecash = $num;
-      }
-      if(!empty($number[1])) {
-      	if(strlen($number[1]) == 1) {
-      		return '₹ ' .$thecash . '.' . $number[1] . '0';
-      	} else if(strlen($number[1]) == 2){
-      		return '₹ ' .$thecash . '.' . $number[1];
-      	} else {
-            return 'cannot handle decimal values more than two digits...';
+function IND_money_format($number){
+    $decimal = (string)($number - floor($number));
+    $money = floor($number);
+    $length = strlen($money);
+    $delimiter = '';
+    $money = strrev($money);
+
+    for($i=0;$i<$length;$i++){
+        if(( $i==3 || ($i>3 && ($i-1)%2==0) )&& $i!=$length){
+            $delimiter .=',';
         }
-      } else {
-      	return '₹ ' .$thecash.'.00';
-      }
+        $delimiter .=$money[$i];
     }
+
+    $result = strrev($delimiter);
+    $decimal = preg_replace("/0\./i", ".", $decimal);
+    $decimal = substr($decimal, 0, 3);
+
+    if( $decimal != '0'){
+        $result = $result.$decimal;
+    }
+
+    return $result;
 }
 ?>
