@@ -74,6 +74,14 @@ class DbFunction{
 		return $stmt;
 	}
 
+	function get_fy_all() {
+		$db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $query = "SELECT * FROM fy_quarter";
+        $stmt= $mysqli->query($query);
+        return $stmt;
+	}
+
 	function set_fy_qtr_user($fy_id, $user) {
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();

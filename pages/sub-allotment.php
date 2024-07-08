@@ -8,6 +8,9 @@ include('../config/DbFunction.php');
 include('../config/utilityfunc.php');
 
 $obj=new DbFunction();
+
+$rs_fy = $obj->get_fy_all() ;
+
 ?> 
 
 <!DOCTYPE html>
