@@ -115,7 +115,7 @@ $arr = $obj->get_fy_status();
                                 <?php if ($row[5] != 0) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
-                                <td class="text-right"><?php echo $row[4];?></td>
+                                <td class="text-right"><?php echo ($row[4] != NULL ? $row[4] : "NA");?></td>
                                 <?php }?>
 
                                 <?php if ($row[3] == NULL) { ?> <!--Not initiated-->
