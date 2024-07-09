@@ -131,7 +131,8 @@ $rs_fy = $obj->get_fys();
 									<div class="table-responsive tab-pane show active" id="tab-table1">
 										<table id="home-table" class="display table table-striped table-hover table-bordered">
 											<thead class="text-center">
-												<th hidden>CCI_ID</th>
+												<th>FY-QTR</th>
+												<th>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
 												<th>District<br>(2)</th>
 												<th>CCI Name<br>(3)</th>
@@ -158,7 +159,8 @@ $rs_fy = $obj->get_fys();
 									<div class="table-responsive tab-pane" id="tab-table2">
 										<table id="saa-table" class="display table table-striped table-hover table-bordered">
 										<thead class="text-center">
-												<th hidden>CCI_ID</th>
+												<th>FY-QTR</th>
+												<th>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
 												<th>District<br>(2)</th>
 												<th>CCI Name<br>(3)</th>
@@ -179,7 +181,8 @@ $rs_fy = $obj->get_fys();
 									<div class="table-responsive tab-pane" id="tab-table3">
 										<table id="os-table" class="display table table-striped table-hover table-bordered">
 											<thead class="text-center">
-												<th hidden>CCI_ID</th>
+												<th>FY-QTR</th>
+												<th>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
 												<th>District<br>(2)</th>
 												<th>CCI Name<br>(3)</th>
@@ -330,18 +333,15 @@ $rs_fy = $obj->get_fys();
 					$("#home-table").DataTable({
 						data: response.homedata,
 						columnDefs: [
-							{ targets: [0], visible: false, searchable: false },
-							{ targets: [1], searchable: false },
+							{ targets: [0, 1], visible: false },
 							{ 
-								targets: [4, 6, 7, 8],
+								targets: [5, 7, 8, 9],
 								createdCell: function (td) {
 									$(td).addClass('text-end');
-								},
-								searchable: false
+								}
 							},
 							{ 
-								targets: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-								searchable: false,
+								targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
@@ -354,6 +354,7 @@ $rs_fy = $obj->get_fys();
 								}
 							}
 						],
+						searching: false,
 						paging:false,
 						scrollCollapse: true,
 						scrollX: true,
@@ -363,15 +364,15 @@ $rs_fy = $obj->get_fys();
 					$("#saa-table").DataTable({
 						data: response.saadata,
 						columnDefs: [
-							{ targets: [0], visible: false },
+							{ targets: [0, 1], visible: false },
 							{
-								targets: [1, 6, 7],
+								targets: [2, 7, 8],
 								createdCell: function (td) {
 									$(td).addClass('text-end');
 								}
 							},
 							{ 
-								targets: [8, 9, 10, 11, 12, 13],
+								targets: [9, 10, 11, 12, 13, 14],
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
@@ -381,10 +382,10 @@ $rs_fy = $obj->get_fys();
 								},
 								createdCell: function (td) {
 									$(td).addClass('text-end');
-								},
-								searchable: false
+								}
 							}
 						],
+						searching: false,
 						paging:false,
 						scrollCollapse: true,
 						scrollX: true,
@@ -394,16 +395,15 @@ $rs_fy = $obj->get_fys();
 					$("#os-table").DataTable({
 						data: response.osdata,
 						columnDefs: [
-							{ targets: [0], visible: false },
+							{ targets: [0, 1], visible: false },
 							{
-								targets: [1, 6, 7],
+								targets: [2, 7, 8],
 								createdCell: function (td) {
 									$(td).addClass('text-end');
-								},
-								searchable: false
+								}
 							},
 							{ 
-								targets: [8, 9, 10, 11, 12, 13],
+								targets: [9, 10, 11, 12, 13, 14],
 								className: 'text-right',
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
@@ -411,10 +411,10 @@ $rs_fy = $obj->get_fys();
 										style: 'currency',
 										currency: 'INR'
 									});
-								},
-								searchable: false
+								}
 							}
 						],
+						searching: false,
 						paging:false,
 						scrollCollapse: true,
 						scrollX: true,                        

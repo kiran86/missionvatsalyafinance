@@ -184,6 +184,7 @@ $arr = $obj->get_fy_status();
                             <div class="table-responsive tab-pane show active" id="tab-table1">
                               <table id="home-table" class="display table table-striped table-hover table-bordered">
                                 <thead class="text-center">
+                                  <th>FY-QTR</th>
                                   <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
@@ -211,6 +212,7 @@ $arr = $obj->get_fy_status();
                             <div class="table-responsive tab-pane" id="tab-table2">
                               <table id="saa-table" class="display table table-striped table-hover table-bordered">
                               <thead class="text-center">
+                                  <th>FY-QTR</th>
                                   <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
@@ -232,6 +234,7 @@ $arr = $obj->get_fy_status();
                             <div class="table-responsive tab-pane" id="tab-table3">
                               <table id="os-table" class="display table table-striped table-hover table-bordered">
                                 <thead class="text-center">
+                                  <th>FY-QTR</th>
                                   <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
@@ -327,18 +330,15 @@ $arr = $obj->get_fy_status();
                 var home_table = $("#home-table").DataTable({
                   data: response.homedata,
                   columnDefs: [
-                    { targets: [0], visible: false, searchable: false },
-                    { targets: [1], searchable: false },
+                    { targets: [0, 1], visible: false },
                     { 
-                      targets: [4, 6, 7, 8],
+                      targets: [5, 7, 8, 9],
                       createdCell: function (td) {
                         $(td).addClass('text-end');
-                      },
-                      searchable: false
+                      }
                     },
                     { 
-                      targets: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-                      searchable: false,
+                      targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
                           maximumFractionDigits: 2,
@@ -351,7 +351,6 @@ $arr = $obj->get_fy_status();
                       }
                     }
                   ],
-                  deferRender: true,
                   searching: false,
                   paging:false,
                   info: false,                  
@@ -364,15 +363,15 @@ $arr = $obj->get_fy_status();
                   searching: false,
                   data: response.saadata,
                   columnDefs: [
-                    { targets: [0], visible: false },
+                    { targets: [0, 1], visible: false },
                     {
-                      targets: [1, 6, 7],
+                      targets: [2, 7, 8],
                       createdCell: function (td) {
                         $(td).addClass('text-end');
                       }
                     },
                     { 
-                      targets: [8, 9, 10, 11, 12, 13],
+                      targets: [9, 10, 11, 12, 13, 14],
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
                           maximumFractionDigits: 2,
@@ -382,8 +381,7 @@ $arr = $obj->get_fy_status();
                       },
                       createdCell: function (td) {
                         $(td).addClass('text-end');
-                      },
-                      searchable: false
+                      }
                     }
                   ],
                   paging:false,
@@ -396,16 +394,15 @@ $arr = $obj->get_fy_status();
                   searching: false,
                   data: response.osdata,
                   columnDefs: [
-                    { targets: [0], visible: false },
+                    { targets: [0, 1], visible: false },
                     {
-                      targets: [1, 6, 7],
+                      targets: [2, 7, 8],
                       createdCell: function (td) {
                         $(td).addClass('text-end');
-                      },
-                      searchable: false
+                      }
                     },
                     { 
-                      targets: [8, 9, 10, 11, 12, 13],
+                      targets: [9, 10, 11, 12, 13, 14],
                       className: 'text-right',
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
@@ -413,8 +410,7 @@ $arr = $obj->get_fy_status();
                           style: 'currency',
                           currency: 'INR'
                         });
-                      },
-                      searchable: false
+                      }
                     }
                   ],
                   paging:false,
@@ -440,10 +436,6 @@ $arr = $obj->get_fy_status();
               contentType: false,
               processData: false
           });
-
-          home_table.columns.adjust().draw();
-          saa_table.columns.adjust().draw();
-          os_table.columns.adjust().draw();
         }
 
         dataModal.addEventListener('show.bs.modal', populateModal);
@@ -501,12 +493,15 @@ $arr = $obj->get_fy_status();
             },
           }).then((Forward) => {
             if (Forward) {
-              var fy_qtr = event.relatedTarget.getAttribute('data-bs-whatever');
+              var fy_qtr = $('#home-table').DataTable().rows(0).data()[0][0];
+              var formData = new FormData();
+              formData.append('fy-qtr', fy_qtr);
+              // console.log(fy_qtr);
               // forward csv file
               $.ajax({
                 url: "forward_csv.php",
                 type: "POST",
-                data: new FormData('fy-qtr', fy_qtr),
+                data: formData,
                 dataType: 'json',
                 success: function(response){
                   console.log(response);
@@ -540,7 +535,9 @@ $arr = $obj->get_fy_status();
                           className: "btn btn-success",
                           },
                         },
-                      });
+                      }).then(function () {
+                        location.reload();
+                      });                      
                       break;
                   }
                 },

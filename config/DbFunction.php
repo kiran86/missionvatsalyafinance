@@ -122,7 +122,7 @@ class DbFunction{
 	function set_fy_qtr_user($fy_id, $user) {
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
-        $query = "UPDATE fy_quarter SET user_level = ? WHERE fy_id = ?";
+        $query = "UPDATE fy_quarter SET at_user_id = ? WHERE fy_id = ?";
         $stmt= $mysqli->prepare($query);
 		if (false === $stmt) {
 			trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
