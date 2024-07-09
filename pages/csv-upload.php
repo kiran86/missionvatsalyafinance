@@ -442,7 +442,6 @@ $rs_fy = $obj->get_fys();
 
 		$("#forward").on("click", function (e) {
 			e.preventDefault();
-			// var table = $("#home-table").DataTable();
 			if (
 				!($.fn.dataTable.isDataTable("#home-table")) &&
 				!($.fn.dataTable.isDataTable("#saa-table")) &&

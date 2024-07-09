@@ -125,12 +125,25 @@ $arr = $obj->get_fy_status();
                                   </button>
                                 </td>
                                 <?php } else if ($row[5] == 0 && $_SESSION['login'] == $row[3]){ ?><!--Pending with this user-->
-                                <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTable">
+                                <?php if ($_SESSION['login'] == 3) {?><!--Highest privileges-->
+                                  <td class="text-center">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 </td>
-                                <?php } else if ($row[5] == 0){ ?><!--Pending with other user-->
+                                <?php } else if ($_SESSION['login'] == 1) {?><!--Lowest privilage-->
+                                <td class="text-center">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTable" onclick="addButton(0)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                </td>
+                                <?php } else {?><!--Other privilage-->
+                                <td class="text-center">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTable" onclick="addButton(1)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                </td>
+                                <?php }} else if ($row[5] == 0){ ?><!--Pending with other user-->
                                 <td class="text-center">
                                   <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalView">
                                     <i class="fas fa-eye"></i>
@@ -171,7 +184,7 @@ $arr = $obj->get_fy_status();
                             <div class="table-responsive tab-pane show active" id="tab-table1">
                               <table id="home-table" class="display table table-striped table-hover table-bordered">
                                 <thead class="text-center">
-                                  <th hidden>CCI_ID</th>
+                                  <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
                                   <th>CCI Name<br>(3)</th>
@@ -198,7 +211,7 @@ $arr = $obj->get_fy_status();
                             <div class="table-responsive tab-pane" id="tab-table2">
                               <table id="saa-table" class="display table table-striped table-hover table-bordered">
                               <thead class="text-center">
-                                  <th hidden>CCI_ID</th>
+                                  <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
                                   <th>CCI Name<br>(3)</th>
@@ -219,7 +232,7 @@ $arr = $obj->get_fy_status();
                             <div class="table-responsive tab-pane" id="tab-table3">
                               <table id="os-table" class="display table table-striped table-hover table-bordered">
                                 <thead class="text-center">
-                                  <th hidden>CCI_ID</th>
+                                  <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
                                   <th>CCI Name<br>(3)</th>
@@ -241,12 +254,6 @@ $arr = $obj->get_fy_status();
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        
-                        <a href="#" id="forward" class="btn btn-primary">
-                          Forward
-                          <i class="fas fa-arrow-alt-circle-right"></i>
-                        </a>
                       </div>
                     </div>
                   </div>
@@ -317,7 +324,7 @@ $arr = $obj->get_fy_status();
               dataType: 'json',
               success: function(response){
                 $('.modal-title').text('Sub Allotment Data : '.concat(response.quarter));
-                $("#home-table").DataTable({
+                var home_table = $("#home-table").DataTable({
                   data: response.homedata,
                   columnDefs: [
                     { targets: [0], visible: false, searchable: false },
@@ -344,13 +351,17 @@ $arr = $obj->get_fy_status();
                       }
                     }
                   ],
+                  deferRender: true,
+                  searching: false,
                   paging:false,
+                  info: false,                  
                   scrollCollapse: true,
                   scrollX: true,
                   scrollY: '50vh'
                 });
 
-                $("#saa-table").DataTable({
+                var saa_table = $("#saa-table").DataTable({
+                  searching: false,
                   data: response.saadata,
                   columnDefs: [
                     { targets: [0], visible: false },
@@ -381,7 +392,8 @@ $arr = $obj->get_fy_status();
                   scrollY: '50vh'
                 });
 
-                $("#os-table").DataTable({
+                var os_table = $("#os-table").DataTable({
+                  searching: false,
                   data: response.osdata,
                   columnDefs: [
                     { targets: [0], visible: false },
@@ -428,13 +440,122 @@ $arr = $obj->get_fy_status();
               contentType: false,
               processData: false
           });
+
+          home_table.columns.adjust().draw();
+          saa_table.columns.adjust().draw();
+          os_table.columns.adjust().draw();
         }
 
         dataModal.addEventListener('show.bs.modal', populateModal);
-        // dataModalOther.addEventListener('show.bs.modal', populateModal);
-        document.getElementById('btnModalView').addEventListener('click', event => {
-          document.getElementById('forward').remove();
+        dataModal.addEventListener('hidden.bs.modal', function(event) {
+          $('.modal-footer').html("");
         });
+        
+        function addButton(mode) {
+              $('.modal-footer').append('<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>');
+          switch (mode) {
+            case 2:
+              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
+              $('.modal-footer').append('<a href="#" id="approve" class="btn btn-primary" onclick="forward()">Approve <i class="fas fa-check-circle"></i></a>');
+              break;
+            case 1:
+              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
+              $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="forward()">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
+              break;
+            case 0:
+              $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="forward()">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
+              break;
+          }
+        }
+
+        // $("#forward").on("click", function (e) {
+        function forward() {
+          if (
+            !($.fn.dataTable.isDataTable("#home-table")) &&
+            !($.fn.dataTable.isDataTable("#saa-table")) &&
+            !($.fn.dataTable.isDataTable("#os-table"))
+          ) {
+            swal("No Data", "Nothing to forward!", {
+                    icon: "error",
+                      buttons: {
+                        confirm: {
+                            className: "btn btn-danger",
+                        },
+                      },
+                  });
+            exit();
+          }
+          swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            buttons: {
+              confirm: {
+                text: "Yes, forward it!",
+                className: "btn btn-success",
+              },
+              cancel: {
+                visible: true,
+                className: "btn btn-danger",
+              },
+            },
+          }).then((Forward) => {
+            if (Forward) {
+              var fy_qtr = event.relatedTarget.getAttribute('data-bs-whatever');
+              // forward csv file
+              $.ajax({
+                url: "forward_csv.php",
+                type: "POST",
+                data: new FormData('fy-qtr', fy_qtr),
+                dataType: 'json',
+                success: function(response){
+                  console.log(response);
+                  switch (response.status) {
+                    case 0:
+                      swal({
+                        title: "Error!",
+                        text: "Failed to forward the file. Please try again later.",
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-danger",
+                            },
+                        },
+                      });
+                      break;
+                    case 1:
+                      // clear table data
+                      $('#home-table').DataTable().clear();
+                      $('#home-table').DataTable().destroy();
+                      $('#saa-table').DataTable().clear();
+                      $('#saa-table').DataTable().destroy();
+                      $('#os-table').DataTable().clear();
+                      $('#os-table').DataTable().destroy();
+                      swal({
+                        title: "Forwarded!",
+                        text: "Your file has been forward for approval.",
+                        icon: "success",
+                        buttons: {
+                          confirm: {
+                          className: "btn btn-success",
+                          },
+                        },
+                      });
+                      break;
+                  }
+                },
+                error: function(xhr, status, error) {
+                  console.error('AJAX Error: ' + status + error);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+              });
+            } else {
+              swal.close();
+            }
+          });
+        }
     </script>
 </body>
 </html>
