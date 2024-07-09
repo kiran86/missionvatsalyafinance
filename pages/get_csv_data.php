@@ -13,25 +13,18 @@
 
 	include('../config/DbFunction.php');
 	$obj=new DbFunction();
-	
-	switch ($_SESSION['login']) {
-		case 1:
-			$uploaddir = "../csv/";
-			$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 
-			if(isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
-				if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
-					chmod($uploadfile, 0777);
-				} else {
-					error_log('There was an error occured during upload!');
-				}
-			} else { 
-				error_log('Error: File could not be uploaded!');
-				exit(1);
-			}
-			break;
-		case 2:
-			break;
+	$uploaddir = "../csv/";
+	if ($_SESSION['login'] == 1 && isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
+		$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
+
+		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
+			chmod($uploadfile, 0777);
+		} else {
+			error_log('There was an error occured during upload!');
+		}
+	} else {
+		$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 	}
 
 	$n_home = 0;

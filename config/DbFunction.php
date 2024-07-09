@@ -113,7 +113,6 @@ class DbFunction{
 						`login`.`user_type`;";
         $rs= $mysqli->query($query);
 		while ($r = $rs->fetch_array()) {
-			// error_log($r[0]);
 			$arr[] = $r;
 		}
 		$rs->close();

@@ -93,17 +93,17 @@ $arr = $obj->get_fy_status();
                               </tr>
                             </thead>
                             <tbody>
-                              <?php foreach ($arr as $row) { echo "<script>alert(". $row[0] .");</script>"?>
+                              <?php foreach ($arr as $row) { ?>
                               <tr>
                                 <td class="text-center"><?php echo $row[1]; ?></td>
                                 <td class="text-center"><?php echo $row[2]; ?></td>
 
                                 <?php if ($row[3] == NULL) { ?>
-                                <td class="text-center"><span class="badge badge-danger">Not Initiated</span></td>
+                                <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-danger">Not Initiated</span></td>
                                 <?php } else if ($row[5] == 0){ ?>
-                                <td class="text-center"><span class="badge badge-warning">Pending</span></td>
+                                <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-warning">Pending</span></td>
                                 <?php } else { ?>
-                                <td class="text-center"><span class="badge badge-success">Approved</span></td>
+                                <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-success">Approved</span></td>
                                 <?php }?>
 
                                 <?php if ($row[6] == NULL) { ?>
@@ -124,10 +124,16 @@ $arr = $obj->get_fy_status();
                                     <i class="far fa-eye-slash"></i>
                                   </button>
                                 </td>
-                                <?php } else if ($row[5] == 0){ ?><!--Pending-->
+                                <?php } else if ($row[5] == 0 && $_SESSION['login'] == $row[3]){ ?><!--Pending with this user-->
                                 <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black">
-                                    <i class="fa fa-align-left"></i>
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTable">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                </td>
+                                <?php } else if ($row[5] == 0){ ?><!--Pending with other user-->
+                                <td class="text-center">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalView">
+                                    <i class="fas fa-eye"></i>
                                   </button>
                                 </td>
                                 <?php } else { ?><!--Approved-->
@@ -141,6 +147,106 @@ $arr = $obj->get_fy_status();
                             </tbody>
                           </table>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" tab-index="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="dataModal">
+                  <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Sub-allotment Data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="card">
+                          <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                              <li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
+                              <li class="nav-item"><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
+                              <li class="nav-item"><button class="nav-link" href="#tab-table3" data-bs-toggle="tab" data-bs-target="#tab-table3">OS</button></li>
+                            </ul>
+                          </div>
+                          <div class="card-body tab-content">
+                            <div class="table-responsive tab-pane show active" id="tab-table1">
+                              <table id="home-table" class="display table table-striped table-hover table-bordered">
+                                <thead class="text-center">
+                                  <th hidden>CCI_ID</th>
+                                  <th>Sl. No.<br>(1)</th>
+                                  <th>District<br>(2)</th>
+                                  <th>CCI Name<br>(3)</th>
+                                  <th>Unit No.<br>(4)</th>
+                                  <th>CCI run by<br>(5)</th>
+                                  <th>No. of Months<br>(6)</th>
+                                  <th>Average No of Children days per month<br>(7)</th>
+                                  <th>Average No of CWSN Children days per month<br>(8)</th>
+                                  <th>Maintenance and Others Cost @ ₹3,000 per child per month<br>(9)</th>
+                                  <th>Beadding Cost @ ₹250 per child per quarter<br>(10)</th>
+                                  <th>CWSN fund @ ₹4,400 per child per month<br>(11)</th>
+                                  <th>Administrative cost @ ₹2,50,000 per quarter per unit<br>(12)</th>
+                                  <th>CWSN Equipment @ ₹1,00,000 per unit per quarter<br>(13)</th>
+                                  <th>Salary of staff @ ₹6,57,280 per quarter per unit<br>(14)</th>
+                                  <th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit<br>(15)</th>
+                                  <th>Total Salary<br>(16)</th>
+                                  <th>Total (Recurring Cost)<br>(17)</th>
+                                  <th>District Recommendation<br>(18)</th>
+                                  <th>Fund to be released<br>(19)</th>
+                                </thead>
+                              </tbody>
+                              </table>
+                            </div>
+                            <div class="table-responsive tab-pane" id="tab-table2">
+                              <table id="saa-table" class="display table table-striped table-hover table-bordered">
+                              <thead class="text-center">
+                                  <th hidden>CCI_ID</th>
+                                  <th>Sl. No.<br>(1)</th>
+                                  <th>District<br>(2)</th>
+                                  <th>CCI Name<br>(3)</th>
+                                  <th>Unit No.<br>(4)</th>
+                                  <th>CCI run by<br>(5)</th>
+                                  <th>No. of Months<br>(6)</th>
+                                  <th>Average No of Children days per month<br>(7)</th>
+                                  <th>Maintenance Cost @ ₹2,500 per child per month<br>(8)</th>
+                                  <th>Administrative cost @ ₹56,250 per quarter per unit<br>(9)</th>
+                                  <th>Salary of staff @ ₹3,68,204 per quarter per unit<br>(10)</th>
+                                  <th>Total (Recurring Cost)<br>(11)</th>
+                                  <th>District Recommendation<br>(12)</th>
+                                  <th>Fund to be released<br>(13)</th>
+                                </thead>
+                              </tbody>
+                              </table>
+                            </div>
+                            <div class="table-responsive tab-pane" id="tab-table3">
+                              <table id="os-table" class="display table table-striped table-hover table-bordered">
+                                <thead class="text-center">
+                                  <th hidden>CCI_ID</th>
+                                  <th>Sl. No.<br>(1)</th>
+                                  <th>District<br>(2)</th>
+                                  <th>CCI Name<br>(3)</th>
+                                  <th>Unit No.<br>(4)</th>
+                                  <th>CCI run by<br>(5)</th>
+                                  <th>No. of Months<br>(6)</th>
+                                  <th>Average No of Children days per month<br>(7)</th>
+                                  <th>Maintenance Cost @ ₹2,500 per child per month<br>(8)</th>
+                                  <th>Administrative cost @ ₹1,25,000 per quarter per unit<br>(9)</th>
+                                  <th>Salary of staff @ ₹3,25,247 per quarter per unit<br>(10)</th>
+                                  <th>Total (Recurring Cost)<br>(11)</th>
+                                  <th>District Recommendation<br>(12)</th>
+                                  <th>Fund to be released<br>(13)</th>
+                                </thea>
+                              </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        
+                        <a href="#" id="forward" class="btn btn-primary">
+                          Forward
+                          <i class="fas fa-arrow-alt-circle-right"></i>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -188,6 +294,146 @@ $arr = $obj->get_fy_status();
                     $(this).addClass('active');
                 }
             });
+        });
+
+        const dataModal = document.getElementById('dataModal');
+
+        function populateModal(event) {
+          var fy_qtr = event.relatedTarget.getAttribute('data-bs-whatever');
+          var formData = new FormData();
+          formData.append('fy-qtr', fy_qtr);
+          // clear old table data
+          $('#home-table').DataTable().clear();
+          $('#home-table').DataTable().destroy();
+          $('#saa-table').DataTable().clear();
+          $('#saa-table').DataTable().destroy();
+          $('#os-table').DataTable().clear();
+          $('#os-table').DataTable().destroy();
+                
+          $.ajax({
+              url: "get_csv_data.php",
+              type: "POST",
+              data: formData,
+              dataType: 'json',
+              success: function(response){
+                $('.modal-title').text('Sub Allotment Data : '.concat(response.quarter));
+                $("#home-table").DataTable({
+                  data: response.homedata,
+                  columnDefs: [
+                    { targets: [0], visible: false, searchable: false },
+                    { targets: [1], searchable: false },
+                    { 
+                      targets: [4, 6, 7, 8],
+                      createdCell: function (td) {
+                        $(td).addClass('text-end');
+                      },
+                      searchable: false
+                    },
+                    { 
+                      targets: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+                      searchable: false,
+                      render: function(data, type, row) {
+                        return Number(data).toLocaleString('en-IN', {
+                          maximumFractionDigits: 2,
+                          style: 'currency',
+                          currency: 'INR'
+                        });
+                      },
+                      createdCell: function (td) {
+                        $(td).addClass('text-end');
+                      }
+                    }
+                  ],
+                  paging:false,
+                  scrollCollapse: true,
+                  scrollX: true,
+                  scrollY: '50vh'
+                });
+
+                $("#saa-table").DataTable({
+                  data: response.saadata,
+                  columnDefs: [
+                    { targets: [0], visible: false },
+                    {
+                      targets: [1, 6, 7],
+                      createdCell: function (td) {
+                        $(td).addClass('text-end');
+                      }
+                    },
+                    { 
+                      targets: [8, 9, 10, 11, 12, 13],
+                      render: function(data, type, row) {
+                        return Number(data).toLocaleString('en-IN', {
+                          maximumFractionDigits: 2,
+                          style: 'currency',
+                          currency: 'INR'
+                        });
+                      },
+                      createdCell: function (td) {
+                        $(td).addClass('text-end');
+                      },
+                      searchable: false
+                    }
+                  ],
+                  paging:false,
+                  scrollCollapse: true,
+                  scrollX: true,
+                  scrollY: '50vh'
+                });
+
+                $("#os-table").DataTable({
+                  data: response.osdata,
+                  columnDefs: [
+                    { targets: [0], visible: false },
+                    {
+                      targets: [1, 6, 7],
+                      createdCell: function (td) {
+                        $(td).addClass('text-end');
+                      },
+                      searchable: false
+                    },
+                    { 
+                      targets: [8, 9, 10, 11, 12, 13],
+                      className: 'text-right',
+                      render: function(data, type, row) {
+                        return Number(data).toLocaleString('en-IN', {
+                          maximumFractionDigits: 2,
+                          style: 'currency',
+                          currency: 'INR'
+                        });
+                      },
+                      searchable: false
+                    }
+                  ],
+                  paging:false,
+                  scrollCollapse: true,
+                  scrollX: true,                        
+                  scrollY: '50vh'
+                });
+
+                // Listen for Bootstrap tab change
+                document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
+                  el.addEventListener('shown.bs.tab', () => {
+                    DataTable.tables({ visible: true, api: true })
+                    .columns.adjust()
+                    .responsive().recalc()
+                    .scroller.measure();
+                  });
+                });
+              },
+              error: function(xhr, status, error) {
+                  console.error('AJAX Error: ' + status + error);
+              },
+              cache: false,
+              contentType: false,
+              processData: false
+          });
+        }
+
+        dataModal.addEventListener('show.bs.modal', populateModal);
+        // dataModalOther.addEventListener('show.bs.modal', populateModal);
+        document.getElementById('btnModalView').addEventListener('click', event => {
+          document.getElementById('forward').remove();
         });
     </script>
 </body>
