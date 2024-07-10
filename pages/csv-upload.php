@@ -473,11 +473,14 @@ $rs_fy = $obj->get_fys();
               },
             }).then((Forward) => {
               if (Forward) {
+				var formData = new FormData();
+				formData.append('fy-qtr', $("#csvform")[0]);
+				formData.append('action', 'forward');
 				// forward csv file
 				$.ajax({
-					url: "forward_csv.php",
+					url: "csv_movement.php",
                     type: "POST",
-                    data: new FormData($("#csvform")[0]),
+                    data: formData,
                     dataType: 'json',
                     success: function(response){
                         console.log(response);

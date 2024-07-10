@@ -98,7 +98,7 @@
 				$saa_data[$n_saa][12] = floatval($saa_data[$n_saa][9]) + 
 											floatval($saa_data[$n_saa][10]) +
 											floatval($saa_data[$n_saa][11]);
-				$saa_data[$n_saa][13] = floatval($row[12]);
+				$saa_data[$n_saa][13] = floatval($row[11]);
 				$saa_data[$n_saa][14] = $saa_data[$n_saa][12] > $saa_data[$n_saa][13] ? $saa_data[$n_saa][13] : $saa_data[$n_saa][12];
 				$n_saa++;
                 break;
