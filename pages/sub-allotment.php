@@ -448,10 +448,10 @@ $arr = $obj->get_fy_status();
           switch (mode) {
             case 2:
               $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="file_action(this.id)"><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
-              $('.modal-footer').append('<a href="#" id="approve" class="btn btn-primary" onclick="file_action(this.id)">Approve <i class="fas fa-check-circle"></i></a>');
+              $('.modal-footer').append('<a href="#" id="approve" class="btn btn-primary" onclick="file_action(this.id)"><i class="fas fa-check-circle"></i> Approve</a>');
               break;
             case 1:
-              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="file_action(this.id)><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
+              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="file_action(this.id)"><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
               $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="file_action(this.id)">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
               break;
             case 0:
@@ -483,7 +483,7 @@ $arr = $obj->get_fy_status();
             icon: "warning",
             buttons: {
               confirm: {
-                text: "Yes, forward it!",
+                text: "Yes, " +action + "!",
                 className: "btn btn-success",
               },
               cancel: {
@@ -496,7 +496,7 @@ $arr = $obj->get_fy_status();
               var fy_qtr = $('#home-table').DataTable().rows(0).data()[0][0];
               var formData = new FormData();
               formData.append('fy-qtr', fy_qtr);
-              formData.append('action', 'forward');
+              formData.append('action', action);
               // forward csv file
               $.ajax({
                 url: "csv_movement.php",
@@ -509,7 +509,7 @@ $arr = $obj->get_fy_status();
                     case 0:
                       swal({
                         title: "Error!",
-                        text: "Failed to forward the file. Please try again later.",
+                        text: "Error!" + response.message,
                         icon: "error",
                         buttons: {
                             confirm: {
@@ -527,8 +527,8 @@ $arr = $obj->get_fy_status();
                       $('#os-table').DataTable().clear();
                       $('#os-table').DataTable().destroy();
                       swal({
-                        title: "Forwarded!",
-                        text: "Your file has been forward for approval.",
+                        title: "Successfull!",
+                        text: response.message,
                         icon: "success",
                         buttons: {
                           confirm: {

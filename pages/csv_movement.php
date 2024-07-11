@@ -9,35 +9,48 @@
 
 	$uploaddir = "../csv/";
 	$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
-	$movement = ($_POST['action'] == 'forward') ? 1 : -1;
+	$action = $_POST['action'];
+	if ($action == 'forward') {
+	    $movement = 1;
+		$err_msg = "Failed to forward the file.";
+		$success_msg = "File forwarded for approval.";
+	} else if ($action == 'revert') {
+		$movement = -1;
+		$err_msg = "Failed to revert the file.";
+		$success_msg = "File reverted back for rework.";
+	} else {
+		$movement = 0;
+		$err_msg = "Failed to approved allotment.";
+		$success_msg = "Allotment data finalized.";
+	}
 	
-    switch ($_SESSION['login']) {
-		case 1:
-		case 2:
+    switch ($action) {
+		case 'forward':
+		case 'revert':
 			if(file_exists($uploadfile)) {
 				$query = "UPDATE fy_quarter SET at_user_id = ? WHERE fy_id = ?";
 				$stmt= $mysqli->prepare($query);
 				if (false === $stmt) {
 					trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
-					echo json_encode(Array('status' => 0, 'message' =>'An error occured! Failed to forward.'));
+					echo json_encode(Array('status' => 0, 'message' =>'An error occured!' . $err_msg));
 				} else {
 					$user = $_SESSION['login'] + $movement;
 					$stmt->bind_param('is', $user, $_POST['fy-qtr']);
 					$stmt->execute();
-					echo json_encode(Array('status' => 1, 'message' =>'File forwarded successfully.'));
+					echo json_encode(Array('status' => 1, 'message' =>$success_msg));
 				}
 			} else {
 				error_log('CSV file not found');
-				echo json_encode(Array('status' => 0, 'message' =>'An error occured! Failed to forward.'));
+				echo json_encode(Array('status' => 0, 'message' =>'An error occured!' . $err_msg));
 			}
 			break;
-		case 3:
+		case 'approve':
 			if(file_exists($uploadfile)) {
 				$query = "INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `amnt_released`) VALUES (?,?,?,?,?,?)";
 				$stmt= $mysqli->prepare($query);
 				if (false === $stmt) {
                     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
-                    echo json_encode(Array('status' => 0, 'message' =>'An error occured.'));
+                    echo json_encode(Array('status' => 0, 'message' =>$err_msg));
                 } else {
 					$csv_data = file($uploadfile);
 					foreach ($csv_data as $key => $value) {
@@ -104,11 +117,11 @@
 						$stmt->bind_param('ssiiid', $cci_id, $fy_id, $n_months, $children_days, $cwsn_children_days, $amnt_released);
 						$stmt->execute();
 					}
-					echo json_encode(Array('status' => 2, 'message' =>'Approved.'));
+					echo json_encode(Array('status' => 1, 'message' => $success_msg));
 				}
 			} else {
 				error_log('CSV file not found');
-				echo json_encode(Array('status' => 0, 'message' =>'CSV file not found.'));
+				echo json_encode(Array('status' => 0, 'message' =>'Allotment file not found.'));
 			}
 			break;
 	}
