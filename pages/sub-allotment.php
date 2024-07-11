@@ -447,26 +447,27 @@ $arr = $obj->get_fy_status();
               $('.modal-footer').append('<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>');
           switch (mode) {
             case 2:
-              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="revert()"><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
-              $('.modal-footer').append('<a href="#" id="approve" class="btn btn-primary" onclick="forward()">Approve <i class="fas fa-check-circle"></i></a>');
+              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="file_action(this.id)"><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
+              $('.modal-footer').append('<a href="#" id="approve" class="btn btn-primary" onclick="file_action(this.id)">Approve <i class="fas fa-check-circle"></i></a>');
               break;
             case 1:
-              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="revert()><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
-              $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="forward()">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
+              $('.modal-footer').append('<a href="#" id="revert" class="btn btn-primary" onclick="file_action(this.id)><i class="fas fa-arrow-alt-circle-left"></i> Revert</a>');
+              $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="file_action(this.id)">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
               break;
             case 0:
-              $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="forward()">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
+              $('.modal-footer').append('<a href="#" id="forward" class="btn btn-primary" onclick="file_action(this.id)">Forward <i class="fas fa-arrow-alt-circle-right"></i></a>');
               break;
           }
         }
 
-        function forward() {
+        function file_action(action) {
+          console.log("Action: " + action);
           if (
             !($.fn.dataTable.isDataTable("#home-table")) &&
             !($.fn.dataTable.isDataTable("#saa-table")) &&
             !($.fn.dataTable.isDataTable("#os-table"))
           ) {
-            swal("No Data", "Nothing to forward!", {
+            swal("No Data", "Nothing to do!", {
                     icon: "error",
                       buttons: {
                         confirm: {
@@ -538,7 +539,79 @@ $arr = $obj->get_fy_status();
                         location.reload();
                       });                      
                       break;
-                    case 2:
+                  }
+                },
+                error: function(xhr, status, error) {
+                  console.error('AJAX Error: ' + status + error);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+              });
+            } else {
+              swal.close();
+            }
+          });
+        }
+
+        function approve() {
+          if (
+            !($.fn.dataTable.isDataTable("#home-table")) &&
+            !($.fn.dataTable.isDataTable("#saa-table")) &&
+            !($.fn.dataTable.isDataTable("#os-table"))
+          ) {
+            swal("No Data", "Nothing to approve!", {
+                    icon: "error",
+                      buttons: {
+                        confirm: {
+                            className: "btn btn-danger",
+                        },
+                      },
+                  });
+            exit();
+          }
+          swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            buttons: {
+              confirm: {
+                text: "Yes, approve!",
+                className: "btn btn-success",
+              },
+              cancel: {
+                visible: true,
+                className: "btn btn-danger",
+              },
+            },
+          }).then((Approve) => {
+            if (Approve) {
+              var fy_qtr = $('#home-table').DataTable().rows(0).data()[0][0];
+              var formData = new FormData();
+              formData.append('fy-qtr', fy_qtr);
+              formData.append('action', 'approve');
+              // forward csv file
+              $.ajax({
+                url: "csv_movement.php",
+                type: "POST",
+                data: formData,
+                dataType: 'json',
+                success: function(response){
+                  console.log(response);
+                  switch (response.status) {
+                    case 0:
+                      swal({
+                        title: "Error!",
+                        text: "Failed to approve the file. Please try again later.",
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-danger",
+                            },
+                        },
+                      });
+                      break;
+                    case 1:
                       // clear table data
                       $('#home-table').DataTable().clear();
                       $('#home-table').DataTable().destroy();
@@ -548,7 +621,7 @@ $arr = $obj->get_fy_status();
                       $('#os-table').DataTable().destroy();
                       swal({
                         title: "Approved!",
-                        text: "Allotment data finalized.",
+                        text: "Allotment data has been finalized.",
                         icon: "success",
                         buttons: {
                           confirm: {
@@ -610,7 +683,7 @@ $arr = $obj->get_fy_status();
               var formData = new FormData();
               formData.append('fy-qtr', fy_qtr);
               formData.append('action', 'revert');
-              // forward csv file
+              // revert csv file
               $.ajax({
                 url: "csv_movement.php",
                 type: "POST",
@@ -622,7 +695,7 @@ $arr = $obj->get_fy_status();
                     case 0:
                       swal({
                         title: "Error!",
-                        text: "Failed to forward the file. Please try again later.",
+                        text: "Failed to revert back the file. Please try again later.",
                         icon: "error",
                         buttons: {
                             confirm: {
@@ -640,29 +713,8 @@ $arr = $obj->get_fy_status();
                       $('#os-table').DataTable().clear();
                       $('#os-table').DataTable().destroy();
                       swal({
-                        title: "Forwarded!",
-                        text: "Your file has been forward for approval.",
-                        icon: "success",
-                        buttons: {
-                          confirm: {
-                          className: "btn btn-success",
-                          },
-                        },
-                      }).then(function () {
-                        location.reload();
-                      });                      
-                      break;
-                    case 2:
-                      // clear table data
-                      $('#home-table').DataTable().clear();
-                      $('#home-table').DataTable().destroy();
-                      $('#saa-table').DataTable().clear();
-                      $('#saa-table').DataTable().destroy();
-                      $('#os-table').DataTable().clear();
-                      $('#os-table').DataTable().destroy();
-                      swal({
-                        title: "Approved!",
-                        text: "Allotment data finalized.",
+                        title: "Reverted!",
+                        text: "Your file has been reverted back.",
                         icon: "success",
                         buttons: {
                           confirm: {
