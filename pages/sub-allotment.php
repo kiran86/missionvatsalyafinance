@@ -151,7 +151,7 @@ $arr = $obj->get_fy_status();
                                 </td>
                                 <?php } else { ?><!--Approved-->
                                 <td class="text-center">  
-                                  <button type="button" class="btn btn-icon btn-round btn-black">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-whatever="<?php echo $row[0]; ?>" onclick="downloadPDF()">
                                     <i class="fas fa-download"></i>
                                   </button>
                                 </td>
@@ -551,6 +551,20 @@ $arr = $obj->get_fy_status();
             } else {
               swal.close();
             }
+          });
+        }
+        
+        function downloadPDF() {
+          var fy_qtr = event.relatedTarget.getAttribute('data-bs-whatever');
+          var formData = new FormData();
+          formData.append('fy-qtr', fy_qtr);
+          formData.append('action', 'download');
+          $.ajax({
+              url: "get_csv_data.php",
+              type: "POST",
+              data: formData,
+              dataType: 'json',
+              success: function(response){}
           });
         }
         </script>
