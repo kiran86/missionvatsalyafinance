@@ -47,6 +47,8 @@
             break;
 		}
 
+		$expenses = $obj->get_expense_structure($row[0]);
+
 		//Populate each array element
 		switch ($row[5]) {
 			case 'Children Home':
@@ -64,14 +66,23 @@
 				$home_data[$n_home][7] = $row[8];
 				$home_data[$n_home][8] = $row[9];
 				$home_data[$n_home][9] = $row[10];
-				$home_data[$n_home][10] = (int)$row[8] * (int)$row[9] * 3000.0;
-				$home_data[$n_home][11] = (int)$row[8] * (int)$row[9] * 250.0;
-				$home_data[$n_home][12] = (int)$row[8] * (int)$row[10] * 4400.0;
-				$home_data[$n_home][13] = 250000.0;
-				$home_data[$n_home][14] = ($row[5] == 'Children Home CWSN'? 1.0 : 0.0) * 100000.0;
-				$home_data[$n_home][15] = 657280.0;
-				$home_data[$n_home][16] = ($row[5] == 'Children Home CWSN'? 1.0 : 0.0) * 143191.0;
+				// Maintenance cost
+				$home_data[$n_home][10] = (int)$row[8] * (int)$row[9] * $expenses[0][1];
+				// Bedding cost
+				$home_data[$n_home][11] = (int)$row[8] * (int)$row[9] * $expenses[0][1];
+				// CWSN fund
+				$home_data[$n_home][12] = (int)$row[8] * (int)$row[10] * ($expenses[0][7] + $expenses[0][8]);
+				// Admin cost
+				$home_data[$n_home][13] = $expenses[0][5];
+				// CWSN quip
+				$home_data[$n_home][14] = $expenses[0][6];
+				// Staff salary
+				$home_data[$n_home][15] = $expenses[0][9];
+				// CWSN staff salary
+				$home_data[$n_home][16] = $expenses[0][10];
+				// Total salary
 				$home_data[$n_home][17] = $home_data[$n_home][15] + $home_data[$n_home][16];
+				// Total recurring
 				$home_data[$n_home][18] = floatval($home_data[$n_home][10]) +
 											floatval($home_data[$n_home][11]) +
 											floatval($home_data[$n_home][12]) +
@@ -92,9 +103,12 @@
 				$saa_data[$n_saa][6] = $row[3];
 				$saa_data[$n_saa][7] = $row[8];
 				$saa_data[$n_saa][8] = $row[9];
-				$saa_data[$n_saa][9] = (int)$row[8] * (int)$row[9] * 2500.0;
-				$saa_data[$n_saa][10] = 56250.0;
-				$saa_data[$n_saa][11] = 368204.0;
+				// Maintanence Cost
+				$saa_data[$n_saa][9] = (int)$row[8] * (int)$row[9] * $expenses[0][1];
+				// Admin cost
+				$saa_data[$n_saa][10] = $expenses[0][5];
+				// Staff salary
+				$saa_data[$n_saa][11] = $expenses[0][9];
 				$saa_data[$n_saa][12] = floatval($saa_data[$n_saa][9]) + 
 											floatval($saa_data[$n_saa][10]) +
 											floatval($saa_data[$n_saa][11]);
@@ -112,9 +126,12 @@
 				$os_data[$n_os][6] = $row[3];
 				$os_data[$n_os][7] = $row[8];
 				$os_data[$n_os][8] = $row[9];
-				$os_data[$n_os][9] = (int)$row[8] * (int)$row[9] * 2500.0;
-				$os_data[$n_os][10] = 125000.0;
-				$os_data[$n_os][11] = 325247.0;
+				// Maintanance cost
+				$os_data[$n_os][9] = (int)$row[8] * (int)$row[9] * $expenses[0][1];
+				// Administrative cost
+				$os_data[$n_os][10] = $expenses[0][5];
+				// Staff salary
+				$os_data[$n_os][11] = $expenses[0][9];
 				$os_data[$n_os][12] = floatval($os_data[$n_os][9]) + 
 											floatval($os_data[$n_os][10]) +
 											floatval($os_data[$n_os][11]);
