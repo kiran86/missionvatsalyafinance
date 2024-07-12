@@ -58,9 +58,10 @@ class DbFunction{
 	function get_cci_details() {
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
-        $sql = "SELECT cci.id, cci.district, cci.cci_name, cci.cci_run_by, cci.category, cci.cci_unit_no, cci.cci_gender, cci.strength
-                  FROM cci
-                  ORDER BY cci.district, cci.cci_run_by, cci.cci_name, cci.category, cci.cci_unit_no";
+        $sql = "SELECT `cci`.`id`, `cci`.`district`, `cci`.`cci_name`, `cci`.`cci_run_by`, `cci`.`category`, `cci`.`cci_unit_no`, `cci`.`cci_gender`, `cci`.`strength`, `cci_recurring_exp`.`maintenance_cost`, `cci_recurring_exp`.`bedding_cost`,`cci_recurring_exp`.`admin_expenses`, `cci_recurring_exp`.`cwsn_equip`, `cci_recurring_exp`.`cwsn_addl_grant`, `cci_recurring_exp`.`cwsn_medical`, `cci_recurring_exp`.`staff_sal`, `cci_recurring_exp`.`cwsn_staff_sal`
+				FROM cci LEFT JOIN `cci_recurring_exp`
+				ON `cci`.`id` = `cci_recurring_exp`.`id`
+				ORDER BY cci.district, cci.cci_run_by, cci.cci_name, cci.category, cci.cci_unit_no";
         $rs = $mysqli->query($sql, MYSQLI_ASSOC);
         return $rs;
 	}

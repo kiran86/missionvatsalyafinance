@@ -461,7 +461,7 @@ $arr = $obj->get_fy_status();
         }
 
         function file_action(action) {
-          console.log("Action: " + action);
+          // console.log("Action: " + action);
           if (
             !($.fn.dataTable.isDataTable("#home-table")) &&
             !($.fn.dataTable.isDataTable("#saa-table")) &&
@@ -504,7 +504,7 @@ $arr = $obj->get_fy_status();
                 data: formData,
                 dataType: 'json',
                 success: function(response){
-                  console.log(response);
+                  // console.log(response);
                   switch (response.status) {
                     case 0:
                       swal({

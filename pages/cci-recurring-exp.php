@@ -6,12 +6,19 @@ if (! (isset ( $_SESSION ['login'] ))) {
 	header ( 'location:../index.php' );
 }
 
-include('../config/DbFunction.php');
-include('../config/utilityfunc.php');
+// include('../config/DbFunction.php');
+// include('../config/utilityfunc.php');
 
-$obj = new DbFunction();
-$cci_arr = $obj->get_cci_details();
-
+// $obj = new DbFunction();
+// $cci_arr = $obj->get_cci_details();
+require_once("../config/Database.php");
+$db = Database::getInstance();
+$mysqli = $db->getConnection();
+$sql = "SELECT `cci`.`id`, `cci`.`district`, `cci`.`cci_name`, `cci`.`cci_run_by`, `cci`.`category`, `cci`.`cci_unit_no`, `cci`.`cci_gender`, `cci`.`strength`, `cci_recurring_exp`.`maintenance_cost`, `cci_recurring_exp`.`bedding_cost`,`cci_recurring_exp`.`admin_expenses`, `cci_recurring_exp`.`cwsn_equip`, `cci_recurring_exp`.`cwsn_addl_grant`, `cci_recurring_exp`.`cwsn_medical`, `cci_recurring_exp`.`staff_sal`, `cci_recurring_exp`.`cwsn_staff_sal`
+				FROM cci LEFT JOIN `cci_recurring_exp`
+				ON `cci`.`id` = `cci_recurring_exp`.`id`
+				ORDER BY cci.district, cci.cci_run_by, cci.cci_name, cci.category, cci.cci_unit_no";
+$cci_arr = $mysqli->query($sql, MYSQLI_ASSOC);
 ?> 
 
 <!DOCTYPE html>
@@ -78,13 +85,10 @@ $cci_arr = $obj->get_cci_details();
                       </div>
                       <div class="card-body">
                         <div class="table-responsive">
-                          <table
-                            id="multi-filter-select"
-                            class="display table table-striped table-hover"
-                          >
+                          <table id="cci-details" class="display table table-striped table-hover">
                             <thead class="text-center">
                               <tr>
-                                <th>cci_id<br>0</th>
+                                <th hidden>cci_id<br>0</th>
                                 <th>District<br>1</th>
                                 <th>Name of the CCI<br>2</th>
                                 <th>Run by<br>3</th>
@@ -92,12 +96,20 @@ $cci_arr = $obj->get_cci_details();
                                 <th>Unit No<br>5</th>
                                 <th>Gender<br>6</th>
                                 <th>Strength<br>7</th>
+                                <th hidden>maintenance_cost</th>
+                                <th hidden>bedding_cost</th>
+                                <th hidden>admin_expenses</th>
+                                <th hidden>cwsn_equip</th>
+                                <th hidden>cwsn_addl_grant</th>
+                                <th hidden>cwsn_medical</th>
+                                <th hidden>staff_sal</th>
+                                <th hidden>cwsn_staff_sal</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
                             <tfoot>
                               <tr>
-                                <th>cci_id<br>0</th>
+                                <th hidden>cci_id<br>0</th>
                                 <th>District<br>1</th>
                                 <th>Name of the CCI<br>2</th>
                                 <th>Run by<br>3</th>
@@ -105,28 +117,43 @@ $cci_arr = $obj->get_cci_details();
                                 <th>Unit No<br>5</th>
                                 <th>Gender<br>6</th>
                                 <th>Strength<br>7</th>
+                                <th hidden>maintenance_cost</th>
+                                <th hidden>bedding_cost</th>
+                                <th hidden>admin_expenses</th>
+                                <th hidden>cwsn_equip</th>
+                                <th hidden>cwsn_addl_grant</th>
+                                <th hidden>cwsn_medical</th>
+                                <th hidden>staff_sal</th>
+                                <th hidden>cwsn_staff_sal</th>
                                 <th>Action</th>
                               </tr>
                             </tfoot>
+                            <tbody>
                             <?php foreach ($cci_arr as $cci) {?>
                               <tr>
-                                <td><?php echo $cci['id']; ?></td>
+                                <td hidden><?php echo $cci['id']; ?></td>
                                 <td><?php echo $cci['district']; ?></td>
                                 <td><?php echo $cci['cci_name']; ?></td>
                                 <td><?php echo $cci['cci_run_by']; ?></td>
                                 <td><?php echo $cci['category']; ?></td>
-                                <td><?php echo $cci['cci_unit_no']; ?></td>
+                                <td class="text-end"><?php echo $cci['cci_unit_no']; ?></td>
                                 <td><?php echo $cci['cci_gender']; ?></td>
-                                <td><?php echo $cci['strength']; ?></td>
+                                <td class="text-end"><?php echo $cci['strength']; ?></td>
+                                <td hidden><?php echo $cci['maintenance_cost']; ?></td>
+                                <td hidden><?php echo $cci['bedding_cost']; ?></td>
+                                <td hidden><?php echo $cci['admin_expenses']; ?></td>
+                                <td hidden><?php echo $cci['cwsn_equip']; ?></td>
+                                <td hidden><?php echo $cci['cwsn_addl_grant']; ?></td>
+                                <td hidden><?php echo $cci['cwsn_medical']; ?></td>
+                                <td hidden><?php echo $cci['staff_sal']; ?></td>
+                                <td hidden><?php echo $cci['cwsn_staff_sal']; ?></td>
                                 <td>
                                   <div class="form-button-action">
                                     <button
                                       type="button"
-                                      data-bs-toggle="tooltip"
                                       title=""
-                                      class="btn btn-link btn-primary btn-lg"
+                                      class="btn btn-link btn-primary btn-lg edit-cci"
                                       data-original-title="Edit Task"
-                                      onclick="editCCI(<?php echo $cc['id']; ?>"
                                     >
                                       <i class="fa fa-edit"></i>
                                     </button>
@@ -141,6 +168,73 @@ $cci_arr = $obj->get_cci_details();
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade modal-lg" id="modalCCIEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                <form class="needs-validation" novalidate="" id="cci-edit-expenditure">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="cciEditExpenditure"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <input type="hidden" name="cci-id" id="cci-id" value="">
+                      <div class="mb-3 row">
+                        <label for="maintanance-cost" class="col-sm-3 col-form-label">Maintanance Cost:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="maintanance-cost" id="maintanance-cost" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="bedding-cost" class="col-sm-3 col-form-label">Bedding Cost:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="bedding-cost" id="bedding-cost" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="admin_expenses" class="col-sm-3 col-form-label">Administrative Expenses:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="admin_expenses" id="admin_expenses" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="cwsn_equip" class="col-sm-3 col-form-label">Specialized Equipments & Materials:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="cwsn_equip" id="cwsn_equip" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="cwsn_addl_grant" class="col-sm-3 col-form-label">Additional Grant for CWSN:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="cwsn_addl_grant" id="cwsn_addl_grant" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="cwsn_medical" class="col-sm-3 col-form-label">Specialized Medical Assistance for CWSN:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="cwsn_medical" id="cwsn_medical" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="staff_sal" class="col-sm-3 col-form-label">Staff Salary:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="staff_sal" id="staff_sal" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="cwsn_staff_sal" class="col-sm-3 col-form-label">Salary for CWSN Staff:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="cwsn_staff_sal" id="cwsn_staff_sal" required>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
                 </div>
               </div>
             </div>
@@ -179,7 +273,7 @@ $cci_arr = $obj->get_cci_details();
     <!-- Kaiadmin JS -->
     <script src="../assets/js/kaiadmin.min.js"></script>
     <script>
-      $("#multi-filter-select").DataTable({
+      $("#cci-details").DataTable({
         pageLength: 10,
         initComplete: function () {
           this.api()
@@ -210,6 +304,99 @@ $cci_arr = $obj->get_cci_details();
             });
         },
       });
+
+      $(document).ready(function () {
+        $('li.nav-item').each(function() {
+            if (window.location.pathname.includes($(this).children('a').attr('href'))) {
+                $(this).addClass('active');
+            }
+        });
+
+        var table = $('#cci-details').DataTable();
+        $('#cci-details tbody').on('click', '.edit-cci', function() {
+          var data = table.row($(this).parents('tr')).data();
+          // console.log(data);
+          $('#cci-id').val(data[0]);
+          $('#cciEditExpenditure').text(data[1] + ' | ' + data[2] + ' | ' + data[3]);
+          $('#maintanance-cost').val(data[8]);
+          $('#bedding-cost').val(data[9]);
+          $('#admin_expenses').val(data[10]);
+          $('#cwsn_equip').val(data[11]);
+          $('#cwsn_addl_grant').val(data[12]);
+          $('#cwsn_medical').val(data[13]);
+          $('#staff_sal').val(data[14]);
+          $('#cwsn_staff_sal').val(data[15]);
+          $('#modalCCIEdit').modal('show');
+        });
+
+        $('#cci-edit-expenditure').on('submit', function(e) {
+          e.preventDefault();
+          // var form = document.getElementById('cci-edit-expenditure');
+          var formData = new FormData(this);
+          $.ajax({
+            url: "set_cci_expenditure.php",
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            success: function(response){
+              switch (response.status) {
+                case 0:
+                  swal({
+                    title: "Error!",
+                    text: "Error!" + response.message,
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-danger",
+                        },
+                    },
+                  });
+                  break;
+                case 1:
+                  swal({
+                    title: "Successfull!",
+                    text: response.message,
+                    icon: "success",
+                    buttons: {
+                      confirm: {
+                      className: "btn btn-success",
+                      },
+                    },
+                  }).then(function () {
+                    location.reload();
+                  });                      
+                  break;
+              }
+            },
+            error: function(xhr, status, error) {
+              console.error('AJAX Error: ' + status + error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+          });
+        });
+      });
+
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+          }, false)
+        })
+      })()
     </script>
   </body>
 </html>
