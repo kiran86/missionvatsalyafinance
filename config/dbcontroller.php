@@ -15,7 +15,7 @@ $DB_host = "127.0.0.1";
 $DB_port = 3306;
 $DB_user = "root";
 $DB_pass = "";
-$DB_name = "missionvatsalyafinance";
+$DB_name = "missionvatsalya";
 
 try
 {

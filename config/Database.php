@@ -16,7 +16,7 @@ class Database {
 	private $port = 3306;
 	private $_username = "root";
 	private $_password = "";
-	private $_database = "missionvatsalyafinance";
+	private $_database = "missionvatsalya";
 
 	/*
 	Get an instance of the Database
