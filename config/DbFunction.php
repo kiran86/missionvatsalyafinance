@@ -55,6 +55,16 @@ class DbFunction{
 		return $stmt;
 	}
 
+	function get_cci_details() {
+		$db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $sql = "SELECT cci.id, cci.district, cci.cci_name, cci.cci_run_by, cci.category, cci.cci_unit_no, cci.cci_gender, cci.strength
+                  FROM cci
+                  ORDER BY cci.district, cci.cci_run_by, cci.cci_name, cci.category, cci.cci_unit_no";
+        $rs = $mysqli->query($sql, MYSQLI_ASSOC);
+        return $rs;
+	}
+
 	function generate_csv($fy_qtr) {
 		$db = Database::getInstance();
 		$mysqli = $db->getConnection();
