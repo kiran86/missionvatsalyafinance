@@ -10,6 +10,7 @@
 	$uploaddir = "../csv/";
 	$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 	$action = $_POST['action'];
+	
 	if ($action == 'forward') {
 	    $movement = 1;
 		$err_msg = "Failed to forward the file.";
