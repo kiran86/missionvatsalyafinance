@@ -1,60 +1,112 @@
 <?php
 require('../fpdf/fpdf.php');
+session_start ();
+setlocale(LC_MONETARY, 'en_IN');
+
+if (! (isset ( $_SESSION ['login'] ))) {
+	header ( 'location:../index.php' );
+}
+
+require_once('../config/Database.php');
 
 class PDF extends FPDF
 {
-// Load data
-function LoadData($file)
-{
-    // Read file lines
-    $lines = file($file);
-    $data = array();
-    foreach($lines as $line)
-        $data[] = explode(';',trim($line));
-    return $data;
-}
-
-// Colored table
-function FancyTable($header, $data)
-{
-    // Colors, line width and bold font
-    $this->SetFillColor(255,0,0);
-    $this->SetTextColor(255);
-    $this->SetDrawColor(128,0,0);
-    $this->SetLineWidth(.3);
-    $this->SetFont('','B');
-    // Header
-    $w = array(40, 35, 40, 45);
-    for($i=0;$i<count($header);$i++)
-        $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
-    $this->Ln();
-    // Color and font restoration
-    $this->SetFillColor(224,235,255);
-    $this->SetTextColor(0);
-    $this->SetFont('');
-    // Data
-    $fill = false;
-    foreach($data as $row)
+    // Load data from database
+    function LoadData($fy_qtr, $approval_date)
     {
-        $this->Cell($w[0],6,$row[0],'LR',0,'L',$fill);
-        $this->Cell($w[1],6,$row[1],'LR',0,'L',$fill);
-        $this->Cell($w[2],6,number_format($row[2]),'LR',0,'R',$fill);
-        $this->Cell($w[3],6,number_format($row[3]),'LR',0,'R',$fill);
-        $this->Ln();
-        $fill = !$fill;
+        $db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $sql = "SELECT 
+                    `cci`.`district`, `cci`.`cci_name`, `cci`.`cci_unit_no`, `cci`.`cci_run_by`, `cci`.`category`,
+                    `fy_quarter`.`fy`, `fy_quarter`.`quarter`,
+                    `fund_release`.`n_months`, `fund_release`.`children_days`, `fund_release`.`cwsn_child_days`, `fund_release`.`maintenance_cost`, `fund_release`.`bedding_cost`, `fund_release`.`admin_expenses`, `fund_release`.`cwsn_equip`, `fund_release`.`cwsn_addl_grant`, `fund_release`.`cwsn_medical`, `fund_release`.`staff_sal`, `fund_release`.`cwsn_staff_sal`, `fund_release`.`dist_recommendation`, `fund_release`.`amnt_released`
+                FROM
+                    `fund_release`
+                LEFT JOIN
+                    `cci`
+                ON
+                    `fund_release`.`cci_id` = `cci`.`id`
+                LEFT JOIN
+                    `fy_quarter`
+                ON
+                    `fund_release`.`fy_id` = `fy_quarter`.`fy_id`
+                WHERE
+                    `fund_release`.`fy_id` = ? AND `fund_release`.`apprvl_dt` = ?
+                ORDER BY
+                    `cci`.`district`, `cci`.`cci_run_by`, `cci`.`cci_name`, `cci`.`category`, `cci`.`cci_unit_no`;";
+        $stmt = $mysqli->prepare($sql);
+        if ($stmt === FALSE) {
+            trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
+            return null;
+        }
+        $stmt->bind_param('ss', $fy_qtr, $approval_date);
+        if ($stmt->execute()) {
+            $data = $stmt->get_result()->fetch_all(MYSQLI_NUM);
+        } else {
+            trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
+            return null;
+        }
+        return $data;
     }
-    // Closing line
-    $this->Cell(array_sum($w),0,'','T');
-}
+
+    // Colored table
+    function FancyTable($header, $data)
+    {
+        // Colors, line width and bold font
+        $this->SetFillColor(255,0,0);
+        $this->SetTextColor(255);
+        $this->SetDrawColor(128,0,0);
+        $this->SetLineWidth(.3);
+        $this->SetFont('','B');
+        // Header
+        $w = array(5, 35, 5, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15);
+        for($i=0;$i<count($header);$i++)
+            $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
+        $this->Ln();
+        // Color and font restoration
+        $this->SetFillColor(224,235,255);
+        $this->SetTextColor(0);
+        $this->SetFont('');
+        // Data
+        $fill = false;
+        $n_row = 0;
+        foreach($data as $row)
+        {
+            $this->Cell($w[0],6,++$n_row,'LR',0,'L',$fill);
+            $this->Cell($w[1],6,$row[0],'LR',0,'L',$fill);
+            $this->Cell($w[2],6,$row[1],'LR',0,'L',$fill);
+            $this->Cell($w[3],6,$row[2],'LR',0,'R',$fill);
+            $this->Cell($w[4],6,$row[3],'LR',0,'L',$fill);
+            $this->Cell($w[5],6,$row[4],'LR',0,'L',$fill);
+            $this->Cell($w[6],6,$row[7],'LR',0,'R',$fill);
+            $this->Cell($w[7],6,$row[8],'LR',0,'R',$fill);
+            $this->Cell($w[8],6,$row[9],'LR',0,'R',$fill);
+            $this->Cell($w[9],6,number_format($row[10]),'LR',0,'R',$fill);
+            $this->Cell($w[10],6,number_format($row[11]),'LR',0,'R',$fill);
+            $this->Cell($w[11],6,number_format($row[12]),'LR',0,'R',$fill);
+            $this->Cell($w[12],6,number_format($row[13]),'LR',0,'R',$fill);
+            $this->Cell($w[13],6,number_format($row[14]),'LR',0,'R',$fill);
+            $this->Cell($w[14],6,number_format($row[15]),'LR',0,'R',$fill);
+            $this->Cell($w[15],6,number_format($row[16]),'LR',0,'R',$fill);
+            $this->Cell($w[16],6,number_format($row[17]),'LR',0,'R',$fill);
+            $this->Cell($w[17],6,number_format($row[18]),'LR',0,'R',$fill);
+            $this->Cell($w[18],6,number_format($row[19]),'LR',0,'R',$fill);
+            $this->Ln();
+            $fill = !$fill;
+        }
+        // Closing line
+        $this->Cell(array_sum($w),0,'','T');
+    }
 }
 
-$pdf = new PDF();
+$pdf = new PDF('L', 'mm', 'A4');
 // Column headings
-$header = array('Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)');
+$header = array('SL. NO', 'CCI NAME', 'UNIT NO.', 'CCI RUN BY', 'CCI CATEGORY', 'NO. OF MONTHS', 'AVERAGE NO OF CHILDREN DAYS PER MONTH', 'AVERAGE NO OF CWSN CHILDREN DAYS PER MONTH', 'MAINTENANCE AND OTHERS COST', 'BEADDING COST', 'CWSN FUND', 'ADMINISTRATIVE COST', 'CWSN EQUIPMENT', 'SALARY OF STAFF', 'SALARY FOR CWSN STAFF', 'TOTAL SALARY', 'TOTAL (RECURRING COST)', 'DISTRICT RECOMMENDATION', 'FUND TO BE RELEASED');
 // Data loading
-$data = $pdf->LoadData('countries.txt');
+$data = $pdf->LoadData($_POST['fy-qtr'], $_POST['approval-date']);
 $pdf->SetFont('Arial','',14);
 $pdf->AddPage();
 $pdf->FancyTable($header,$data);
-$pdf->Output();
+$pdf->Output('F', '../output/' . $_POST['fy-qtr'] . '.pdf');
+// $pdf->Output();
 ?>

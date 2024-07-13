@@ -165,7 +165,7 @@ $arr = $obj->get_fy_status();
                                 </td>
                                 <?php } else { ?><!--Approved-->
                                 <td class="text-center">  
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-whatever="<?php echo $row[0]; ?>" onclick="downloadPDF()">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-whatever="<?php echo $row[0]; ?>" onclick="downloadPDF('<?php echo $row[0]; ?>', '<?php echo $row[8]; ?>')">
                                     <i class="fas fa-download"></i>
                                   </button>
                                 </td>
@@ -209,13 +209,13 @@ $arr = $obj->get_fy_status();
                                   <th>No. of Months<br>(6)</th>
                                   <th>Average No of Children days per month<br>(7)</th>
                                   <th>Average No of CWSN Children days per month<br>(8)</th>
-                                  <th>Maintenance and Others Cost @ ₹3,000 per child per month<br>(9)</th>
-                                  <th>Beadding Cost @ ₹250 per child per quarter<br>(10)</th>
-                                  <th>CWSN fund @ ₹4,400 per child per month<br>(11)</th>
-                                  <th>Administrative cost @ ₹2,50,000 per quarter per unit<br>(12)</th>
-                                  <th>CWSN Equipment @ ₹1,00,000 per unit per quarter<br>(13)</th>
-                                  <th>Salary of staff @ ₹6,57,280 per quarter per unit<br>(14)</th>
-                                  <th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit<br>(15)</th>
+                                  <th>Maintenance and Others Cost<br>(9)</th>
+                                  <th>Beadding Cost<br>(10)</th>
+                                  <th>CWSN fund<br>(11)</th>
+                                  <th>Administrative cost<br>(12)</th>
+                                  <th>CWSN Equipment<br>(13)</th>
+                                  <th>Salary of staff<br>(14)</th>
+                                  <th>Salary for CWSN Staff<br>(15)</th>
                                   <th>Total Salary<br>(16)</th>
                                   <th>Total (Recurring Cost)<br>(17)</th>
                                   <th>District Recommendation<br>(18)</th>
@@ -568,17 +568,25 @@ $arr = $obj->get_fy_status();
           });
         }
         
-        function downloadPDF() {
-          var fy_qtr = event.relatedTarget.getAttribute('data-bs-whatever');
+        function downloadPDF(fy_qtr, approval_date) {
+          console.log(fy_qtr + ' ' + approval_date);
           var formData = new FormData();
           formData.append('fy-qtr', fy_qtr);
-          formData.append('action', 'download');
+          formData.append('approval-date', approval_date);
           $.ajax({
-              url: "get_csv_data.php",
+              url: "pdf.php",
               type: "POST",
               data: formData,
               dataType: 'json',
-              success: function(response){}
+              success: function(response){
+                console.log(response);
+              },
+              error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+              },
+              cache: false,
+              contentType: false,
+              processData: false
           });
         }
         </script>
