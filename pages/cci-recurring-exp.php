@@ -176,57 +176,77 @@ $cci_arr = $mysqli->query($sql, MYSQLI_ASSOC);
                 <div class="modal-content">
                 <form class="needs-validation" novalidate="" id="cci-edit-expenditure">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="cciEditExpenditure"></h1>
+                    <div class="modal-title font-monospace">
+                    <h2 class="fs-5" id="cci_name_district"></h2>
+                    <h6 class="fs-6" id="cci_run_by"></h6>
+                    <h6 class="fs-6" id="cci_category_unit"></h6>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                      <input type="hidden" name="cci-id" id="cci-id" value="">
-                      <div class="mb-3 row">
-                        <label for="maintanance-cost" class="col-sm-3 col-form-label">Maintanance Cost:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="maintanance-cost" id="maintanance-cost" required>
+                      <input type="hidden" name="cci_id" id="cci_id" value="">
+                      <div class="row mb-3">
+                          <label for="maintenance_cost" class="col-5 col-form-label text-end">Maintanance Cost:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="maintenance_cost" id="maintenance_cost" required>
+                          <span class="input-group-text text-primary col-5">per child per month</span>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                          <label for="bedding_cost" class="col-5 col-form-label text-end">Bedding Cost:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="bedding_cost" id="bedding_cost" required>
+                          <span class="input-group-text text-primary col-5">per child per quarter</span>
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="bedding-cost" class="col-sm-3 col-form-label">Bedding Cost:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="bedding-cost" id="bedding-cost" required>
+                          <label for="admin_expenses" class="col-5 col-form-label text-end">Administrative Expenses:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="admin_expenses" id="admin_expenses" required>
+                          <span class="input-group-text text-primary col-5">per unit per quarter</span>
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="admin_expenses" class="col-sm-3 col-form-label">Administrative Expenses:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="admin_expenses" id="admin_expenses" required>
+                          <label for="cwsn_equip" class="col-5 col-form-label text-end">Specialized Equipments & Materials:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="cwsn_equip" id="cwsn_equip" required>
+                          <span class="input-group-text text-primary col-5">per unit per quarter</span>
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="cwsn_equip" class="col-sm-3 col-form-label">Specialized Equipments & Materials:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="cwsn_equip" id="cwsn_equip" required>
+                          <label for="cwsn_addl_grant" class="col-5 col-form-label text-end">Additional Grant for CWSN:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="cwsn_addl_grant" id="cwsn_addl_grant" required>
+                          <span class="input-group-text text-primary col-5">per CWSN per month</span>
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="cwsn_addl_grant" class="col-sm-3 col-form-label">Additional Grant for CWSN:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="cwsn_addl_grant" id="cwsn_addl_grant" required>
+                          <label for="cwsn_medical" class="col-5 col-form-label text-end">Specialized Medical Assistance for CWSN:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control col-1 text-end" name="cwsn_medical" id="cwsn_medical" required>
+                          <span class="input-group-text text-primary col-5">per CWSN per month</span>
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="cwsn_medical" class="col-sm-3 col-form-label">Specialized Medical Assistance for CWSN:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="cwsn_medical" id="cwsn_medical" required>
+                          <label for="staff_sal" class="col-5 col-form-label text-end">Staff Salary:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="staff_sal" id="staff_sal" required>
+                          <span class="input-group-text text-primary col-5">per unit per quarter</span>
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label for="staff_sal" class="col-sm-3 col-form-label">Staff Salary:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="staff_sal" id="staff_sal" required>
-                        </div>
-                      </div>
-                      <div class="mb-3 row">
-                        <label for="cwsn_staff_sal" class="col-sm-3 col-form-label">Salary for CWSN Staff:</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="cwsn_staff_sal" id="cwsn_staff_sal" required>
+                          <label for="cwsn_staff_sal" class="col-5 col-form-label text-end">Salary for CWSN Staff:</label>
+                        <div class="input-group col">
+                          <span class="input-group-text">₹</span>
+                          <input type="text" class="form-control text-end" name="cwsn_staff_sal" id="cwsn_staff_sal" required>
+                          <span class="input-group-text text-primary col-5">per unit per quarter</span>
                         </div>
                       </div>
                   </div>
@@ -316,10 +336,12 @@ $cci_arr = $mysqli->query($sql, MYSQLI_ASSOC);
         $('#cci-details tbody').on('click', '.edit-cci', function() {
           var data = table.row($(this).parents('tr')).data();
           // console.log(data);
-          $('#cci-id').val(data[0]);
-          $('#cciEditExpenditure').text(data[1] + ' | ' + data[2] + ' | ' + data[3]);
-          $('#maintanance-cost').val(data[8]);
-          $('#bedding-cost').val(data[9]);
+          $('#cci_id').val(data[0]);
+          $('#cci_name_district').text(data[2] + ', ' + data[1]);
+          $('#cci_run_by').text(data[3]);
+          $('#cci_category_unit').text(data[4] + ' for ' + data[6] + ' unit ' + data[5]);
+          $('#maintenance_cost').val(data[8]);
+          $('#bedding_cost').val(data[9]);
           $('#admin_expenses').val(data[10]);
           $('#cwsn_equip').val(data[11]);
           $('#cwsn_addl_grant').val(data[12]);

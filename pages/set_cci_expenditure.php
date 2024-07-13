@@ -33,6 +33,7 @@ $stmt->bind_param('dddddddds',
                     $_POST['cwsn_staff_sal'],
                     $_POST['cci_id']);
 if ($stmt->execute()) {
+    // error_log($sql);
     echo json_encode(Array('status' => 1, 'message' => 'CCI Expenditure updated successfully!'));
 } else {
     echo json_encode(Array('status' => 0, 'message' => 'An error occured while updating CCI Expenditure detaisl!'));

@@ -134,7 +134,7 @@ class DbFunction{
 		$expenses = [];
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
-        $query = "SELECT `maintenance_cost`, `bedding_cost`, `admin_expenses`, `staff_sal`, `cwsn_staff_sal` FROM `cci_recurring_exp` WHERE `id` = '". $cci_id. "'";
+        $query = "SELECT `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal` FROM `cci_recurring_exp` WHERE `id` = '". $cci_id. "'";
         $rs= $mysqli->query($query);
         while ($r = $rs->fetch_array()) {
             $expenses[] = $r;
