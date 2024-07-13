@@ -100,7 +100,7 @@ class DbFunction{
 	function get_fy_allotment() {
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
-        $query = 'SELECT * FROM `fy_quarter` LEFT JOIN `login` ON `fy_quarter`.`at_user_id` = `login`.`id` ORDER BY `fy_id`;';$query = 'SELECT * FROM `fy_quarter` LEFT JOIN `login` ON `fy_quarter`.`at_user_id` = `login`.`id` ORDER BY `fy_id`;';
+		$query = 'SELECT * FROM `fy_quarter` LEFT JOIN `login` ON `fy_quarter`.`at_user_id` = `login`.`id` ORDER BY `fy_id`;';
         $stmt= $mysqli->query($query);
         return $stmt;
 	}
@@ -109,16 +109,20 @@ class DbFunction{
 		$db = Database::getInstance();
         $mysqli = $db->getConnection();
         $query = "SELECT 
-					`fy_quarter`.*, 
-					`login`.`user_type`, 
-					COUNT(`fund_release`.`cci_id`) AS 'n_cci', 
-					SUM(`fund_release`.`amnt_released`) AS 't_amount'
+						`fy_quarter`.*,
+						`login`.`user_type`,
+					COUNT(`fund_release`.`cci_id`) AS 'n_cci',
+					GROUP_CONCAT(DISTINCT(`cci`.`district`) ORDER BY `cci`.`district` SEPARATOR ', ') as `districts`,
+					SUM(`fund_release`.`amnt_released`) AS 't_amount',
+					MIN(`fund_release`.`apprvl_dt`)
 					FROM
 						`fy_quarter`
 					LEFT JOIN 
 						`login` ON `fy_quarter`.`at_user_id` = `login`.`id`
 					LEFT JOIN 
 						`fund_release` ON `fy_quarter`.`fy_id` = `fund_release`.`fy_id`
+					LEFT JOIN
+						`cci` ON `fund_release`.`cci_id` = `cci`.`id`
 					GROUP BY 
 						`fy_quarter`.`fy_id`, 
 						`login`.`user_type`;";

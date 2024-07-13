@@ -87,8 +87,10 @@ $arr = $obj->get_fy_status();
                                 <th scope="col" class="text-center">Financial Year</th>
                                 <th scope="col" class="text-center">Quarter</th>
                                 <th scope="col" class="text-center">Status</th>
+                                <th scope="col" class="text-center">@</th>
                                 <th scope="col" class="text-center">Total Amount</th>
-                                <th scope="col" class="text-center">With</th>
+                                <th scope="col" class="text-center col-3">Districts</th>
+                                <th scope="col" class="text-center">Approval Date</th>
                                 <th scope="col" class="text-center">Actions</th>
                               </tr>
                             </thead>
@@ -105,17 +107,29 @@ $arr = $obj->get_fy_status();
                                 <?php } else { ?>
                                 <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-success">Approved</span></td>
                                 <?php }?>
-
-                                <?php if ($row[6] == NULL) { ?>
-                                <td class="text-center">NA</td>
-                                <?php } else {?>
-                                <td class="text-end">₹<?php echo IND_money_format($row[6]);?></td>
-                                <?php }?>
                                 
                                 <?php if ($row[5] != 0) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
                                 <td class="text-center"><?php echo ($row[4] != NULL ? $row[4] : "NA");?></td>
+                                <?php }?>
+
+                                <?php if ($row[7] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-end">₹<?php echo IND_money_format($row[7]);?></td>
+                                <?php }?>
+                                
+                                <?php if ($row[6] == NULL) { ?>
+                                <td class="text-center"></td>
+                                <?php } else {?>
+                                <td class="text-start"><?php echo $row[6];?></td>
+                                <?php }?>
+
+                                <?php if ($row[8] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-center"><?php echo $row[8];?></td>
                                 <?php }?>
 
                                 <?php if ($row[3] == NULL) { ?> <!--Not initiated-->
