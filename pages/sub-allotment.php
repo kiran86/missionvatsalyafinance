@@ -164,10 +164,14 @@ $arr = $obj->get_fy_status();
                                   </button>
                                 </td>
                                 <?php } else { ?><!--Approved-->
-                                <td class="text-center">  
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-whatever="<?php echo $row[0]; ?>" onclick="downloadPDF('<?php echo $row[0]; ?>', '<?php echo $row[8]; ?>')">
-                                    <i class="fas fa-download"></i>
-                                  </button>
+                                <td class="text-center">
+                                  <form method = "POST" action="alt_pdf.php">
+                                    <input type="hidden" name="fy-qtr" value="<?php echo $row[0];?>">
+                                    <input type="hidden" name="approval-date" value="<?php echo $row[8];?>">
+                                    <button type="submit" class="btn btn-icon btn-round btn-black">
+                                      <i class="fas fa-download"></i>
+                                    </button>
+                                  </form>
                                 </td>
                                 <?php }?>
                               </tr>
@@ -565,28 +569,6 @@ $arr = $obj->get_fy_status();
             } else {
               swal.close();
             }
-          });
-        }
-        
-        function downloadPDF(fy_qtr, approval_date) {
-          console.log(fy_qtr + ' ' + approval_date);
-          var formData = new FormData();
-          formData.append('fy-qtr', fy_qtr);
-          formData.append('approval-date', approval_date);
-          $.ajax({
-              url: "pdf.php",
-              type: "POST",
-              data: formData,
-              dataType: 'json',
-              success: function(response){
-                console.log(response);
-              },
-              error: function(xhr, status, error) {
-                console.error('AJAX Error: ' + status + error);
-              },
-              cache: false,
-              contentType: false,
-              processData: false
           });
         }
         </script>

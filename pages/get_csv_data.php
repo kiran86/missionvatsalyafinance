@@ -112,8 +112,8 @@
 				// Staff salary
 				$saa_data[$n_saa][11] = $expenses[0][6];
 				$saa_data[$n_saa][12] = floatval($saa_data[$n_saa][9]) + 
-											floatval($saa_data[$n_saa][10]) +
-											floatval($saa_data[$n_saa][11]);
+										floatval($saa_data[$n_saa][10]) +
+										floatval($saa_data[$n_saa][11]);
 				$saa_data[$n_saa][13] = floatval($row[11]);
 				$saa_data[$n_saa][14] = $saa_data[$n_saa][12] > $saa_data[$n_saa][13] ? $saa_data[$n_saa][13] : $saa_data[$n_saa][12];
 				$n_saa++;
@@ -134,9 +134,9 @@
 				$os_data[$n_os][10] = $expenses[0][2];
 				// Staff salary
 				$os_data[$n_os][11] = $expenses[0][6];
-				$os_data[$n_os][12] = floatval($os_data[$n_os][9]) + 
-											floatval($os_data[$n_os][10]) +
-											floatval($os_data[$n_os][11]);
+				$os_data[$n_os][12] = 	floatval($os_data[$n_os][9]) + 
+										floatval($os_data[$n_os][10]) +
+										floatval($os_data[$n_os][11]);
 				$os_data[$n_os][13] = floatval($row[11]);
 				$os_data[$n_os][14] = $os_data[$n_os][12] > $os_data[$n_os][13] ? $os_data[$n_os][13] : $os_data[$n_os][12];
 				$n_os++;
