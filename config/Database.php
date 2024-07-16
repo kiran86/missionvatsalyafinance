@@ -2,15 +2,6 @@
 class Database {
 	private $_connection;
 	private static $_instance; //The single instance
-
-	/**
-	 * DB Connection settings for online hosting.
-	 */
-	// private $_host = "sql310.infinityfree.com";
-	// private $port = 3306;
-	// private $_username = "if0_36906119";
-	// private $_password = "dpTzUHmRe2G";
-	// private $_database = "if0_36906119_missionvatsalya";
 	
 	/**
 	 * Database connection settings for testing.

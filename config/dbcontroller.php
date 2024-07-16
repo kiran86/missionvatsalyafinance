@@ -1,12 +1,4 @@
 <?php
-/**
- * DB Connection settings for online hosting.
- */
-// $DB_host = "sql310.infinityfree.com";
-// $DB_port = 3306;
-// $DB_user = "if0_36906119";
-// $DB_pass = "dpTzUHmRe2G";
-// $DB_name = "if0_36906119_missionvatsalya";
 
 /**
  * Database connection settings for testing.
