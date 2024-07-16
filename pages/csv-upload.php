@@ -354,11 +354,14 @@ $rs_fy = $obj->get_fys();
 								}
 							}
 						],
+						fixedColumns: {
+							start: 2
+						},
 						searching: false,
 						paging:false,
 						scrollCollapse: true,
 						scrollX: true,
-						scrollY: '50vh'
+						scrollY: '300px'
 					});
 
 					$("#saa-table").DataTable({

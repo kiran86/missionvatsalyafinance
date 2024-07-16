@@ -2,11 +2,11 @@
 /**
  * DB Connection settings for online hosting.
  */
-// $DB_host = "sql205.epizy.com";
+// $DB_host = "sql310.infinityfree.com";
 // $DB_port = 3306;
-// $DB_user = "epiz_28111343";
-// $DB_pass = "7wHqmGF1hbCZ";
-// $DB_name = "epiz_28111343_infradevlop";
+// $DB_user = "if0_36906119";
+// $DB_pass = "dpTzUHmRe2G";
+// $DB_name = "if0_36906119_missionvatsalya";
 
 /**
  * Database connection settings for testing.

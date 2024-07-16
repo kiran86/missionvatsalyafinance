@@ -6,12 +6,15 @@ class Database {
 	/**
 	 * DB Connection settings for online hosting.
 	 */
-	// private $_host = "sql205.epizy.com";
+	// private $_host = "sql209.infinityfree.com";
 	// private $port = 3306;
-	// private $_username = "epiz_28111343";
-	// private $_password = "7wHqmGF1hbCZ";
-	// private $_database = "epiz_28111343_infradevlop";
+	// private $_username = "if0_36905052";
+	// private $_password = "m5s57TJRubwUmo";
+	// private $_database = "if0_36905052_missionvatsalya";
 	
+	/**
+	 * Database connection settings for testing.
+	 */
 	private $_host = "127.0.0.1";
 	private $port = 3306;
 	private $_username = "root";
