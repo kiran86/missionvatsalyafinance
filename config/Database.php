@@ -6,11 +6,11 @@ class Database {
 	/**
 	 * DB Connection settings for online hosting.
 	 */
-	// private $_host = "sql209.infinityfree.com";
+	// private $_host = "sql310.infinityfree.com";
 	// private $port = 3306;
-	// private $_username = "if0_36905052";
-	// private $_password = "m5s57TJRubwUmo";
-	// private $_database = "if0_36905052_missionvatsalya";
+	// private $_username = "if0_36906119";
+	// private $_password = "dpTzUHmRe2G";
+	// private $_database = "if0_36906119_missionvatsalya";
 	
 	/**
 	 * Database connection settings for testing.
