@@ -143,5 +143,5 @@
                 break;
 		}
     }
-    echo json_encode(Array('quarter' => $quarter, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
+    echo json_encode(Array('fyid' => $_POST['fy-qtr'], 'quarter' => $quarter, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
 ?>

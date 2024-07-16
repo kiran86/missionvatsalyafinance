@@ -120,6 +120,7 @@ $rs_fy = $obj->get_fys();
 						<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
+									<p id="fy-id" hidden></p>
 									<h4 class="card-title">Sub Allotment Data </h4> <br/>
 									<ul class="nav nav-tabs card-header-tabs" role="tablist">
 										<li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
@@ -329,6 +330,7 @@ $rs_fy = $obj->get_fys();
                 data: formData,
 				dataType: 'json',
                 success: function(response){
+					$('#fy-id').val(response.fyid);
 					$('.card-title').text('Sub Allotment Data : '.concat(response.quarter));
 					$("#home-table").DataTable({
 						data: response.homedata,
@@ -477,7 +479,7 @@ $rs_fy = $obj->get_fys();
             }).then((Forward) => {
               if (Forward) {
 				var formData = new FormData();
-				formData.append('fy-qtr', $("#csvform")[0]);
+				formData.append('fy-qtr', $("#fy-id").val());
 				formData.append('action', 'forward');
 				// forward csv file
 				$.ajax({
@@ -491,7 +493,7 @@ $rs_fy = $obj->get_fys();
 							case 0:
 								swal({
                                     title: "Error!",
-                                    text: "Failed to forward the file. Please try again later.",
+                                    text: response.message,
                                     type: "error",
                                     buttons: {
                                         confirm: {

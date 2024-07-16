@@ -11,7 +11,7 @@
 	$uploaddir = "../csv/";
 	$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 	$action = $_POST['action'];
-	
+	error_log($uploadfile);
 	if ($action == 'forward') {
 	    $movement = 1;
 		$err_msg = "Failed to forward the file.";
@@ -34,7 +34,7 @@
 				$stmt= $mysqli->prepare($query);
 				if (false === $stmt) {
 					trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
-					echo json_encode(Array('status' => 0, 'message' =>'An error occured!' . $err_msg));
+					echo json_encode(Array('status' => 0, 'message' =>'An error occured! ' . $err_msg));
 				} else {
 					$user = $_SESSION['login'] + $movement;
 					$stmt->bind_param('is', $user, $_POST['fy-qtr']);
@@ -43,7 +43,7 @@
 				}
 			} else {
 				error_log('CSV file not found');
-				echo json_encode(Array('status' => 0, 'message' =>'An error occured!' . $err_msg));
+				echo json_encode(Array('status' => 0, 'message' =>'An error occured! ' . $err_msg));
 			}
 			break;
 		case 'approve':
