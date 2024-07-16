@@ -105,6 +105,7 @@
 						$stmt->bind_param('ssiiidddddddddds', $cci_id, $fy_id, $n_month, $children_days, $cwsn_children_days, $maintanence_cost, $bedding_cost, $admin_cost, $cwsn_equip, $cwsn_addl_grant, $cwsn_medical, $staff_sal, $cwsn_staff_sal, $dist_recommendation, $amnt_released, $date);
                         $stmt->execute();
 					}
+					unlink($uploadfile);
 					echo json_encode(Array('status' => 1, 'message' => $success_msg));
 				}
 			} else {
