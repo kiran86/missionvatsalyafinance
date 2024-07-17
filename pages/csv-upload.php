@@ -39,6 +39,7 @@ $rs_fy = $obj->get_fys();
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+	<link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/fc-5.0.1/fh-4.0.1/r-3.0.2/sc-2.4.3/sl-2.0.3/datatables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -153,13 +154,12 @@ $rs_fy = $obj->get_fys();
 												<th>Total (Recurring Cost)<br>(17)</th>
 												<th>District Recommendation<br>(18)</th>
 												<th>Fund to be released<br>(19)</th>
-											</thead>
-										</tbody>
+											</thead><tbody></tbody>
 										</table>
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table2">
 										<table id="saa-table" class="display table table-striped table-hover table-bordered">
-										<thead class="text-center">
+											<thead class="text-center">
 												<th>FY-QTR</th>
 												<th>CCI_ID</th>
 												<th>Sl. No.<br>(1)</th>
@@ -176,7 +176,6 @@ $rs_fy = $obj->get_fys();
 												<th>District Recommendation<br>(12)</th>
 												<th>Fund to be released<br>(13)</th>
 											</thead>
-										</tbody>
 										</table>
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table3">
@@ -197,8 +196,7 @@ $rs_fy = $obj->get_fys();
 												<th>Total (Recurring Cost)<br>(11)</th>
 												<th>District Recommendation<br>(12)</th>
 												<th>Fund to be released<br>(13)</th>
-											</thea>
-										</tbody>
+											</thead>
 										</table>
 									</div>
 									<div class="card-footer">
@@ -221,7 +219,7 @@ $rs_fy = $obj->get_fys();
 	<script src="../assets/js/core/bootstrap.min.js"></script>
 
 	<!-- jQuery Scrollbar -->
-	<script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<!-- <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script> -->
 
 	<!-- Chart JS -->
 	<script src="../assets/js/plugin/chart.js/chart.min.js"></script>
@@ -233,7 +231,8 @@ $rs_fy = $obj->get_fys();
 	<script src="../assets/js/plugin/chart-circle/circles.min.js"></script>
 
 	<!-- Datatables -->
-	<script src="../assets/js/plugin/datatables/datatables.min.js"></script>
+	<!-- <script src="../assets/js/plugin/datatables/datatables.min.js"></script> -->
+	<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/fc-5.0.1/fh-4.0.1/r-3.0.2/sc-2.4.3/sl-2.0.3/datatables.min.js"></script>
 
 	<!-- Bootstrap Notify -->
 	<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
@@ -390,6 +389,9 @@ $rs_fy = $obj->get_fys();
 								}
 							}
 						],
+						fixedColumns: {
+							start: 2
+						},
 						searching: false,
 						paging:false,
 						scrollCollapse: true,
@@ -419,6 +421,9 @@ $rs_fy = $obj->get_fys();
 								}
 							}
 						],
+						fixedColumns: {
+							start: 2
+						},
 						searching: false,
 						paging:false,
 						scrollCollapse: true,
@@ -488,7 +493,6 @@ $rs_fy = $obj->get_fys();
                     data: formData,
                     dataType: 'json',
                     success: function(response){
-                        console.log(response);
 						switch (response.status) {
 							case 0:
 								swal({
