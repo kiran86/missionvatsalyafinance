@@ -25,6 +25,7 @@
 	$n_home = 0;
 	$n_saa = 0;
 	$n_os = 0;
+	$districts = [];
 
 	$csv_data = file($uploadfile);
 	foreach ($csv_data as $key => $value) {
@@ -45,6 +46,10 @@
 		$expenses = $obj->get_expense_structure($row[0]);
 		$n_month = intval($row[8]);
 		$n_quarter = ($n_month / 3) + ($n_month % 3) > 0 ? 1 : 0;
+		// Collect unique districts
+		if (array_search($row[1], $districts, true) === false) {
+			array_push($districts, $row[1]);
+		}
 
 		//Populate each array element
 		switch ($row[5]) {
@@ -138,5 +143,5 @@
                 break;
 		}
     }
-    echo json_encode(Array('fyid' => $_POST['fy-qtr'], 'quarter' => $quarter, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
+    echo json_encode(Array('fyid' => $_POST['fy-qtr'], 'quarter' => $quarter, 'districts' => $districts, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
 ?>

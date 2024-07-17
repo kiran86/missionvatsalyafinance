@@ -117,12 +117,28 @@ $rs_fy = $obj->get_fys();
 						</div>
 					</div>
 					</form>
+					<form class="needs-validation" id="fPDF" action="#" method="post" enctype="multipart/form-data">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Upload District Recommendations</h4>
+								</div>
+								<div class="card-body" id="pdfUpload">
+									<input type="hidden" name="fy-id" id="hfyid" />
+								</div>
+								<div class="card-footer">
+								</div>
+							</div>
+						</div>
+					</div>
+					</form>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
 									<p id="fy-id" hidden></p>
-									<h4 class="card-title">Sub Allotment Data </h4> <br/>
+									<h4 class="card-title" id="suballotment">Sub Allotment Data </h4> <br/>
 									<ul class="nav nav-tabs card-header-tabs" role="tablist">
 										<li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
 										<li class="nav-item"><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
@@ -324,15 +340,28 @@ $rs_fy = $obj->get_fys();
 			$('#saa-table').DataTable().destroy();
 			$('#os-table').DataTable().clear();
 			$('#os-table').DataTable().destroy();
-            
+
             $.ajax({
-                url: "get_csv_data.php.php",
+                url: "get_csv_data.php",
                 type: "POST",
                 data: formData,
 				dataType: 'json',
                 success: function(response){
 					$('#fy-id').val(response.fyid);
-					$('.card-title').text('Sub Allotment Data : '.concat(response.quarter));
+					$('#hfyid').val(response.fyid);
+					$('#suballotment').text('Sub Allotment Data : '.concat(response.quarter));
+					document.querySelectorAll('.pdfDistricts').forEach(e => e.remove());
+					response.districts.forEach(function(district) {
+						$('#pdfUpload').append(
+							'<div class="row mb-3 pdfDistricts">' + 
+								'<label for="formFile" class="col-sm-3 col-form-label">' + district + ': <span id="" style="font-size:11px;color:red">*</span></label>' +
+								'<div class="col-lg-6">' + 
+									'<input class="form-control" type="file" accept=".pdf" name="pdf' + district + '" id="pdf' + district + '" required>' +
+								'</div>' +
+							'</div>'
+						)
+					});
+
 					var t_home = $("#home-table").DataTable({
 						data: response.homedata,
 						columnDefs: [
@@ -464,9 +493,14 @@ $rs_fy = $obj->get_fys();
                 processData: false
             });
 		});
-
 		$("#forward").on("click", function (e) {
 			e.preventDefault();
+			if ($("#fPDF")[0].checkValidity()) {
+				console.log('FPDF valid!');
+			} else {
+				$("#fPDF")[0].reportValidity();
+				exit();
+			}
 			if (
 				!($.fn.dataTable.isDataTable("#home-table")) &&
 				!($.fn.dataTable.isDataTable("#saa-table")) &&
@@ -498,7 +532,7 @@ $rs_fy = $obj->get_fys();
               },
             }).then((Forward) => {
               if (Forward) {
-				var formData = new FormData();
+				var formData = new FormData($('#fPDF')[0]);
 				formData.append('fy-qtr', $("#fy-id").val());
 				formData.append('action', 'forward');
 				// forward csv file
@@ -506,7 +540,6 @@ $rs_fy = $obj->get_fys();
 					url: "csv_movement.php",
                     type: "POST",
                     data: formData,
-                    dataType: 'json',
                     success: function(response){
 						switch (response.status) {
 							case 0:

@@ -8,6 +8,11 @@
 	$db = Database::getInstance();
 	$mysqli = $db->getConnection();
 
+	foreach ($_FILES as $key => $file) {
+		error_log($key);
+		move_uploaded_file($file['tmp_name'], '../recommendations/test.pdf');
+	}
+
 	$uploaddir = "../csv/";
 	$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 	$action = $_POST['action'];

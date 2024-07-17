@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2024 at 02:38 PM
+-- Generation Time: Jul 17, 2024 at 07:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -495,31 +495,6 @@ INSERT INTO `cci_recurring_exp` (`id`, `strength`, `category`, `maintenance_cost
 -- --------------------------------------------------------
 
 --
--- Table structure for table `file_movement`
---
-
-CREATE TABLE `file_movement` (
-  `cci_id` varchar(255) NOT NULL,
-  `fy_id` varchar(255) NOT NULL,
-  `n_months` int(11) NOT NULL,
-  `children_days` int(11) NOT NULL,
-  `cwsn_child_days` int(11) NOT NULL,
-  `maintenance_cost` double(10,2) NOT NULL,
-  `bedding_cost` double(10,2) NOT NULL,
-  `admin_expenses` double(10,2) NOT NULL,
-  `cwsn_equip` double(10,2) NOT NULL,
-  `cwsn_addl_grant` double(10,2) NOT NULL,
-  `cwsn_medical` double(10,2) NOT NULL,
-  `staff_sal` double(10,2) NOT NULL,
-  `cwsn_staff_sal` double(10,2) NOT NULL,
-  `dist_recommendation` double(10,2) NOT NULL,
-  `amnt_to_be_released` double(10,2) NOT NULL,
-  `fwd_dt` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `fund_release`
 --
 
@@ -537,9 +512,14 @@ CREATE TABLE `fund_release` (
   `cwsn_medical` double(10,2) NOT NULL,
   `staff_sal` double(10,2) NOT NULL,
   `cwsn_staff_sal` double(10,2) NOT NULL,
+  `amnt_adjstmnt` double(10,2) NOT NULL,
   `dist_recommendation` double(10,2) NOT NULL,
   `amnt_released` double(10,2) NOT NULL,
-  `apprvl_dt` date NOT NULL
+  `init_date` date DEFAULT NULL,
+  `remarks` varchar(255) NOT NULL,
+  `at_user` int(11) NOT NULL,
+  `apprvl_dt` date NOT NULL,
+  `finalized` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -560,7 +540,7 @@ CREATE TABLE `fy_quarter` (
 --
 
 INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `at_user_id`) VALUES
-('2324Q4', '2023-24', 'January 2024 - March 2024', NULL),
+('2324Q4', '2023-24', 'January 2024 - March 2024', 1),
 ('2425Q1', '2024-25', 'April 2024 - June 2024', NULL);
 
 -- --------------------------------------------------------
@@ -599,12 +579,6 @@ ALTER TABLE `cci`
 --
 ALTER TABLE `cci_recurring_exp`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `file_movement`
---
-ALTER TABLE `file_movement`
-  ADD PRIMARY KEY (`cci_id`,`fy_id`);
 
 --
 -- Indexes for table `fund_release`
