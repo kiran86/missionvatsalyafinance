@@ -16,13 +16,8 @@
 
 	$uploaddir = "../csv/";
 	if ($_SESSION['login'] == 1 && isset($_FILES["csvfile"]) && $_FILES["csvfile"]["error"] === UPLOAD_ERR_OK) {
-		$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
-
-		if(move_uploaded_file($_FILES["csvfile"]["tmp_name"], $uploadfile)) {
-			chmod($uploadfile, 0777);
-		} else {
-			error_log('There was an error occured during upload!');
-		}
+		// Load CSV file
+		$uploadfile = $_FILES["csvfile"]["tmp_name"];
 	} else {
 		$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
 	}

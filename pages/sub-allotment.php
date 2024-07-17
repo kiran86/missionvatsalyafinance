@@ -340,7 +340,7 @@ $arr = $obj->get_fy_status();
           $('#os-table').DataTable().destroy();
                 
           $.ajax({
-              url: "get_csv_data.php",
+              url: "get_csv_data.php.php",
               type: "POST",
               data: formData,
               dataType: 'json',

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2024 at 01:36 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Jul 17, 2024 at 02:38 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -495,6 +495,31 @@ INSERT INTO `cci_recurring_exp` (`id`, `strength`, `category`, `maintenance_cost
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `file_movement`
+--
+
+CREATE TABLE `file_movement` (
+  `cci_id` varchar(255) NOT NULL,
+  `fy_id` varchar(255) NOT NULL,
+  `n_months` int(11) NOT NULL,
+  `children_days` int(11) NOT NULL,
+  `cwsn_child_days` int(11) NOT NULL,
+  `maintenance_cost` double(10,2) NOT NULL,
+  `bedding_cost` double(10,2) NOT NULL,
+  `admin_expenses` double(10,2) NOT NULL,
+  `cwsn_equip` double(10,2) NOT NULL,
+  `cwsn_addl_grant` double(10,2) NOT NULL,
+  `cwsn_medical` double(10,2) NOT NULL,
+  `staff_sal` double(10,2) NOT NULL,
+  `cwsn_staff_sal` double(10,2) NOT NULL,
+  `dist_recommendation` double(10,2) NOT NULL,
+  `amnt_to_be_released` double(10,2) NOT NULL,
+  `fwd_dt` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `fund_release`
 --
 
@@ -557,7 +582,7 @@ CREATE TABLE `login` (
 INSERT INTO `login` (`id`, `user_type`, `password`) VALUES
 (1, 'AO SCPS', '12345'),
 (2, 'Treasurer SCPS', '12345'),
-(3, 'DCRT', '12345');
+(3, 'DD DCRT', '12345');
 
 --
 -- Indexes for dumped tables
@@ -574,6 +599,12 @@ ALTER TABLE `cci`
 --
 ALTER TABLE `cci_recurring_exp`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `file_movement`
+--
+ALTER TABLE `file_movement`
+  ADD PRIMARY KEY (`cci_id`,`fy_id`);
 
 --
 -- Indexes for table `fund_release`

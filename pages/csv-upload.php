@@ -39,7 +39,7 @@ $rs_fy = $obj->get_fys();
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
-	<link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/fc-5.0.1/fh-4.0.1/r-3.0.2/sc-2.4.3/sl-2.0.3/datatables.min.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.0.8/af-2.7.0/b-3.0.2/b-colvis-3.0.2/b-html5-3.0.2/b-print-3.0.2/cr-2.0.3/date-1.5.2/fc-5.0.1/fh-4.0.1/kt-2.12.1/r-3.0.2/rg-1.5.0/rr-1.5.0/sc-2.4.3/sb-1.7.1/sp-2.3.1/sl-2.0.3/sr-1.4.1/datatables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -154,7 +154,7 @@ $rs_fy = $obj->get_fys();
 												<th>Total (Recurring Cost)<br>(17)</th>
 												<th>District Recommendation<br>(18)</th>
 												<th>Fund to be released<br>(19)</th>
-											</thead><tbody></tbody>
+											</thead>
 										</table>
 									</div>
 									<div class="table-responsive tab-pane" id="tab-table2">
@@ -230,9 +230,11 @@ $rs_fy = $obj->get_fys();
 	<!-- Chart Circle -->
 	<script src="../assets/js/plugin/chart-circle/circles.min.js"></script>
 
-	<!-- Datatables -->
+	<!-- Datatables and Extensions-->
 	<!-- <script src="../assets/js/plugin/datatables/datatables.min.js"></script> -->
-	<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/fc-5.0.1/fh-4.0.1/r-3.0.2/sc-2.4.3/sl-2.0.3/datatables.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.0.8/af-2.7.0/b-3.0.2/b-colvis-3.0.2/b-html5-3.0.2/b-print-3.0.2/cr-2.0.3/date-1.5.2/fc-5.0.1/fh-4.0.1/kt-2.12.1/r-3.0.2/rg-1.5.0/rr-1.5.0/sc-2.4.3/sb-1.7.1/sp-2.3.1/sl-2.0.3/sr-1.4.1/datatables.min.js"></script>
 
 	<!-- Bootstrap Notify -->
 	<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
@@ -324,14 +326,14 @@ $rs_fy = $obj->get_fys();
 			$('#os-table').DataTable().destroy();
             
             $.ajax({
-                url: "get_csv_data.php",
+                url: "get_csv_data.php.php",
                 type: "POST",
                 data: formData,
 				dataType: 'json',
                 success: function(response){
 					$('#fy-id').val(response.fyid);
 					$('.card-title').text('Sub Allotment Data : '.concat(response.quarter));
-					$("#home-table").DataTable({
+					var t_home = $("#home-table").DataTable({
 						data: response.homedata,
 						columnDefs: [
 							{ targets: [0, 1], visible: false },
@@ -356,16 +358,16 @@ $rs_fy = $obj->get_fys();
 							}
 						],
 						fixedColumns: {
-							start: 2
+							start: 3
 						},
 						searching: false,
 						paging:false,
 						scrollCollapse: true,
 						scrollX: true,
-						scrollY: '300px'
+						scrollY: '50vh'
 					});
 
-					$("#saa-table").DataTable({
+					var t_saa = $("#saa-table").DataTable({
 						data: response.saadata,
 						columnDefs: [
 							{ targets: [0, 1], visible: false },
@@ -392,6 +394,7 @@ $rs_fy = $obj->get_fys();
 						fixedColumns: {
 							start: 2
 						},
+						select: 'single',
 						searching: false,
 						paging:false,
 						scrollCollapse: true,
@@ -399,7 +402,7 @@ $rs_fy = $obj->get_fys();
 						scrollY: '50vh'
 					});
 
-					$("#os-table").DataTable({
+					var t_os = $("#os-table").DataTable({
 						data: response.osdata,
 						columnDefs: [
 							{ targets: [0, 1], visible: false },
@@ -440,6 +443,18 @@ $rs_fy = $obj->get_fys();
 							.scroller.measure();
 						});
 					});
+
+					function attachRowClickListener(table, tableName) {
+						$('#' + tableName + ' tbody').on('click', 'tr', function() {
+							var rowData = table.row(this).data();
+							var rowArray = Object.values(rowData);
+							console.log(tableName + ' Row Data as Array:', rowArray);
+						});
+					}
+
+					attachRowClickListener(t_home, 'home-table');
+					attachRowClickListener(t_saa, 'saa-table');
+					attachRowClickListener(t_os, 'os-table');
                 },
 				error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + status + error);
