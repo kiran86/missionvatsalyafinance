@@ -8,13 +8,18 @@
 	$db = Database::getInstance();
 	$mysqli = $db->getConnection();
 
-	foreach ($_FILES as $key => $file) {
-		error_log($key);
-		move_uploaded_file($file['tmp_name'], '../recommendations/test.pdf');
-	}
+	$fy_id = $_POST['fy-id'];	
+	$user = $_SESSION['login'];
+	// Set CSV file location
+	$csvdir = "../csv/";
+	$csvfile = $csvdir . $fy_id . ".csv";
+	// Set PDF file location
+	$pdfdir = "../recommendations/";
 
-	$uploaddir = "../csv/";
-	$uploadfile = $uploaddir . $_POST['fy-qtr'] . ".csv";
+	$remarks = null;
+	$apprv_dt = null;
+	$finalized = null;
+
 	$action = $_POST['action'];
 	if ($action == 'forward') {
 	    $movement = 1;
@@ -32,34 +37,31 @@
 	
     switch ($action) {
 		case 'forward':
-		case 'revert':
-			if(file_exists($uploadfile)) {
-				$query = "UPDATE fy_quarter SET at_user_id = ? WHERE fy_id = ?";
-				$stmt= $mysqli->prepare($query);
-				if (false === $stmt) {
-					trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
-					echo json_encode(Array('status' => 0, 'message' =>'An error occured! ' . $err_msg));
-				} else {
-					$user = $_SESSION['login'] + $movement;
-					$stmt->bind_param('is', $user, $_POST['fy-qtr']);
-					$stmt->execute();
-					echo json_encode(Array('status' => 1, 'message' =>$success_msg));
-				}
-			} else {
-				error_log('CSV file not found');
-				echo json_encode(Array('status' => 0, 'message' =>'An error occured! ' . $err_msg));
-			}
-			break;
-		case 'approve':
-			if(file_exists($uploadfile)) {
-				$query = "INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `dist_recommendation`, `amnt_released`, `apprvl_dt`)
-						VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			// First time CSV upload
+			if($_SESSION['login'] == 1 && file_exists($csvfile)) {
+				$query = "INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `amnt_adjstmnt`, `dist_recommendation`, `amnt_released`, `init_date`, `remarks`, `at_user`, `apprvl_dt`, `finalized`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				$stmt= $mysqli->prepare($query);
 				if (false === $stmt) {
                     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
                     echo json_encode(Array('status' => 0, 'message' =>$err_msg));
                 } else {
-					$csv_data = file($uploadfile);
+					// Copy PDF files to project directory
+					$pdffile ="";
+					$flag = true;
+					foreach ($_FILES as $key => $val) {
+						if ($_SESSION['login'] == 1 && isset($_FILES[$key]) && $_FILES[$key]["error"] === UPLOAD_ERR_OK) {
+							$pdffile = $pdfdir . date('Ymd') . '_' . substr($key, 3) . "_" . $fy_id . ".pdf";
+							if (!move_uploaded_file($_FILES[$key]["tmp_name"], $pdffile)) {
+								$flag = false;
+							}
+						}
+					}
+					if (!$flag) {
+						trigger_error("Error in query: PDF upload error", E_USER_ERROR);
+                    	echo json_encode(Array('status' => 0, 'message' =>$err_msg));
+					}
+					// read CSV and load onto datarabse
+					$csv_data = file($csvfile);
 					foreach ($csv_data as $key => $value) {
 						// skip header line
 						if ($key == 0)
@@ -69,11 +71,12 @@
 						if (count($row) < 12 || $row[9] == '' || $row[10] == '' || $row[11] == '')
 							continue;
 
+						$user = $_SESSION['login'] + 1;
 						$cci_id = $row[0];
-						$fy_id = $row[7];
 						$children_days = intval($row[9]);
 						$cwsn_children_days = intval($row[10]);
-						$dist_recommendation = floatval($row[11]);
+						$amnt_adjst = floatval($row[11]);
+						$dist_recommendation = floatval($row[12]);
 
 						// Fetch expense structure for this cci
 						$expenses = [];
@@ -102,19 +105,28 @@
                                             $cwsn_medical + 
 											$admin_cost + 
 											$cwsn_equip +
-											$total_sal;
+											$total_sal +
+											$amnt_adjst;
 						$amnt_released = $total_recurring > $dist_recommendation ? $dist_recommendation : $total_recurring;
 
 						// insert into database
-						$stmt->bind_param('ssiiidddddddddds', $cci_id, $fy_id, $n_month, $children_days, $cwsn_children_days, $maintanence_cost, $bedding_cost, $admin_cost, $cwsn_equip, $cwsn_addl_grant, $cwsn_medical, $staff_sal, $cwsn_staff_sal, $dist_recommendation, $amnt_released, $date);
+						$stmt->bind_param('ssiiidddddddddddssisi', $cci_id, $fy_id, $n_month, $children_days, $cwsn_children_days, $maintanence_cost, $bedding_cost, $admin_cost, $cwsn_equip, $cwsn_addl_grant, $cwsn_medical, $staff_sal, $cwsn_staff_sal, $amnt_adjst, $dist_recommendation, $amnt_released, $date, $remarks, $user, $apprv_dt, $finalized);
                         $stmt->execute();
 					}
-					unlink($uploadfile);
+					// remove CSV file
+					unlink($csvfile);
 					echo json_encode(Array('status' => 1, 'message' => $success_msg));
 				}
 			} else {
-				error_log('CSV file not found');
-				echo json_encode(Array('status' => 0, 'message' =>'Allotment file not found.'));
+				$user++;
 			}
+			break;
+		case 'revert':
+			$user--;
+			// Update database
+			
+			break;
+		case 'approve':
+			
 			break;
 	}

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2024 at 07:00 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jul 18, 2024 at 06:36 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -516,11 +516,19 @@ CREATE TABLE `fund_release` (
   `dist_recommendation` double(10,2) NOT NULL,
   `amnt_released` double(10,2) NOT NULL,
   `init_date` date DEFAULT NULL,
-  `remarks` varchar(255) NOT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
   `at_user` int(11) NOT NULL,
-  `apprvl_dt` date NOT NULL,
+  `apprvl_dt` date DEFAULT NULL,
   `finalized` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `fund_release`
+--
+
+INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `amnt_adjstmnt`, `dist_recommendation`, `amnt_released`, `init_date`, `remarks`, `at_user`, `apprvl_dt`, `finalized`) VALUES
+('CCI_002', '2324Q4', 3, 54, 54, 486000.00, 13500.00, 250000.00, 100000.00, 64800.00, 648000.00, 657280.00, 143191.00, 0.00, 3621815.00, 2362771.00, '2024-07-18', NULL, 2, NULL, NULL),
+('CCI_003', '2324Q4', 3, 72, 72, 648000.00, 18000.00, 250000.00, 100000.00, 86400.00, 864000.00, 657280.00, 143191.00, 0.00, 3262615.00, 2766871.00, '2024-07-18', NULL, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 

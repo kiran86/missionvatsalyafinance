@@ -495,9 +495,7 @@ $rs_fy = $obj->get_fys();
 		});
 		$("#forward").on("click", function (e) {
 			e.preventDefault();
-			if ($("#fPDF")[0].checkValidity()) {
-				console.log('FPDF valid!');
-			} else {
+			if (!$("#fPDF")[0].checkValidity()) {
 				$("#fPDF")[0].reportValidity();
 				exit();
 			}
@@ -533,14 +531,15 @@ $rs_fy = $obj->get_fys();
             }).then((Forward) => {
               if (Forward) {
 				var formData = new FormData($('#fPDF')[0]);
-				formData.append('fy-qtr', $("#fy-id").val());
 				formData.append('action', 'forward');
 				// forward csv file
 				$.ajax({
 					url: "csv_movement.php",
                     type: "POST",
                     data: formData,
+					dataType: 'json',
                     success: function(response){
+						console.log(response.status);
 						switch (response.status) {
 							case 0:
 								swal({
