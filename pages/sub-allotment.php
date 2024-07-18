@@ -10,7 +10,7 @@ include('../config/DbFunction.php');
 include('../config/utilityfunc.php');
 
 $obj = new DbFunction();
-$arr = $obj->get_fy_status();
+$arr = $obj->get_allotment();
 
 ?> 
 
@@ -81,7 +81,7 @@ $arr = $obj->get_fy_status();
                       <div class="card-body p-0">
                         <div class="table-responsive">
                           <!-- Projects table -->
-                          <table class="table mb-0">
+                          <table class="table mb-0 table-bordered">
                             <thead class="thead-dark align-items-center">
                               <tr>
                                 <th scope="col" class="text-center">Financial Year</th>
@@ -90,6 +90,7 @@ $arr = $obj->get_fy_status();
                                 <th scope="col" class="text-center">@</th>
                                 <th scope="col" class="text-center">Total Amount</th>
                                 <th scope="col" class="text-center col-3">Districts</th>
+                                <th scope="col" class="text-center">Initiation Date</th>
                                 <th scope="col" class="text-center">Approval Date</th>
                                 <th scope="col" class="text-center">Actions</th>
                               </tr>
@@ -97,49 +98,66 @@ $arr = $obj->get_fy_status();
                             <tbody>
                               <?php foreach ($arr as $row) { ?>
                               <tr>
+                                <!-- Financial Year -->
                                 <td class="text-center"><?php echo $row[1]; ?></td>
+                                <!-- Quarter -->
                                 <td class="text-center"><?php echo $row[2]; ?></td>
 
-                                <?php if ($row[3] == NULL) { ?>
+                                <!-- Status -->
+                                <?php if ($row[8] == NULL) { ?>
                                 <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-danger">Not Initiated</span></td>
-                                <?php } else if ($row[5] == 0){ ?>
+                                <?php } else if ($row[9] == NULL){ ?>
                                 <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-warning">Pending</span></td>
-                                <?php } else { ?>
+                                <?php } else if ($row[10] == NULL) { ?>
                                 <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-success">Approved</span></td>
-                                <?php }?>
-                                
-                                <?php if ($row[5] != 0) { ?>
-                                <td class="text-center">NA</td>
-                                <?php } else {?>
-                                <td class="text-center"><?php echo ($row[4] != NULL ? $row[4] : "NA");?></td>
+                                <?php } else { ?>
+                                <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-success">Finalized</span></td>
                                 <?php }?>
 
+                                <!-- at user -->
+                                <?php if ($row[3] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-center"><?php echo $row[3];?></td>
+                                <?php }?>
+
+                                <!-- Total Amount -->
+                                <?php if ($row[6] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-end">₹<?php echo IND_money_format($row[6]);?></td>
+                                <?php }?>
+                                
+                                <!-- Districts -->
+                                <?php if ($row[5] == NULL) { ?>
+                                <td class="text-center"></td>
+                                <?php } else {?>
+                                <td class="text-start"><?php echo $row[5];?></td>
+                                <?php }?>
+
+                                <!-- Initiation Date -->
                                 <?php if ($row[7] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
-                                <td class="text-end">₹<?php echo IND_money_format($row[7]);?></td>
-                                <?php }?>
-                                
-                                <?php if ($row[6] == NULL) { ?>
-                                <td class="text-center"></td>
-                                <?php } else {?>
-                                <td class="text-start"><?php echo $row[6];?></td>
+                                <td class="text-center"><?php echo date_format(date_create($row[7]), 'd/m/Y');?></td>
                                 <?php }?>
 
+                                <!-- Approval Date -->
                                 <?php if ($row[8] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
-                                <td class="text-center"><?php echo $row[8];?></td>
+                                <td class="text-center"><?php echo date_format(date_create($row[8]), 'd/m/Y');?></td>
                                 <?php }?>
 
-                                <?php if ($row[3] == NULL) { ?> <!--Not initiated-->
+                                <!-- Actions -->
+                                <?php if ($row[7] == NULL) { ?> <!--Not initiated-->
                                 <td class="text-center">
                                   <button type="button" class="btn btn-icon btn-round btn-black" disabled>
                                     <i class="far fa-eye-slash"></i>
                                   </button>
                                 </td>
-                                <?php } else if ($row[5] == 0 && $_SESSION['login'] == $row[3]){ ?><!--Pending with this user-->
-                                <?php if ($_SESSION['login'] == 3) {?><!--Highest privileges-->
+                                <?php } else if ($row[7] != null && $_SESSION['login'] == $row[3]){ ?><!--Pending with this user-->
+                                <?php if ($_SESSION['login'] == 3) {?><!--Approval privileges-->
                                   <td class="text-center">
                                   <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
                                     <i class="fas fa-table"></i>
@@ -517,7 +535,7 @@ $arr = $obj->get_fy_status();
               formData.append('action', action);
               // forward csv file
               $.ajax({
-                url: "csv_movement.php",
+                url: "file_movement.php",
                 type: "POST",
                 data: formData,
                 dataType: 'json',

@@ -534,7 +534,7 @@ $rs_fy = $obj->get_fys();
 				formData.append('action', 'forward');
 				// forward csv file
 				$.ajax({
-					url: "csv_movement.php",
+					url: "file_movement.php",
                     type: "POST",
                     data: formData,
 					dataType: 'json',

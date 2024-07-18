@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 18, 2024 at 06:36 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Jul 18, 2024 at 08:32 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -515,7 +515,7 @@ CREATE TABLE `fund_release` (
   `amnt_adjstmnt` double(10,2) NOT NULL,
   `dist_recommendation` double(10,2) NOT NULL,
   `amnt_released` double(10,2) NOT NULL,
-  `init_date` date DEFAULT NULL,
+  `init_dt` date DEFAULT NULL,
   `remarks` varchar(255) DEFAULT NULL,
   `at_user` int(11) NOT NULL,
   `apprvl_dt` date DEFAULT NULL,
@@ -526,7 +526,7 @@ CREATE TABLE `fund_release` (
 -- Dumping data for table `fund_release`
 --
 
-INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `amnt_adjstmnt`, `dist_recommendation`, `amnt_released`, `init_date`, `remarks`, `at_user`, `apprvl_dt`, `finalized`) VALUES
+INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `amnt_adjstmnt`, `dist_recommendation`, `amnt_released`, `init_dt`, `remarks`, `at_user`, `apprvl_dt`, `finalized`) VALUES
 ('CCI_002', '2324Q4', 3, 54, 54, 486000.00, 13500.00, 250000.00, 100000.00, 64800.00, 648000.00, 657280.00, 143191.00, 0.00, 3621815.00, 2362771.00, '2024-07-18', NULL, 2, NULL, NULL),
 ('CCI_003', '2324Q4', 3, 72, 72, 648000.00, 18000.00, 250000.00, 100000.00, 86400.00, 864000.00, 657280.00, 143191.00, 0.00, 3262615.00, 2766871.00, '2024-07-18', NULL, 2, NULL, NULL);
 
@@ -539,17 +539,16 @@ INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cws
 CREATE TABLE `fy_quarter` (
   `fy_id` varchar(10) NOT NULL,
   `fy` varchar(7) NOT NULL,
-  `quarter` varchar(255) NOT NULL,
-  `at_user_id` tinyint(1) DEFAULT NULL
+  `quarter` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `fy_quarter`
 --
 
-INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`, `at_user_id`) VALUES
-('2324Q4', '2023-24', 'January 2024 - March 2024', 1),
-('2425Q1', '2024-25', 'April 2024 - June 2024', NULL);
+INSERT INTO `fy_quarter` (`fy_id`, `fy`, `quarter`) VALUES
+('2324Q4', '2023-24', 'January 2024 - March 2024'),
+('2425Q1', '2024-25', 'April 2024 - June 2024');
 
 -- --------------------------------------------------------
 

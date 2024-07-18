@@ -39,7 +39,7 @@
 		case 'forward':
 			// First time CSV upload
 			if($_SESSION['login'] == 1 && file_exists($csvfile)) {
-				$query = "INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `amnt_adjstmnt`, `dist_recommendation`, `amnt_released`, `init_date`, `remarks`, `at_user`, `apprvl_dt`, `finalized`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				$query = "INSERT INTO `fund_release` (`cci_id`, `fy_id`, `n_months`, `children_days`, `cwsn_child_days`, `maintenance_cost`, `bedding_cost`, `admin_expenses`, `cwsn_equip`, `cwsn_addl_grant`, `cwsn_medical`, `staff_sal`, `cwsn_staff_sal`, `amnt_adjstmnt`, `dist_recommendation`, `amnt_released`, `init_dt`, `remarks`, `at_user`, `apprvl_dt`, `finalized`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				$stmt= $mysqli->prepare($query);
 				if (false === $stmt) {
                     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
