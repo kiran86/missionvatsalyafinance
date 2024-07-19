@@ -53,7 +53,7 @@ $arr = $obj->get_allotment();
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
-    
+    <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.0.8/af-2.7.0/b-3.0.2/b-colvis-3.0.2/b-html5-3.0.2/b-print-3.0.2/cr-2.0.3/date-1.5.2/fc-5.0.1/fh-4.0.1/kt-2.12.1/r-3.0.2/rg-1.5.0/rr-1.5.0/sc-2.4.3/sb-1.7.1/sp-2.3.1/sl-2.0.3/sr-1.4.1/datatables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -115,69 +115,71 @@ $arr = $obj->get_allotment();
                                 <?php }?>
 
                                 <!-- at user -->
-                                <?php if ($row[3] == NULL) { ?>
+                                <?php if ($row[4] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
-                                <td class="text-center"><?php echo $row[3];?></td>
+                                <td class="text-center"><?php echo $row[4];?></td>
                                 <?php }?>
 
                                 <!-- Total Amount -->
-                                <?php if ($row[6] == NULL) { ?>
-                                <td class="text-center">NA</td>
-                                <?php } else {?>
-                                <td class="text-end">₹<?php echo IND_money_format($row[6]);?></td>
-                                <?php }?>
-                                
-                                <!-- Districts -->
-                                <?php if ($row[5] == NULL) { ?>
-                                <td class="text-center"></td>
-                                <?php } else {?>
-                                <td class="text-start"><?php echo $row[5];?></td>
-                                <?php }?>
-
-                                <!-- Initiation Date -->
                                 <?php if ($row[7] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
-                                <td class="text-center"><?php echo date_format(date_create($row[7]), 'd/m/Y');?></td>
+                                <td class="text-end">₹<?php echo IND_money_format($row[7]);?></td>
+                                <?php }?>
+                                
+                                <!-- Districts -->
+                                <?php if ($row[6] == NULL) { ?>
+                                <td class="text-center"></td>
+                                <?php } else {?>
+                                <td class="text-start"><?php echo $row[6];?></td>
                                 <?php }?>
 
-                                <!-- Approval Date -->
+                                <!-- Initiation Date -->
                                 <?php if ($row[8] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
                                 <td class="text-center"><?php echo date_format(date_create($row[8]), 'd/m/Y');?></td>
                                 <?php }?>
 
+                                <!-- Approval Date -->
+                                <?php if ($row[9] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-center"><?php echo date_format(date_create($row[9]), 'd/m/Y');?></td>
+                                <?php }?>
+
                                 <!-- Actions -->
-                                <?php if ($row[7] == NULL) { ?> <!--Not initiated-->
+                                <!--Not initiated-->
+                                <?php if ($row[8] == NULL) { ?>
                                 <td class="text-center">
                                   <button type="button" class="btn btn-icon btn-round btn-black" disabled>
                                     <i class="far fa-eye-slash"></i>
                                   </button>
                                 </td>
-                                <?php } else if ($row[7] != null && $_SESSION['login'] == $row[3]){ ?><!--Pending with this user-->
+                                <!--Pending with this user-->
+                                <?php } else if ($row[8] != null && $_SESSION['login'] == $row[3]){ ?>
                                 <?php if ($_SESSION['login'] == 3) {?><!--Approval privileges-->
                                   <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 </td>
                                 <?php } else if ($_SESSION['login'] == 1) {?><!--Lowest privilage-->
                                 <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTable" onclick="addButton(0)">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 </td>
                                 <?php } else {?><!--Other privilage-->
                                 <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalTable" onclick="addButton(1)">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 </td>
                                 <?php }} else if ($row[5] == 0){ ?><!--Pending with other user-->
                                 <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0]; ?>" id="btnModalView">
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
                                     <i class="fas fa-eye"></i>
                                   </button>
                                 </td>
@@ -201,6 +203,7 @@ $arr = $obj->get_allotment();
                     </div>
                   </div>
                 </div>
+                <!-- Modal for allotment tables -->
                 <div class="modal fade" tab-index="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="dataModal">
                   <div class="modal-dialog modal-fullscreen">
                     <div class="modal-content">
@@ -240,10 +243,10 @@ $arr = $obj->get_allotment();
                                   <th>Salary for CWSN Staff<br>(15)</th>
                                   <th>Total Salary<br>(16)</th>
                                   <th>Total (Recurring Cost)<br>(17)</th>
-                                  <th>District Recommendation<br>(18)</th>
-                                  <th>Fund to be released<br>(19)</th>
+                                  <th>Amount Adjustments<br>(18)</th>
+                                  <th>District Recommendation<br>(19)</th>
+                                  <th>Fund to be released<br>(20)</th>
                                 </thead>
-                              </tbody>
                               </table>
                             </div>
                             <div class="table-responsive tab-pane" id="tab-table2">
@@ -262,10 +265,10 @@ $arr = $obj->get_allotment();
                                   <th>Administrative cost @ ₹56,250 per quarter per unit<br>(9)</th>
                                   <th>Salary of staff @ ₹3,68,204 per quarter per unit<br>(10)</th>
                                   <th>Total (Recurring Cost)<br>(11)</th>
-                                  <th>District Recommendation<br>(12)</th>
-                                  <th>Fund to be released<br>(13)</th>
+                                  <th>Amount Adjustments<br>(12)</th>
+                                  <th>District Recommendation<br>(13)</th>
+                                  <th>Fund to be released<br>(14)</th>
                                 </thead>
-                              </tbody>
                               </table>
                             </div>
                             <div class="table-responsive tab-pane" id="tab-table3">
@@ -284,10 +287,10 @@ $arr = $obj->get_allotment();
                                   <th>Administrative cost @ ₹1,25,000 per quarter per unit<br>(9)</th>
                                   <th>Salary of staff @ ₹3,25,247 per quarter per unit<br>(10)</th>
                                   <th>Total (Recurring Cost)<br>(11)</th>
-                                  <th>District Recommendation<br>(12)</th>
-                                  <th>Fund to be released<br>(13)</th>
-                                </thea>
-                              </tbody>
+                                  <th>Amount Adjustments<br>(12)</th>
+                                  <th>District Recommendation<br>(13)</th>
+                                  <th>Fund to be released<br>(14)</th>
+                                </thead>
                               </table>
                             </div>
                           </div>
@@ -321,6 +324,9 @@ $arr = $obj->get_allotment();
 
     <!-- Datatables -->
     <script src="../assets/js/plugin/datatables/datatables.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  	<script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.0.8/af-2.7.0/b-3.0.2/b-colvis-3.0.2/b-html5-3.0.2/b-print-3.0.2/cr-2.0.3/date-1.5.2/fc-5.0.1/fh-4.0.1/kt-2.12.1/r-3.0.2/rg-1.5.0/rr-1.5.0/sc-2.4.3/sb-1.7.1/sp-2.3.1/sl-2.0.3/sr-1.4.1/datatables.min.js"></script>
 
     <!-- Bootstrap Notify -->
     <script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
@@ -346,9 +352,9 @@ $arr = $obj->get_allotment();
         const dataModal = document.getElementById('dataModal');
 
         function populateModal(event) {
-          var fy_qtr = event.relatedTarget.getAttribute('data-bs-whatever');
+          var data = event.relatedTarget.getAttribute('data-bs-whatever');
           var formData = new FormData();
-          formData.append('fy-qtr', fy_qtr);
+          formData.append('data', data);
           // clear old table data
           $('#home-table').DataTable().clear();
           $('#home-table').DataTable().destroy();
@@ -358,7 +364,7 @@ $arr = $obj->get_allotment();
           $('#os-table').DataTable().destroy();
                 
           $.ajax({
-              url: "get_csv_data.php.php",
+              url: "get_expenditure.php",
               type: "POST",
               data: formData,
               dataType: 'json',
@@ -375,7 +381,7 @@ $arr = $obj->get_allotment();
                       }
                     },
                     { 
-                      targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                      targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
                           maximumFractionDigits: 2,
@@ -388,6 +394,7 @@ $arr = $obj->get_allotment();
                       }
                     }
                   ],
+                  select: 'single',
                   searching: false,
                   paging:false,
                   info: false,                  
@@ -408,7 +415,7 @@ $arr = $obj->get_allotment();
                       }
                     },
                     { 
-                      targets: [9, 10, 11, 12, 13, 14],
+                      targets: [9, 10, 11, 12, 13, 14, 15],
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
                           maximumFractionDigits: 2,
@@ -421,6 +428,7 @@ $arr = $obj->get_allotment();
                       }
                     }
                   ],
+                  select: 'single',
                   paging:false,
                   scrollCollapse: true,
                   scrollX: true,
@@ -439,7 +447,7 @@ $arr = $obj->get_allotment();
                       }
                     },
                     { 
-                      targets: [9, 10, 11, 12, 13, 14],
+                      targets: [9, 10, 11, 12, 13, 14, 15],
                       className: 'text-right',
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
@@ -450,6 +458,7 @@ $arr = $obj->get_allotment();
                       }
                     }
                   ],
+                  select: 'single',
                   paging:false,
                   scrollCollapse: true,
                   scrollX: true,                        
@@ -464,6 +473,18 @@ $arr = $obj->get_allotment();
                     .responsive().recalc()
                     .scroller.measure();
                   });
+                });
+
+                home_table.on('select', function (e, dt, type, indexes) {
+                    if (type === 'row') {
+                        var data = home_table
+                            .rows(indexes)
+                            .data()
+                            .toArray();
+                
+                        // do something with the ID of the selected items
+                        alert(data[0]);
+                    }
                 });
               },
               error: function(xhr, status, error) {
