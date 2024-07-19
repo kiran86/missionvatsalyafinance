@@ -81,7 +81,7 @@ class DbFunction{
 		$output = fopen("php://output",'w') or die("Can't open php://output");
 		header("Content-Type:text/csv"); 
 		header("Content-Disposition:attachment;filename=". $fy_qtr .".csv"); 
-		fputcsv($output, array('id', 'district', 'cci_name', 'cci_run_by', 'cci_unit_no', 'category', 'cci_gender', 'fy_id', 'no_of_months', 'children_days', 'cwsn_children_days' , 'amnt-adjustment', 'dist_recommendation'));
+		fputcsv($output, array('id', 'district', 'cci_name', 'cci_run_by', 'cci_unit_no', 'category', 'cci_gender', 'fy_id', 'no_of_months', 'children_days', 'cwsn_children_days' , 'amnt_adjustment', 'dist_recommendation'));
 		foreach($cci_cat as $row) {
 			$row['fy_id'] = $fy_qtr;
 			$row['no_of_months'] = 3;

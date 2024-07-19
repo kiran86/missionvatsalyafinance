@@ -74,11 +74,11 @@
 				$home_data[$n_home][8] = $row[9];
 				$home_data[$n_home][9] = $row[10];
 				// Maintenance cost
-				$home_data[$n_home][10] = $n_month * (int)$row[9] * $expenses[0][0];
+				$home_data[$n_home][10] = $n_month * intval($row[9]) * $expenses[0][0];
 				// Bedding cost
-				$home_data[$n_home][11] = $n_quarter * (int)$row[9] * $expenses[0][1];
+				$home_data[$n_home][11] = $n_quarter * intval($row[9]) * $expenses[0][1];
 				// CWSN fund
-				$home_data[$n_home][12] = $n_month * (int)$row[10] * ($expenses[0][4] + $expenses[0][5]);
+				$home_data[$n_home][12] = $n_month * intval($row[10]) * ($expenses[0][4] + $expenses[0][5]);
 				// Admin cost
 				$home_data[$n_home][13] = $n_quarter * $expenses[0][2];
 				// CWSN quip
@@ -96,8 +96,11 @@
 											floatval($home_data[$n_home][13]) +
 											floatval($home_data[$n_home][14]) +
 											floatval($home_data[$n_home][17]);
-				$home_data[$n_home][19] = (float)$row[11];
-				$home_data[$n_home][20] = (float)$home_data[$n_home][18] > (float)$home_data[$n_home][19] ? (float)$home_data[$n_home][19] : (float)$home_data[$n_home][18];
+				$home_data[$n_home][19] = floatval($row[11]);
+				$home_data[$n_home][20] = floatval($row[12]);
+				$home_data[$n_home][21] = ($home_data[$n_home][18] - $home_data[$n_home][19]) > $home_data[$n_home][20] ? 
+											$home_data[$n_home][20] : 
+											$home_data[$n_home][18] - $home_data[$n_home][19];
 				$n_home++;
                 break;
             case 'Specialized Adoption Agency':
@@ -120,7 +123,10 @@
 										floatval($saa_data[$n_saa][10]) +
 										floatval($saa_data[$n_saa][11]);
 				$saa_data[$n_saa][13] = floatval($row[11]);
-				$saa_data[$n_saa][14] = $saa_data[$n_saa][12] > $saa_data[$n_saa][13] ? $saa_data[$n_saa][13] : $saa_data[$n_saa][12];
+				$saa_data[$n_saa][14] = floatval($row[12]);
+				$saa_data[$n_saa][15] = ($saa_data[$n_saa][12] - $saa_data[$n_saa][13]) > $saa_data[$n_saa][14]
+											? $saa_data[$n_saa][14]
+											: $saa_data[$n_saa][12] - $saa_data[$n_saa][13];
 				$n_saa++;
                 break;
             case 'Open Shelter':
@@ -143,7 +149,10 @@
 										floatval($os_data[$n_os][10]) +
 										floatval($os_data[$n_os][11]);
 				$os_data[$n_os][13] = floatval($row[11]);
-				$os_data[$n_os][14] = $os_data[$n_os][12] > $os_data[$n_os][13] ? $os_data[$n_os][13] : $os_data[$n_os][12];
+				$os_data[$n_os][14] = floatval($row[12]);
+				$os_data[$n_os][15] = ($os_data[$n_os][12] - $os_data[$n_os][13]) > $os_data[$n_os][14]
+										? $os_data[$n_os][14]
+										: $os_data[$n_os][12] - $os_data[$n_os][13];
 				$n_os++;
                 break;
 		}

@@ -6,11 +6,6 @@ if (! (isset ( $_SESSION ['login'] ))) {
 	header ( 'location:../index.php' );
 }
 
-// include('../config/DbFunction.php');
-// include('../config/utilityfunc.php');
-
-// $obj = new DbFunction();
-// $cci_arr = $obj->get_cci_details();
 require_once("../config/Database.php");
 $db = Database::getInstance();
 $mysqli = $db->getConnection();

@@ -160,7 +160,7 @@ $rs_fy = $obj->get_fys();
 												<th>Average No of Children days per month<br>(7)</th>
 												<th>Average No of CWSN Children days per month<br>(8)</th>
 												<th>Maintenance and Others Cost @ ₹3,000 per child per month<br>(9)</th>
-												<th>Beadding Cost @ ₹250 per child per quarter<br>(10)</th>
+												<th>Bedding Cost @ ₹250 per child per quarter<br>(10)</th>
 												<th>CWSN fund @ ₹4,400 per child per month<br>(11)</th>
 												<th>Administrative cost @ ₹2,50,000 per quarter per unit<br>(12)</th>
 												<th>CWSN Equipment @ ₹1,00,000 per unit per quarter<br>(13)</th>
@@ -168,8 +168,9 @@ $rs_fy = $obj->get_fys();
 												<th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit<br>(15)</th>
 												<th>Total Salary<br>(16)</th>
 												<th>Total (Recurring Cost)<br>(17)</th>
-												<th>District Recommendation<br>(18)</th>
-												<th>Fund to be released<br>(19)</th>
+												<th>Amount Adjustment<br>(18)</th>
+												<th>District Recommendation<br>(19)</th>
+												<th>Fund to be released<br>(20)</th>
 											</thead>
 										</table>
 									</div>
@@ -189,6 +190,7 @@ $rs_fy = $obj->get_fys();
 												<th>Administrative cost @ ₹56,250 per quarter per unit<br>(9)</th>
 												<th>Salary of staff @ ₹3,68,204 per quarter per unit<br>(10)</th>
 												<th>Total (Recurring Cost)<br>(11)</th>
+												<th>Amount Adjustment<br>(18)</th>
 												<th>District Recommendation<br>(12)</th>
 												<th>Fund to be released<br>(13)</th>
 											</thead>
@@ -210,6 +212,7 @@ $rs_fy = $obj->get_fys();
 												<th>Administrative cost @ ₹1,25,000 per quarter per unit<br>(9)</th>
 												<th>Salary of staff @ ₹3,25,247 per quarter per unit<br>(10)</th>
 												<th>Total (Recurring Cost)<br>(11)</th>
+												<th>Amount Adjustment<br>(18)</th>
 												<th>District Recommendation<br>(12)</th>
 												<th>Fund to be released<br>(13)</th>
 											</thead>
@@ -373,10 +376,11 @@ $rs_fy = $obj->get_fys();
 								}
 							},
 							{ 
-								targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+								targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
+										minimumFractionDigits: 2,
 										style: 'currency',
 										currency: 'INR'
 									});
@@ -407,10 +411,11 @@ $rs_fy = $obj->get_fys();
 								}
 							},
 							{ 
-								targets: [9, 10, 11, 12, 13, 14],
+								targets: [9, 10, 11, 12, 13, 14, 15],
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
+										minimumFractionDigits: 2,
 										style: 'currency',
 										currency: 'INR'
 									});
@@ -442,11 +447,12 @@ $rs_fy = $obj->get_fys();
 								}
 							},
 							{ 
-								targets: [9, 10, 11, 12, 13, 14],
+								targets: [9, 10, 11, 12, 13, 14, 15],
 								className: 'text-right',
 								render: function(data, type, row) {
 									return Number(data).toLocaleString('en-IN', {
 										maximumFractionDigits: 2,
+										minimumFractionDigits: 2,
 										style: 'currency',
 										currency: 'INR'
 									});

@@ -6,6 +6,8 @@ if (! (isset ( $_SESSION ['login'] ))) {
 	header ( 'location:../index.php' );
 }
 
+$fmt = new NumberFormatter('en_IN', NumberFormatter::CURRENCY);
+
 include('../config/DbFunction.php');
 include('../config/utilityfunc.php');
 
@@ -86,13 +88,13 @@ $arr = $obj->get_allotment();
                               <tr>
                                 <th scope="col" class="text-center">Financial Year</th>
                                 <th scope="col" class="text-center">Quarter</th>
-                                <th scope="col" class="text-center">Status</th>
-                                <th scope="col" class="text-center">@</th>
-                                <th scope="col" class="text-center">Total Amount</th>
                                 <th scope="col" class="text-center col-3">Districts</th>
+                                <th scope="col" class="text-center">Total Amount</th>
+                                <th scope="col" class="text-center">Status</th>
                                 <th scope="col" class="text-center">Initiation Date</th>
+                                <th scope="col" class="text-center">@</th>
                                 <th scope="col" class="text-center">Approval Date</th>
-                                <th scope="col" class="text-center">Actions</th>
+                                <th scope="col" class="text-center" colspan="2">Actions</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -102,6 +104,20 @@ $arr = $obj->get_allotment();
                                 <td class="text-center"><?php echo $row[1]; ?></td>
                                 <!-- Quarter -->
                                 <td class="text-center"><?php echo $row[2]; ?></td>
+                                
+                                <!-- Districts -->
+                                <?php if ($row[6] == NULL) { ?>
+                                <td class="text-center"></td>
+                                <?php } else {?>
+                                <td class="text-start"><?php echo $row[6];?></td>
+                                <?php }?>
+
+                                <!-- Total Amount -->
+                                <?php if ($row[7] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-end"><?php echo $fmt->format($row[7]);?></td>
+                                <?php }?>
 
                                 <!-- Status -->
                                 <?php if ($row[8] == NULL) { ?>
@@ -114,32 +130,18 @@ $arr = $obj->get_allotment();
                                 <td class="text-center"><span style="font-size: 15px;" class="badge rounded-pill badge-success">Finalized</span></td>
                                 <?php }?>
 
-                                <!-- at user -->
-                                <?php if ($row[4] == NULL) { ?>
-                                <td class="text-center">NA</td>
-                                <?php } else {?>
-                                <td class="text-center"><?php echo $row[4];?></td>
-                                <?php }?>
-
-                                <!-- Total Amount -->
-                                <?php if ($row[7] == NULL) { ?>
-                                <td class="text-center">NA</td>
-                                <?php } else {?>
-                                <td class="text-end">₹<?php echo IND_money_format($row[7]);?></td>
-                                <?php }?>
-                                
-                                <!-- Districts -->
-                                <?php if ($row[6] == NULL) { ?>
-                                <td class="text-center"></td>
-                                <?php } else {?>
-                                <td class="text-start"><?php echo $row[6];?></td>
-                                <?php }?>
-
                                 <!-- Initiation Date -->
                                 <?php if ($row[8] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
                                 <td class="text-center"><?php echo date_format(date_create($row[8]), 'd/m/Y');?></td>
+                                <?php }?>
+
+                                <!-- at user -->
+                                <?php if ($row[4] == NULL) { ?>
+                                <td class="text-center">NA</td>
+                                <?php } else {?>
+                                <td class="text-center"><?php echo $row[4];?></td>
                                 <?php }?>
 
                                 <!-- Approval Date -->
@@ -150,52 +152,51 @@ $arr = $obj->get_allotment();
                                 <?php }?>
 
                                 <!-- Actions -->
+                                 <!-- View Table Button-->
+                                <td class="col text-center">
                                 <!--Not initiated-->
                                 <?php if ($row[8] == NULL) { ?>
-                                <td class="text-center">
                                   <button type="button" class="btn btn-icon btn-round btn-black" disabled>
                                     <i class="far fa-eye-slash"></i>
                                   </button>
-                                </td>
-                                <!--Pending with this user-->
-                                <?php } else if ($row[8] != null && $_SESSION['login'] == $row[3]){ ?>
-                                <?php if ($_SESSION['login'] == 3) {?><!--Approval privileges-->
-                                  <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
-                                    <i class="fas fa-table"></i>
-                                  </button>
-                                </td>
-                                <?php } else if ($_SESSION['login'] == 1) {?><!--Lowest privilage-->
-                                <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
-                                    <i class="fas fa-table"></i>
-                                  </button>
-                                </td>
-                                <?php } else {?><!--Other privilage-->
-                                <td class="text-center">
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
-                                    <i class="fas fa-table"></i>
-                                  </button>
-                                </td>
-                                <?php }} else if ($row[5] == 0){ ?><!--Pending with other user-->
-                                <td class="text-center">
+                                <!-- Otherwise -->
+                                <?php } else { ?>
                                   <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
                                     <i class="fas fa-eye"></i>
                                   </button>
+                                <?php } ?>
                                 </td>
-                                <?php } else { ?><!--Approved-->
-                                <td class="text-center">
+                                <!-- End of View Table Button-->
+                                <td class="col text-center">
+                                <!--Pending with this user then review button-->
+                                <?php if ($row[8] != null && $row[9] == null && $_SESSION['login'] == $row[3]){ ?>
+                                  <?php if ($_SESSION['login'] == 3) {?><!--Approval privileges-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                  <?php } else if ($_SESSION['login'] == 1) {?><!--Lowest privilage-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#formModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                  <?php } else {?><!--Other privilage-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#formModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                <?php }} else if ($row[8] != null && $row[9] != null) { ?><!--Approved-->
                                   <form method = "POST" action="alt_pdf.php">
                                     <input type="hidden" name="fy-qtr" value="<?php echo $row[0];?>">
                                     <input type="hidden" name="approval-date" value="<?php echo $row[8];?>">
                                     <button type="submit" class="btn btn-icon btn-round btn-black">
                                       <i class="fas fa-download"></i>
                                     </button>
-                                  </form>
-                                </td>
+                                <?php } else {?><!--Not initiated-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" disabled>
+                                    <i class="fas fa-exclamation-circle"></i>
+                                  </button>
                                 <?php }?>
+                                </td>
                               </tr>
-                              <?php } ?>
+                            <?php } ?>
                             </tbody>
                           </table>
                         </div>
@@ -296,6 +297,21 @@ $arr = $obj->get_allotment();
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal for allotment edit form -->
+                <div class="modal fade" tab-index="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="formModal">
+                  <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        
+                      </div>
                       <div class="modal-footer">
                       </div>
                     </div>
@@ -351,7 +367,7 @@ $arr = $obj->get_allotment();
 
         const dataModal = document.getElementById('dataModal');
 
-        function populateModal(event) {
+        function populateDataModal(event) {
           var data = event.relatedTarget.getAttribute('data-bs-whatever');
           var formData = new FormData();
           formData.append('data', data);
@@ -369,7 +385,11 @@ $arr = $obj->get_allotment();
               data: formData,
               dataType: 'json',
               success: function(response){
-                $('.modal-title').text('Sub Allotment Data : '.concat(response.quarter));
+                expenditure = [].concat(response.homedata, response.saadata, response.osdata);
+                expenditure.sort((a, b) => { return a[3] < b[3]? -1: 1;});
+                console.log(expenditure);
+
+                $('#dataModal .modal-title').text('Sub Allotment Data : '.concat(response.quarter));
                 var home_table = $("#home-table").DataTable({
                   data: response.homedata,
                   columnDefs: [
@@ -384,7 +404,6 @@ $arr = $obj->get_allotment();
                       targets: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
-                          maximumFractionDigits: 2,
                           style: 'currency',
                           currency: 'INR'
                         });
@@ -418,7 +437,6 @@ $arr = $obj->get_allotment();
                       targets: [9, 10, 11, 12, 13, 14, 15],
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
-                          maximumFractionDigits: 2,
                           style: 'currency',
                           currency: 'INR'
                         });
@@ -451,7 +469,6 @@ $arr = $obj->get_allotment();
                       className: 'text-right',
                       render: function(data, type, row) {
                         return Number(data).toLocaleString('en-IN', {
-                          maximumFractionDigits: 2,
                           style: 'currency',
                           currency: 'INR'
                         });
@@ -474,18 +491,6 @@ $arr = $obj->get_allotment();
                     .scroller.measure();
                   });
                 });
-
-                home_table.on('select', function (e, dt, type, indexes) {
-                    if (type === 'row') {
-                        var data = home_table
-                            .rows(indexes)
-                            .data()
-                            .toArray();
-                
-                        // do something with the ID of the selected items
-                        alert(data[0]);
-                    }
-                });
               },
               error: function(xhr, status, error) {
                   console.error('AJAX Error: ' + status + error);
@@ -495,8 +500,13 @@ $arr = $obj->get_allotment();
               processData: false
           });
         }
-        dataModal.addEventListener('show.bs.modal', populateModal);
-        dataModal.addEventListener('hidden.bs.modal', function(event) {
+        dataModal.addEventListener('show.bs.modal', populateDataModal);
+        
+        function populateFormModal(event) {
+          $('#formModal .modal-body').load('allotment_edit_form.php');
+        }
+        formModal.addEventListener('show.bs.modal', populateFormModal);
+        formModal.addEventListener('hidden.bs.modal', function(event) {
           $('.modal-footer').html("");
         });
         
