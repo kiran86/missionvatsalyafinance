@@ -9,6 +9,57 @@ if (! (isset ( $_SESSION ['login'] ))) {
 require_once("../config/Database.php");
 $db = Database::getInstance();
 $mysqli = $db->getConnection();
+
+$data = $_GET['data'];
+$fy_id = explode(',', $data)[0];
+$init_dt = explode(',', $data)[1];
+
+// Get expenditure data
+$sql = "SELECT 
+            `cci`.`id`,
+            `cci`.`district`,
+            CONCAT(`cci`.`cci_name`, ' (', `cci`.`category`, ' for ', `cci`.`cci_gender`, ')'),
+            `cci`.`category`,
+            `cci`.`cci_unit_no`,
+            `cci`.`cci_run_by`,
+            `fund_release`.`n_months`, 
+            `fund_release`.`children_days`, 
+            `fund_release`.`cwsn_child_days`, 
+            `fund_release`.`maintenance_cost`, 
+            `fund_release`.`bedding_cost`, 
+            `fund_release`.`cwsn_addl_grant`+`fund_release`.`cwsn_medical` AS 'CWSN Fund',
+            `fund_release`.`admin_expenses`,
+            `fund_release`.`cwsn_equip`,
+            `fund_release`.`staff_sal`,
+            `fund_release`.`cwsn_staff_sal`,
+            `fund_release`.`staff_sal` + `fund_release`.`cwsn_staff_sal` AS 'Total Salary',
+            `fund_release`.`maintenance_cost` + `fund_release`.`bedding_cost` + `fund_release`.`cwsn_addl_grant` + `fund_release`.`cwsn_medical` + `fund_release`.`admin_expenses` + `fund_release`.`cwsn_equip` + `fund_release`.`staff_sal` + `fund_release`.`cwsn_staff_sal` AS 'Total Recurring',
+            `fund_release`.`amnt_adjstmnt`,
+            `fund_release`.`dist_recommendation`,
+            `fund_release`.`amnt_released`,
+            `fund_release`.`remarks`
+        FROM
+            `fund_release`
+        LEFT JOIN
+            `cci`
+        ON
+            `fund_release`.`cci_id` = `cci`.`id`
+        WHERE
+            `fund_release`.`fy_id` = ? AND `fund_release`.`init_dt` = ?
+        ORDER BY
+            `cci`.`district`, `cci`.`cci_run_by`, `cci`.`cci_name`, `cci`.`category`, `cci`.`cci_unit_no`;";
+$stmt = $mysqli->prepare($sql);
+if ($stmt === FALSE) {
+    trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
+    return null;
+}
+$stmt->bind_param('ss', $fy_id, $init_dt);
+if ($stmt->execute()) {
+    $expenditure = $stmt->get_result()->fetch_all(MYSQLI_NUM);
+} else {
+    trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
+    die(E_USER_ERROR);
+}
 ?>
 
 

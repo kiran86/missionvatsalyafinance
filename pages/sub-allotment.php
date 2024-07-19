@@ -6,7 +6,9 @@ if (! (isset ( $_SESSION ['login'] ))) {
 	header ( 'location:../index.php' );
 }
 
-$fmt = new NumberFormatter('en_IN', NumberFormatter::CURRENCY);
+if ( php_uname('s') != 'Darwin') {
+  $fmt = new NumberFormatter('en_IN', NumberFormatter::CURRENCY);
+}
 
 include('../config/DbFunction.php');
 include('../config/utilityfunc.php');
@@ -116,7 +118,7 @@ $arr = $obj->get_allotment();
                                 <?php if ($row[7] == NULL) { ?>
                                 <td class="text-center">NA</td>
                                 <?php } else {?>
-                                <td class="text-end"><?php echo $fmt->format($row[7]);?></td>
+                                <td class="text-end"><?php echo isset($fmt) ? $fmt->format($row[7]) : $row[7];?></td>
                                 <?php }?>
 
                                 <!-- Status -->
@@ -503,7 +505,8 @@ $arr = $obj->get_allotment();
         dataModal.addEventListener('show.bs.modal', populateDataModal);
         
         function populateFormModal(event) {
-          $('#formModal .modal-body').load('allotment_edit_form.php');
+          var data = event.relatedTarget.getAttribute('data-bs-whatever');
+          $('#formModal .modal-body').load('allotment_edit_form.php?data=' + data);
         }
         formModal.addEventListener('show.bs.modal', populateFormModal);
         formModal.addEventListener('hidden.bs.modal', function(event) {
