@@ -616,9 +616,11 @@ $arr = $obj->get_allotment();
             },
           }).then((Forward) => {
             if (Forward) {
-              var fy_qtr = $('#home-table').DataTable().rows(0).data()[0][0];
+              var fy_id = $('#home-table').DataTable().rows(0).data()[0][0];
+              var init_dt = $('#home-table').DataTable().rows(0).data()[0][22];
               var formData = new FormData();
-              formData.append('fy-qtr', fy_qtr);
+              formData.append('fy_id', fy_id);
+              formData.append('init_dt', init_dt);
               formData.append('action', action);
               // forward csv file
               $.ajax({

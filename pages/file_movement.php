@@ -8,7 +8,9 @@
 	$db = Database::getInstance();
 	$mysqli = $db->getConnection();
 
-	$fy_id = $_POST['fy-id'];	
+	$fy_id = $_POST['fy_id'];
+	$init_dt = isset($_POST['init_dt']) ? $_POST['init_dt'] : date('Y-m-d');
+	error_log($init_dt);
 	$user = $_SESSION['login'];
 	// Set CSV file location
 	$csvdir = "../csv/";
@@ -118,15 +120,54 @@
 					echo json_encode(Array('status' => 1, 'message' => $success_msg));
 				}
 			} else {
-				$user++;
+				if (move_file($user + 1)) {
+					echo json_encode(Array('status' => 1, 'message' => $success_msg));
+				} else {
+					echo json_encode(Array('status' => 0, 'message' => $err_msg));
+                }
 			}
 			break;
 		case 'revert':
-			$user--;
-			// Update database
-			
+			if (move_file($user - 1)) {
+				echo json_encode(Array('status' => 1, 'message' => $success_msg));
+			} else {
+				echo json_encode(Array('status' => 0, 'message' => $err_msg));
+			}
 			break;
 		case 'approve':
-			
+			if (approve_file()) {
+				echo json_encode(Array('status' => 1, 'message' => $success_msg));
+            } else {
+				echo json_encode(Array('status' => 0, 'message' => $err_msg));
+			}
 			break;
+	}
+
+	function move_file($user) {
+		global $fy_id, $init_dt;
+		global $mysqli;
+
+		$query = 'UPDATE `fund_release` SET `at_user` = ? WHERE `fy_id` = ? AND `init_dt` = ?';
+		$stmt = $mysqli->prepare($query);
+		if (false === $stmt) {
+			trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
+            return false;
+		}
+		$stmt->bind_param('iss', $user, $fy_id, $init_dt);
+		return $stmt->execute();
+	}
+
+	function approve_file() {
+		global $fy_id, $init_dt;
+		global $mysqli;
+		$apprv_dt = date('Y-m-d');
+
+		$query = 'UPDATE `fund_release` SET `remarks` = NULL, `at_user` = NULL, `apprvl_dt` = ? WHERE `fy_id` = ? AND `init_dt` = ?';
+		$stmt = $mysqli->prepare($query);
+		if (false === $stmt) {
+			trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
+            return false;
+		}
+		$stmt->bind_param('sss', $apprv_dt, $fy_id, $init_dt);
+		return $stmt->execute();
 	}
