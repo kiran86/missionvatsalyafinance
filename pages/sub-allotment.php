@@ -186,8 +186,8 @@ $arr = $obj->get_allotment();
                                 <td class="col text-center">
                                 <?php if ($row[8] != null && $row[9] != null) { ?><!--Approved and Downloadable-->
                                   <form method = "POST" action="alt_pdf.php">
-                                    <input type="hidden" name="fy-qtr" value="<?php echo $row[0];?>">
-                                    <input type="hidden" name="approval-date" value="<?php echo $row[8];?>">
+                                    <input type="hidden" name="fy-id" value="<?php echo $row[0];?>">
+                                    <input type="hidden" name="approval-date" value="<?php echo $row[9];?>">
                                     <button type="submit" class="btn btn-icon btn-round btn-black">
                                       <i class="fas fa-download"></i>
                                     </button>

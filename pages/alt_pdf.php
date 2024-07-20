@@ -11,7 +11,7 @@ $db = Database::getInstance();
 $mysqli = $db->getConnection();
 
 // Get post data
-$fy_qtr = $_POST['fy-qtr'];
+$fy_id = $_POST['fy-id'];
 $approval_date = $_POST['approval-date'];
 
 // Get Financial Year and Quarter
