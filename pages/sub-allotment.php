@@ -465,7 +465,7 @@ $arr = $obj->get_allotment();
                     start: 3
                   },
                   createdRow: (row, data, dataIndex) => {
-                    if (data[23] !== null && data[23].length > 0) {
+                    if (data[17] !== null && data[17].length > 0) {
                       $(row).addClass('table-warning');
                     }
                   },
@@ -503,7 +503,7 @@ $arr = $obj->get_allotment();
                     start: 3
                   },
                   createdRow: (row, data, dataIndex) => {
-                    if (data[23] !== null && data[23].length > 0) {
+                    if (data[17] !== null && data[17].length > 0) {
                       $(row).addClass('table-warning');
                     }
                   },

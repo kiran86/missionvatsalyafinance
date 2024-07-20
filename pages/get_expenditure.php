@@ -187,7 +187,7 @@
 				// Init date
 				$os_data[$n_os][16] = $init_dt;
 				// Remarks
-				$os_data[$os_home][17] = $row[20];
+				$os_data[$n_os][17] = $row[20];
 				$n_os++;
                 break;
 		}
