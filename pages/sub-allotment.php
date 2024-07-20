@@ -101,7 +101,6 @@ $arr = $obj->get_allotment();
                             </thead>
                             <tbody>
                               <?php foreach ($arr as $row) { ?>
-                              <tr>
                                 <!-- Financial Year -->
                                 <td class="text-center"><?php echo $row[1]; ?></td>
                                 <!-- Quarter -->
@@ -154,49 +153,51 @@ $arr = $obj->get_allotment();
                                 <?php }?>
 
                                 <!-- Actions -->
-                                 <!-- View Table Button-->
+                                <!-- View and Edit Table Button-->
                                 <td class="col text-center">
-                                <!--Not initiated-->
-                                <?php if ($row[8] == NULL) { ?>
+                                <?php if ($row[8] == NULL) { ?><!--Not initiated-->
                                   <button type="button" class="btn btn-icon btn-round btn-black" disabled>
                                     <i class="far fa-eye-slash"></i>
                                   </button>
-                                <!-- Otherwise -->
-                                <?php } else { ?>
+                                <?php } else if ($row[9] != NULL) { ?><!--Approved-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
+                                    <i class="fas fa-eye"></i>
+                                  </button>
+                                <?php } else if ($_SESSION['login'] == $row[3] && $_SESSION['login'] == 1) {?><!--Pending with this user of no revert privileges-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                <?php } else if ($_SESSION['login'] == $row[3] && $_SESSION['login'] == 3) { ?><!--Pending with this user of approval privileges-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                <?php } else if ($_SESSION['login'] == $row[3]) { ?><!--Pending with this user of revert and forward privilage-->
+                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
+                                    <i class="fas fa-table"></i>
+                                  </button>
+                                <?php } else {?><!--Pending with other user -->
                                   <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
                                     <i class="fas fa-eye"></i>
                                   </button>
                                 <?php } ?>
                                 </td>
                                 <!-- End of View Table Button-->
+                                <!-- Download Button -->
                                 <td class="col text-center">
-                                <!--Pending with this user then review button-->
-                                <?php if ($row[8] != null && $row[9] == null && $_SESSION['login'] == $row[3]){ ?>
-                                  <?php if ($_SESSION['login'] == 3) {?><!--Approval privileges-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
-                                    <i class="fas fa-table"></i>
-                                  </button>
-                                  <?php } else if ($_SESSION['login'] == 1) {?><!--Lowest privilage-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#formModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
-                                    <i class="fas fa-table"></i>
-                                  </button>
-                                  <?php } else {?><!--Other privilage-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#formModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
-                                    <i class="fas fa-table"></i>
-                                  </button>
-                                <?php }} else if ($row[8] != null && $row[9] != null) { ?><!--Approved-->
+                                <?php if ($row[8] != null && $row[9] != null) { ?><!--Approved and Downloadable-->
                                   <form method = "POST" action="alt_pdf.php">
                                     <input type="hidden" name="fy-qtr" value="<?php echo $row[0];?>">
                                     <input type="hidden" name="approval-date" value="<?php echo $row[8];?>">
                                     <button type="submit" class="btn btn-icon btn-round btn-black">
                                       <i class="fas fa-download"></i>
                                     </button>
-                                <?php } else {?><!--Not initiated-->
+                                <?php } else {?><!--Not Downloadable-->
                                   <button type="button" class="btn btn-icon btn-round btn-black" disabled>
                                     <i class="fas fa-exclamation-circle"></i>
                                   </button>
-                                <?php }?>
+                                <?php } ?>
                                 </td>
+                                <!-- End of Download Button-->
                               </tr>
                             <?php } ?>
                             </tbody>
@@ -231,7 +232,7 @@ $arr = $obj->get_allotment();
                                   <th>CCI_ID</th>
                                   <th>Sl. No.<br>(1)</th>
                                   <th>District<br>(2)</th>
-                                  <th>CCI Name<br>(3)</th>
+                                  <th>CCI<br>(3)</th>
                                   <th>Unit No.<br>(4)</th>
                                   <th>CCI run by<br>(5)</th>
                                   <th>No. of Months<br>(6)</th>
@@ -249,6 +250,8 @@ $arr = $obj->get_allotment();
                                   <th>Amount Adjustments<br>(18)</th>
                                   <th>District Recommendation<br>(19)</th>
                                   <th>Fund to be released<br>(20)</th>
+                                  <th>INIT-DT</th>
+                                  <th>Remarks</th>
                                 </thead>
                               </table>
                             </div>
@@ -271,6 +274,8 @@ $arr = $obj->get_allotment();
                                   <th>Amount Adjustments<br>(12)</th>
                                   <th>District Recommendation<br>(13)</th>
                                   <th>Fund to be released<br>(14)</th>
+                                  <th>INIT-DT</th>
+                                  <th>Remarks</th>
                                 </thead>
                               </table>
                             </div>
@@ -293,11 +298,15 @@ $arr = $obj->get_allotment();
                                   <th>Amount Adjustments<br>(12)</th>
                                   <th>District Recommendation<br>(13)</th>
                                   <th>Fund to be released<br>(14)</th>
+                                  <th>INIT-DT</th>
+                                  <th>Remarks</th>
                                 </thead>
                               </table>
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div class="modal-footer">
                       </div>
                     </div>
                   </div>
@@ -308,14 +317,10 @@ $arr = $obj->get_allotment();
                   <div class="modal-dialog modal-fullscreen">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title"></h5>
+                        <h5 class="modal-title">Review and Edit Expenditure Allotment</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="modal-body">
-                        
-                      </div>
-                      <div class="modal-footer">
-                      </div>
+                      <div class="modal-body"></div>
                     </div>
                   </div>
                 </div>
@@ -365,9 +370,13 @@ $arr = $obj->get_allotment();
                     $(this).addClass('active');
                 }
             });
+            var home_table = $("#home-table").DataTable();
+            var saa_table = $("#saa-table").DataTable();
+            var os_table = $("#os-table").DataTable();
         });
 
         const dataModal = document.getElementById('dataModal');
+        const formModal = document.getElementById('formModal');
 
         function populateDataModal(event) {
           var data = event.relatedTarget.getAttribute('data-bs-whatever');
@@ -387,15 +396,11 @@ $arr = $obj->get_allotment();
               data: formData,
               dataType: 'json',
               success: function(response){
-                expenditure = [].concat(response.homedata, response.saadata, response.osdata);
-                expenditure.sort((a, b) => { return a[3] < b[3]? -1: 1;});
-                console.log(expenditure);
-
                 $('#dataModal .modal-title').text('Sub Allotment Data : '.concat(response.quarter));
-                var home_table = $("#home-table").DataTable({
+                home_table = $("#home-table").DataTable({
                   data: response.homedata,
                   columnDefs: [
-                    { targets: [0, 1], visible: false },
+                    { targets: [0, 1, 22], visible: false },
                     { 
                       targets: [5, 7, 8, 9],
                       createdCell: function (td) {
@@ -413,22 +418,29 @@ $arr = $obj->get_allotment();
                       createdCell: function (td) {
                         $(td).addClass('text-end');
                       }
-                    }
+                    },
+                    { targets: 23, createdCell: function (td) {$(td).addClass('text-start');} }
                   ],
+                  fixedColumns: {
+                    start: 3
+                  },
+                  createdRow: (row, data, dataIndex) => {
+                    if (data[23] !== null && data[23].length > 0) {
+                      $(row).addClass('table-warning');
+                    }
+                  },
                   select: 'single',
                   searching: false,
                   paging:false,
-                  info: false,                  
                   scrollCollapse: true,
                   scrollX: true,
                   scrollY: '50vh'
                 });
 
-                var saa_table = $("#saa-table").DataTable({
-                  searching: false,
+                saa_table = $("#saa-table").DataTable({
                   data: response.saadata,
                   columnDefs: [
-                    { targets: [0, 1], visible: false },
+                    { targets: [0, 1, 16], visible: false },
                     {
                       targets: [2, 7, 8],
                       createdCell: function (td) {
@@ -446,20 +458,29 @@ $arr = $obj->get_allotment();
                       createdCell: function (td) {
                         $(td).addClass('text-end');
                       }
-                    }
+                    },
+                    { targets: 17, createdCell: function (td) {$(td).addClass('text-start');} }
                   ],
+                  fixedColumns: {
+                    start: 3
+                  },
+                  createdRow: (row, data, dataIndex) => {
+                    if (data[23] !== null && data[23].length > 0) {
+                      $(row).addClass('table-warning');
+                    }
+                  },
                   select: 'single',
+                  searching: false,
                   paging:false,
                   scrollCollapse: true,
                   scrollX: true,
                   scrollY: '50vh'
                 });
 
-                var os_table = $("#os-table").DataTable({
-                  searching: false,
+                os_table = $("#os-table").DataTable({
                   data: response.osdata,
                   columnDefs: [
-                    { targets: [0, 1], visible: false },
+                    { targets: [0, 1, 16], visible: false },
                     {
                       targets: [2, 7, 8],
                       createdCell: function (td) {
@@ -475,9 +496,19 @@ $arr = $obj->get_allotment();
                           currency: 'INR'
                         });
                       }
-                    }
+                    },
+                    { targets: 17, createdCell: function (td) {$(td).addClass('text-start');} }
                   ],
+                  fixedColumns: {
+                    start: 3
+                  },
+                  createdRow: (row, data, dataIndex) => {
+                    if (data[23] !== null && data[23].length > 0) {
+                      $(row).addClass('table-warning');
+                    }
+                  },
                   select: 'single',
+                  searching: false,
                   paging:false,
                   scrollCollapse: true,
                   scrollX: true,                        
@@ -488,11 +519,23 @@ $arr = $obj->get_allotment();
                 document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
                   el.addEventListener('shown.bs.tab', () => {
                     DataTable.tables({ visible: true, api: true })
-                    .columns.adjust()
-                    .responsive().recalc()
-                    .scroller.measure();
+                    .columns.adjust();
                   });
                 });
+
+                // Row selection
+                home_table.on('select', function (e, dt, type, indexes) {
+                  var rowData = home_table.row(indexes).data();
+                  populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[22]);
+                })
+                saa_table.on('select', function (e, dt, type, indexes) {
+                  var rowData = saa_table.row(indexes).data();
+                  populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[16]);
+                })
+                os_table.on('select', function (e, dt, type, indexes) {
+                  var rowData = os_table.row(indexes).data();
+                  populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[16]);
+                })
               },
               error: function(xhr, status, error) {
                   console.error('AJAX Error: ' + status + error);
@@ -503,14 +546,24 @@ $arr = $obj->get_allotment();
           });
         }
         dataModal.addEventListener('show.bs.modal', populateDataModal);
-        
-        function populateFormModal(event) {
-          var data = event.relatedTarget.getAttribute('data-bs-whatever');
-          $('#formModal .modal-body').load('allotment_edit_form.php?data=' + data);
-        }
-        formModal.addEventListener('show.bs.modal', populateFormModal);
-        formModal.addEventListener('hidden.bs.modal', function(event) {
+
+        dataModal.addEventListener('hidden.bs.modal', function(event) {
           $('.modal-footer').html("");
+          home_table.destroy();
+          saa_table.destroy();
+          os_table.destroy();
+        });
+        
+        function populateFormModal(data) {
+          $('#formModal .modal-body').load('allotment_edit_form.php?data=' + data);
+          $('#formModal .modal-body').css("overflow","hidden");
+          $('#formModal').modal('show');
+        }
+
+        formModal.addEventListener('hidden.bs.modal', function(event) {
+          home_table.rows().deselect();
+          saa_table.rows().deselect();
+          os_table.rows().deselect();
         });
         
         function addButton(mode) {

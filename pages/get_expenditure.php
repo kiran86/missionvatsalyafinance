@@ -60,7 +60,8 @@
                 `fund_release`.`maintenance_cost` + `fund_release`.`bedding_cost` + `fund_release`.`cwsn_addl_grant` + `fund_release`.`cwsn_medical` + `fund_release`.`admin_expenses` + `fund_release`.`cwsn_equip` + `fund_release`.`staff_sal` + `fund_release`.`cwsn_staff_sal` AS 'Total Recurring',
                 `fund_release`.`amnt_adjstmnt`,
                 `fund_release`.`dist_recommendation`,
-                `fund_release`.`amnt_released`
+                `fund_release`.`amnt_released`,
+				`fund_release`.`remarks`
             FROM
                 `fund_release`
             LEFT JOIN
@@ -131,6 +132,10 @@
                 $home_data[$n_home][20] = floatval($row[19]);
                 // Amount released
 				$home_data[$n_home][21] = floatval($row[20]);
+				// Init date
+				$home_data[$n_home][22] = $init_dt;
+				// Remarks
+				$home_data[$n_home][23] = $row[21];
 				$n_home++;
                 break;
             case 'Specialized Adoption Agency':
@@ -153,6 +158,10 @@
 				$saa_data[$n_saa][13] = floatval($row[18]);
 				$saa_data[$n_saa][14] = floatval($row[19]);
                 $saa_data[$n_saa][15] = floatval($row[20]);
+				// Init date
+				$saa_data[$n_saa][16] = $init_dt;
+				// Remarks
+				$saa_data[$n_saa][17] = $row[21];
 				$n_saa++;
                 break;
             case 'Open Shelter':
@@ -175,6 +184,10 @@
 				$os_data[$n_os][13] = floatval($row[18]);
 				$os_data[$n_os][14] = floatval($row[19]);
                 $os_data[$n_os][15] = floatval($row[20]);
+				// Init date
+				$os_data[$n_os][16] = $init_dt;
+				// Remarks
+				$os_data[$os_home][17] = $row[20];
 				$n_os++;
                 break;
 		}

@@ -350,6 +350,7 @@ $rs_fy = $obj->get_fys();
                 data: formData,
 				dataType: 'json',
                 success: function(response){
+					console.log(response.districts);
 					$('#fy-id').val(response.fyid);
 					$('#hfyid').val(response.fyid);
 					$('#suballotment').text('Sub Allotment Data : '.concat(response.quarter));
