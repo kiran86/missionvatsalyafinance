@@ -89,7 +89,7 @@
 						}
 						$rs->close();
 						$n_month = intval($row[8]);
-						$n_quarter = ($n_month / 3) + ($n_month % 3) > 0 ? 1 : 0;
+						$n_quarter = ($n_month / 3) + ($n_month % 3 > 0 ? 1 : 0);
 						$date = date("Y-m-d");
 						// Calculate expenses
 						$maintanence_cost = $n_month * (int)$row[9] * $expenses[0][0];

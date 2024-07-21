@@ -382,12 +382,9 @@ $arr = $obj->get_allotment();
           var data = event.relatedTarget.getAttribute('data-bs-whatever');
           var formData = new FormData();
           formData.append('data', data);
-          // clear old table data
-          $('#home-table').DataTable().clear();
+          // clear old table
           $('#home-table').DataTable().destroy();
-          $('#saa-table').DataTable().clear();
           $('#saa-table').DataTable().destroy();
-          $('#os-table').DataTable().clear();
           $('#os-table').DataTable().destroy();
                 
           $.ajax({
