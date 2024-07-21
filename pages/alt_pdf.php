@@ -23,7 +23,7 @@ if ($stmt === FALSE) {
     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
     return null;
 }
-$stmt->bind_param('s', $fy_qtr);
+$stmt->bind_param('s', $fy_id);
 if ($stmt->execute()) {
     $rs = $stmt->get_result()->fetch_all(MYSQLI_NUM);
     $fy = $rs[0][0];
@@ -51,14 +51,13 @@ if ($stmt === FALSE) {
     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
     return null;
 }
-$stmt->bind_param('ss', $_POST['fy-qtr'], $_POST['approval-date']);
+$stmt->bind_param('ss', $fy_id, $approval_date);
 if ($stmt->execute()) {
     $data = $stmt->get_result()->fetch_all(MYSQLI_NUM);
 } else {
     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
     die(E_USER_ERROR);
 }
-
 // Define the header array
 $header = array('#', 'CCI NAME', 'UNIT NO.', 'RUN BY', 'NO. OF MONTHS', 'CHILDREN DAYS PER MONTH', 'CWSN CHILDREN DAYS PER MONTH', 'MAINTENANCE AND OTHER COSTS', 'BEDDING COST', 'CWSN FUND', 'ADMINISTRATIVE COST', 'CWSN EQUIPMENT', 'SALARY OF STAFF', 'SALARY FOR CWSN STAFF', 'TOTAL SALARY', 'TOTAL (RECURRING COST)', 'DISTRICT RECOMMENDATION', 'FUND TO BE RELEASED');
 
@@ -128,7 +127,7 @@ foreach ($data as $row) {
         $sl_no = 0;
     }
     
-    if ($new_dist_flag || $sl_no % 4 == 0) {
+    if ($new_dist_flag || $sl_no % 5 == 0) {
         // Add a new page
         $pdf->AddPage();
         // Set the font for the header
@@ -158,14 +157,14 @@ foreach ($data as $row) {
     drawRow($pdf, $widths, $row, $maxHeight);
 }
 
+$filename = date_format(date_create($approval_date), 'Ymd') . '_' . $fy_id . '.pdf';
+
 /// Set headers to force download
 header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="report.pdf"');
+header('Content-Disposition: attachment; filename="' . $filename . '"');
 header('Cache-Control: private, max-age=0, must-revalidate');
 header('Pragma: public');
 
-// Output the PDF to the browser
-$pdf->Output('D', 'report.pdf');
-
-// $pdf->Output('F', '../output/' . 'sample.pdf');
+// Output the PDF to the browser and Download
+$pdf->Output('D', $filename);
 ?>

@@ -219,9 +219,9 @@ $arr = $obj->get_allotment();
                         <div class="card">
                           <div class="card-header">
                             <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                              <li class="nav-item" role="presentation"><button class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
-                              <li class="nav-item"><button class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
-                              <li class="nav-item"><button class="nav-link" href="#tab-table3" data-bs-toggle="tab" data-bs-target="#tab-table3">OS</button></li>
+                              <li class="nav-item" role="presentation"><button type="button" class="nav-link active" href="#tab-table1" data-bs-toggle="tab" data-bs-target="#tab-table1">Home</button></li>
+                              <li class="nav-item"><button type="button" class="nav-link" href="#tab-table2" data-bs-toggle="tab" data-bs-target="#tab-table2">SAA</button></li>
+                              <li class="nav-item"><button type="button" class="nav-link" href="#tab-table3" data-bs-toggle="tab" data-bs-target="#tab-table3">OS</button></li>
                             </ul>
                           </div>
                           <div class="card-body tab-content">
