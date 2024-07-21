@@ -12,6 +12,7 @@ if ( php_uname('s') != 'Darwin') {
 }
 
 require_once("../config/Database.php");
+require_once("../config/utilityfunc.php");
 $db = Database::getInstance();
 $mysqli = $db->getConnection();
 
@@ -169,14 +170,14 @@ $rs->close();
                     <label for="inputMaintenanceCost" class="col-sm-4 col-form-label">Maintenance and Others Cost</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitMaintenanceCost" value="<?php echo $fmt->format($exp['maintenance_cost']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitMaintenanceCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['maintenance_cost']); else echo IND_money_format($exp['maintenance_cost']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['children_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-3" id="inputMaintenanceCost" value="<?php echo $fmt->format($expenditure['maintenance_cost']);?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-3" id="inputMaintenanceCost" name="inputMaintenanceCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['maintenance_cost']); else echo IND_money_format($expenditure['maintenance_cost']);?>" readonly>
                         </div>
                     </div>
                     <?php if ($expenditure['is_home']) { ?>
@@ -184,14 +185,14 @@ $rs->close();
                     <label for="inputBeddingCost" class="col-sm-4 col-form-label">Bedding Cost</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitBeddingCost" value="<?php echo $fmt->format($exp['bedding_cost']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitBeddingCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['bedding_cost']); else echo IND_money_format($exp['bedding_cost']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['children_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nQuarter" id="" value="<?php echo $n_quarter ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-5" id="inputBeddingCost" value="<?php echo $fmt->format($expenditure['bedding_cost']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-5" id="inputBeddingCost" name="inputBeddingCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['bedding_cost']); else echo IND_money_format($expenditure['bedding_cost']); ?>" readonly>
                         </div>
                     </div>
                     <?php } ?>
@@ -199,14 +200,14 @@ $rs->close();
                     <label for="inputAdminCost" class="col-sm-4 col-form-label">Administrative cost</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitAdminCost" value="<?php echo $fmt->format($exp['admin_expenses']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitAdminCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['admin_expenses']); else echo IND_money_format($exp['admin_expenses']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="--" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nQuarter" id="" value="<?php echo $n_quarter ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputAdminCost"  value="<?php echo $fmt->format($expenditure['admin_expenses']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputAdminCost" name="inputAdminCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['admin_expenses']); else echo IND_money_format($expenditure['admin_expenses']);?>" disabled>
                         </div>
                     </div>
                     <?php if ($expenditure['is_home']) { ?>
@@ -214,42 +215,42 @@ $rs->close();
                     <label for="inputCWSNEquipCost" class="col-sm-4 col-form-label">CWSN Equipment cost</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNEquipCost" value="<?php echo $fmt->format($exp['cwsn_equip']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNEquipCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['cwsn_equip']); else echo IND_money_format($exp['cwsn_equip']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="--" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nQuarter" id="" value="<?php echo $n_quarter ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNEquipCost" value="<?php echo $fmt->format($expenditure['cwsn_equip']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNEquipCost" name="inputCWSNEquipCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_equip']); else echo IND_money_format($expenditure['cwsn_equip']); ?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputCWSNAddlCost" class="col-sm-4 col-form-label">CWSN Additional Grant</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNAddlCost" value="<?php echo $fmt->format($exp['cwsn_addl_grant']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNAddlCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['cwsn_addl_grant']); else echo IND_money_format($exp['cwsn_addl_grant']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['cwsn_child_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNAddlCost" value="<?php echo $fmt->format($expenditure['cwsn_addl_grant']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNAddlCost" name="inputCWSNAddlCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_addl_grant']); else echo IND_money_format($expenditure['cwsn_addl_grant']);?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputCWSNMedical" class="col-sm-4 col-form-label">CWSN Medical Grant</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNMedical" value="<?php echo $fmt->format($exp['cwsn_medical']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNMedical" value="<?php if (isset($fmt)) echo $fmt->format($exp['cwsn_medical']); else echo IND_money_format($exp['cwsn_medical']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['cwsn_child_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNMedical" value="<?php echo $fmt->format($expenditure['cwsn_medical']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNMedical" name="inputCWSNMedical" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_medical']); else echo IND_money_format($expenditure['cwsn_medical']); ?>" disabled>
                         </div>
                     </div>
                     <?php } ?>
@@ -257,14 +258,14 @@ $rs->close();
                     <label for="inputStaffSalary" class="col-sm-4 col-form-label">Staff Salary</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitStaffSalary" value="<?php echo $fmt->format($exp['staff_sal']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($exp['staff_sal']); else echo IND_money_format($exp['staff_sal']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo '--'; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputStaffSalary" value="<?php echo $fmt->format($expenditure['staff_sal']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputStaffSalary" name="inputStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['staff_sal']); else echo IND_money_format($expenditure['staff_sal']);?>" disabled>
                         </div>
                     </div>
                     <?php if ($expenditure['is_home']) { ?>
@@ -272,21 +273,21 @@ $rs->close();
                     <label for="inputCWSNStaffSalary" class="col-sm-4 col-form-label">CWSN Staff Salary</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNStaffSalary" value="<?php echo $fmt->format($exp['cwsn_staff_sal']); ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-2" id="unitCWSNStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($exp['cwsn_staff_sal']); else echo IND_money_format($exp['cwsn_staff_sal']); ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo '--'; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNStaffSalary" value="<?php echo $fmt->format($expenditure['cwsn_staff_sal']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNStaffSalary" name="inputCWSNStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_staff_sal']); else echo IND_money_format($expenditure['cwsn_staff_sal']); ?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputtotalSalary" class="col-sm-6 col-form-label">Total Salary</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputtotalSalary" value="<?php echo $fmt->format($expenditure['t_salary']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputtotalSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['t_salary']); echo IND_money_format($expenditure['t_salary']); ?>" disabled>
                         </div>
                     </div>
                     <?php } ?>
@@ -294,28 +295,28 @@ $rs->close();
                     <label for="inputtotalRecurring" class="col-sm-6 col-form-label">Total (Recurring Cost)</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputtotalRecurring" value="<?php echo $fmt->format($expenditure['t_recurring']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputtotalRecurring" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['t_recurring']); else echo IND_money_format($expenditure['t_recurring']); ?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputAmntAdjustment" class="col-sm-6 col-form-label">Amount Adjustment</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputAmntAdjustment" name="inputAmntAdjustment" value="<?php echo $fmt->format($expenditure['amnt_adjstmnt']); ?>" <?php if ($_SESSION['login'] != 1) echo "readonly"; ?>>
+                        <input type="text" class="form-control text-end" id="inputAmntAdjustment" name="inputAmntAdjustment" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['amnt_adjstmnt']); else echo IND_money_format($expenditure['amnt_adjstmnt']); ?>" <?php if ($_SESSION['login'] != 1) echo "readonly"; ?>>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputDistRecommendation" class="col-sm-6 col-form-label">District Recommendation</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputDistRecommendation" name="inputDistRecommendation" value="<?php echo $fmt->format($expenditure['dist_recommendation']); ?>" <?php if ($_SESSION['login'] != 1) echo "readonly"; ?>>
+                        <input type="text" class="form-control text-end" id="inputDistRecommendation" name="inputDistRecommendation" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['dist_recommendation']); else echo IND_money_format($expenditure['dist_recommendation']); ?>" <?php if ($_SESSION['login'] != 1) echo "readonly"; ?>>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputFundReleased" class="col-sm-6 col-form-label">Fund to be released</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputFundReleased" value="<?php echo $fmt->format($expenditure["amnt_released"]); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputFundReleased" name="inputFundReleased" value="<?php if (isset($fmt)) echo $fmt->format($expenditure["amnt_released"]); else echo IND_money_format($expenditure["amnt_released"]); ?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -372,10 +373,10 @@ $rs->close();
             }, "Invalid input! Only numbers are allowed.");
             // Restricts input to numbers
             setInputFilter(document.getElementById('inputAmntAdjustment'), function(value) {
-                return /^\d*\.?\d*$/.test(value);
+                return /^(\+|-)?(\d*\.?\d*)$/.test(value);
             }, "Invalid input! Only numbers are allowed.");
             setInputFilter(document.getElementById('inputDistRecommendation'), function(value) {
-                return /^\d*\.?\d*$/.test(value);
+                return /^(\+|-)?(\d*\.?\d*)$/.test(value);
             }, "Invalid input! Only numbers are allowed.");
 
             // Recalculate expenditures on change of input
@@ -419,7 +420,7 @@ $rs->close();
             }
             else {
                 // Rejected value: nothing to restore.
-                this.value = "";
+                // this.value = "";
             }
             });
         });
@@ -443,9 +444,38 @@ $rs->close();
             var staff_sal = parseFloat(document.getElementById('unitStaffSalary').value.replace(/,/g,''));
             var cwsn_staff_sal = parseFloat(document.getElementById('unitCWSNStaffSalary').value.replace(/,/g,''));
 
+            var new_maintenance_cost = maintenance_cost * childrenDaysPerMonth * nMonths;
+            var new_bedding_cost = bedding_cost * childrenDaysPerMonth * nQuarter;
+            var new_admin_expenses = admin_expenses * nQuarter;
+            var new_cwsn_equip = cwsn_equip * nQuarter;
+            var new_cwsn_addl_grant = cwsn_addl_grant * cwsnDaysPerMonth * nMonths;
+            var new_cwsn_medical = cwsn_medical * cwsnDaysPerMonth * nMonths;
+            var new_staff_sal = staff_sal * nQuarter;
+            var new_cwsn_staff_sal = cwsn_staff_sal * nQuarter;
+            var new_total_salary = new_staff_sal + new_cwsn_staff_sal;
+            var new_total_recurrig = new_maintenance_cost + 
+                                        new_bedding_cost + 
+                                        new_admin_expenses +
+                                        new_cwsn_equip + 
+                                        new_cwsn_addl_grant +
+                                        new_cwsn_medical +
+                                        new_total_salary +
+                                        amntAdjustment;
+            var new_fund_released = new_total_recurrig > distRecommendation ? distRecommendation : new_total_recurrig;
+            
             $('.nMonths').val(nMonths);
             $('.nQuarter').val(nQuarter);
-            document.getElementById('inputMaintenanceCost').value = maintenance_cost * childrenDaysPerMonth * nMonths;
+            $('#inputMaintenanceCost').val(Number(new_maintenance_cost).toLocaleString('en-IN'));
+            $('#inputBeddingCost').val(Number(new_bedding_cost).toLocaleString('en-IN'));
+            $('#inputAdminCost').val(Number(new_admin_expenses).toLocaleString('en-IN'));
+            $('#inputCWSNEquipCost').val(Number(new_cwsn_equip).toLocaleString('en-IN'));
+            $('#inputCWSNAddlCost').val(Number(new_cwsn_addl_grant).toLocaleString('en-IN'));
+            $('#inputCWSNMedical').val(Number(new_cwsn_medical).toLocaleString('en-IN'));
+            $('#inputStaffSalary').val(Number(new_staff_sal).toLocaleString('en-IN'));
+            $('#inputCWSNStaffSalary').val(Number(new_cwsn_staff_sal).toLocaleString('en-IN'));
+            $('#inputtotalSalary').val(Number(new_total_salary).toLocaleString('en-IN'));
+            $('#inputtotalRecurring').val(Number(new_total_recurrig).toLocaleString('en-IN'));
+            $('#inputFundReleased').val(Number(new_fund_released).toLocaleString('en-IN'));
         }
     </script>
 </body>
