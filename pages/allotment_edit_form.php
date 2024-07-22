@@ -117,7 +117,7 @@ $rs->close();
 <body>
     <div class="row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-        <form id="fExpenditure" action="update_allotment.php" method="post">
+        <form id="fExpenditure" action="" method="">
             <div class="card border-dark scrollable-card">
                 <div class="card-body">
                     <input type="hidden" class="form-control" name="cci-id" id="cci-id" value="<?php echo $cci_id ?>">
@@ -172,7 +172,7 @@ $rs->close();
                         <span class="input-group-text">₹</span>
                         <input type="text" class="form-control text-end col-sm-2" id="unitMaintenanceCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['maintenance_cost']); else echo IND_money_format($exp['maintenance_cost']); ?>" readonly>
                         <span class="input-group-text">x</span>
-                        <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['children_days']; ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-1 cDays" id="" value="<?php echo $expenditure['children_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
@@ -187,7 +187,7 @@ $rs->close();
                         <span class="input-group-text">₹</span>
                         <input type="text" class="form-control text-end col-sm-2" id="unitBeddingCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['bedding_cost']); else echo IND_money_format($exp['bedding_cost']); ?>" readonly>
                         <span class="input-group-text">x</span>
-                        <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['children_days']; ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-1 cDays" id="" value="<?php echo $expenditure['children_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nQuarter" id="" value="<?php echo $n_quarter ?>" readonly>
                         <span class="input-group-text">=</span>
@@ -207,7 +207,7 @@ $rs->close();
                         <input type="text" class="form-control text-end col-sm-1 nQuarter" id="" value="<?php echo $n_quarter ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputAdminCost" name="inputAdminCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['admin_expenses']); else echo IND_money_format($expenditure['admin_expenses']);?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputAdminCost" name="inputAdminCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['admin_expenses']); else echo IND_money_format($expenditure['admin_expenses']);?>" readonly>
                         </div>
                     </div>
                     <?php if ($expenditure['is_home']) { ?>
@@ -222,7 +222,7 @@ $rs->close();
                         <input type="text" class="form-control text-end col-sm-1 nQuarter" id="" value="<?php echo $n_quarter ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNEquipCost" name="inputCWSNEquipCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_equip']); else echo IND_money_format($expenditure['cwsn_equip']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNEquipCost" name="inputCWSNEquipCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_equip']); else echo IND_money_format($expenditure['cwsn_equip']); ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -231,12 +231,12 @@ $rs->close();
                         <span class="input-group-text">₹</span>
                         <input type="text" class="form-control text-end col-sm-2" id="unitCWSNAddlCost" value="<?php if (isset($fmt)) echo $fmt->format($exp['cwsn_addl_grant']); else echo IND_money_format($exp['cwsn_addl_grant']); ?>" readonly>
                         <span class="input-group-text">x</span>
-                        <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['cwsn_child_days']; ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-1 cwsnDays" id="" value="<?php echo $expenditure['cwsn_child_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNAddlCost" name="inputCWSNAddlCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_addl_grant']); else echo IND_money_format($expenditure['cwsn_addl_grant']);?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNAddlCost" name="inputCWSNAddlCost" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_addl_grant']); else echo IND_money_format($expenditure['cwsn_addl_grant']);?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -245,12 +245,12 @@ $rs->close();
                         <span class="input-group-text">₹</span>
                         <input type="text" class="form-control text-end col-sm-2" id="unitCWSNMedical" value="<?php if (isset($fmt)) echo $fmt->format($exp['cwsn_medical']); else echo IND_money_format($exp['cwsn_medical']); ?>" readonly>
                         <span class="input-group-text">x</span>
-                        <input type="text" class="form-control text-end col-sm-1" id="" value="<?php echo $expenditure['cwsn_child_days']; ?>" readonly>
+                        <input type="text" class="form-control text-end col-sm-1 cwsnDays" id="" value="<?php echo $expenditure['cwsn_child_days']; ?>" readonly>
                         <span class="input-group-text">x</span>
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNMedical" name="inputCWSNMedical" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_medical']); else echo IND_money_format($expenditure['cwsn_medical']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNMedical" name="inputCWSNMedical" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_medical']); else echo IND_money_format($expenditure['cwsn_medical']); ?>" readonly>
                         </div>
                     </div>
                     <?php } ?>
@@ -265,7 +265,7 @@ $rs->close();
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputStaffSalary" name="inputStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['staff_sal']); else echo IND_money_format($expenditure['staff_sal']);?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputStaffSalary" name="inputStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['staff_sal']); else echo IND_money_format($expenditure['staff_sal']);?>" readonly>
                         </div>
                     </div>
                     <?php if ($expenditure['is_home']) { ?>
@@ -280,14 +280,14 @@ $rs->close();
                         <input type="text" class="form-control text-end col-sm-1 nMonths" id="" value="<?php echo $expenditure['n_months']; ?>" readonly>
                         <span class="input-group-text">=</span>
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputCWSNStaffSalary" name="inputCWSNStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_staff_sal']); else echo IND_money_format($expenditure['cwsn_staff_sal']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputCWSNStaffSalary" name="inputCWSNStaffSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['cwsn_staff_sal']); else echo IND_money_format($expenditure['cwsn_staff_sal']); ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                     <label for="inputtotalSalary" class="col-sm-6 col-form-label">Total Salary</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputtotalSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['t_salary']); echo IND_money_format($expenditure['t_salary']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputtotalSalary" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['t_salary']); else echo IND_money_format($expenditure['t_salary']); ?>" readonly>
                         </div>
                     </div>
                     <?php } ?>
@@ -295,7 +295,7 @@ $rs->close();
                     <label for="inputtotalRecurring" class="col-sm-6 col-form-label">Total (Recurring Cost)</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputtotalRecurring" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['t_recurring']); else echo IND_money_format($expenditure['t_recurring']); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputtotalRecurring" value="<?php if (isset($fmt)) echo $fmt->format($expenditure['t_recurring']); else echo IND_money_format($expenditure['t_recurring']); ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -316,17 +316,17 @@ $rs->close();
                     <label for="inputFundReleased" class="col-sm-6 col-form-label">Fund to be released</label>
                         <div class="input-group col">
                         <span class="input-group-text">₹</span>
-                        <input type="text" class="form-control text-end" id="inputFundReleased" name="inputFundReleased" value="<?php if (isset($fmt)) echo $fmt->format($expenditure["amnt_released"]); else echo IND_money_format($expenditure["amnt_released"]); ?>" disabled>
+                        <input type="text" class="form-control text-end" id="inputFundReleased" name="inputFundReleased" value="<?php if (isset($fmt)) echo $fmt->format($expenditure["amnt_released"]); else echo IND_money_format($expenditure["amnt_released"]); ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="inputRemarks" class="col-sm-6 col-form-label">Remarks</label>
                         <div class="input-group col">
-                        <textarea rows="3" class="form-control" id="inputRemarks" name="inputRemarks" <?php if ($_SESSION['login'] == 1) echo "disabled"; ?>><?php echo $expenditure['remarks'] ?></textarea>
+                        <textarea rows="3" class="form-control" id="inputRemarks" name="inputRemarks" <?php if ($_SESSION['login'] == 1) echo "readonly"; ?>><?php echo $expenditure['remarks'] ?></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer text-end">
                     <button id="bSubmitExpenditure" type="submit" class="btn btn-primary" disabled>Save</button>
                 </div>
             </div>
@@ -373,7 +373,7 @@ $rs->close();
             }, "Invalid input! Only numbers are allowed.");
             // Restricts input to numbers
             setInputFilter(document.getElementById('inputAmntAdjustment'), function(value) {
-                return /^(\+|-)?(\d*\.?\d*)$/.test(value);
+                return /^(\+|-)?(\d*\,*\.?\d*)$/.test(value);
             }, "Invalid input! Only numbers are allowed.");
             setInputFilter(document.getElementById('inputDistRecommendation'), function(value) {
                 return /^(\+|-)?(\d*\.?\d*)$/.test(value);
@@ -390,10 +390,49 @@ $rs->close();
             });
 
             // Submit the form
-            // $('#bSubmitExpenditure').click(function(e) {
-            //     e.preventDefault();
-            //     var formData = new FormData(document.
-
+            $('#fExpenditure').on('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: "update_allotment.php",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        // console.log(response);
+                        if (response.status) {
+                            swal({
+                                title: "Successfull!",
+                                text: "Allotment updated successfully.",
+                                icon: "success",
+                                buttons: {
+                                confirm: {
+                                className: "btn btn-success",
+                                },
+                                },
+                            }).then(function () {
+                                location.reload();
+                            });
+                        } else {
+                            swal({
+                                title: "Error!",
+                                text: "Error!" + response.message,
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error updating expenditure: " + error);
+                    }
+                });
+            });
         });
         // Restricts input for the given textbox to the given inputFilter function.
         function setInputFilter(textbox, inputFilter, errMsg) {
@@ -465,17 +504,21 @@ $rs->close();
             
             $('.nMonths').val(nMonths);
             $('.nQuarter').val(nQuarter);
-            $('#inputMaintenanceCost').val(Number(new_maintenance_cost).toLocaleString('en-IN'));
-            $('#inputBeddingCost').val(Number(new_bedding_cost).toLocaleString('en-IN'));
-            $('#inputAdminCost').val(Number(new_admin_expenses).toLocaleString('en-IN'));
-            $('#inputCWSNEquipCost').val(Number(new_cwsn_equip).toLocaleString('en-IN'));
-            $('#inputCWSNAddlCost').val(Number(new_cwsn_addl_grant).toLocaleString('en-IN'));
-            $('#inputCWSNMedical').val(Number(new_cwsn_medical).toLocaleString('en-IN'));
-            $('#inputStaffSalary').val(Number(new_staff_sal).toLocaleString('en-IN'));
-            $('#inputCWSNStaffSalary').val(Number(new_cwsn_staff_sal).toLocaleString('en-IN'));
-            $('#inputtotalSalary').val(Number(new_total_salary).toLocaleString('en-IN'));
-            $('#inputtotalRecurring').val(Number(new_total_recurrig).toLocaleString('en-IN'));
-            $('#inputFundReleased').val(Number(new_fund_released).toLocaleString('en-IN'));
+            $('.cDays').val(childrenDaysPerMonth);
+            $('.cwsnDays').val(cwsnDaysPerMonth);
+            $('#inputMaintenanceCost').val(Number(new_maintenance_cost).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigitis: 2}));
+            $('#inputBeddingCost').val(Number(new_bedding_cost).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigitis: 2}));
+            $('#inputAdminCost').val(Number(new_admin_expenses).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigitis: 2}));
+            $('#inputCWSNEquipCost').val(Number(new_cwsn_equip).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputCWSNAddlCost').val(Number(new_cwsn_addl_grant).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputCWSNMedical').val(Number(new_cwsn_medical).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputStaffSalary').val(Number(new_staff_sal).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputCWSNStaffSalary').val(Number(new_cwsn_staff_sal).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputtotalSalary').val(Number(new_total_salary).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputtotalRecurring').val(Number(new_total_recurrig).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            // $('#inputAmntAdjustment').val(Number(amntAdjustment).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            // $('#inputDistRecommendation').val(Number(distRecommendation).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('#inputFundReleased').val(Number(new_fund_released).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
         }
     </script>
 </body>
