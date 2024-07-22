@@ -6,6 +6,8 @@ if (! (isset ( $_SESSION ['login'] ))) {
 }
 include('../config/DbFunction.php');
 include('../config/utilityfunc.php');
+$obj = new DbFunction();
+$user = $obj->get_user($_SESSION['login']);
 ?> 
 
 <!DOCTYPE html>
@@ -56,7 +58,12 @@ include('../config/utilityfunc.php');
     <div class="wrapper">
         <?php include('sidebar.php');?>
         <div class="main-panel">
+          <div class="main-header">
+            <?php include('header.php');?>
+          </div>
+          <div class="page-inner">
             <h2>Dashboard</h2>
+          </div>
         </div>
     </div>
     <!--   Core JS Files   -->

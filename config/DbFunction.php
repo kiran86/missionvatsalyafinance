@@ -21,7 +21,7 @@ class DbFunction{
 		if(false===$stmt){
 			trigger_error("Error in query: " . mysqli_connect_error(),E_USER_ERROR);
 		}
-		$user= $stmt->fetch_column(0);
+		$user= $stmt->fetch_all()[0][0];
         return $user;
 	}
 

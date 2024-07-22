@@ -7,6 +7,7 @@ if (!(isset( $_SESSION ['login']))) {
 
 include('../config/DbFunction.php');
 $obj=new DbFunction();
+$user = $obj->get_user($_SESSION['login']);
 $rs_fy = $obj->get_fys();
 ?>
 <!DOCTYPE html>
@@ -47,7 +48,9 @@ $rs_fy = $obj->get_fys();
 		<!-- Navigation -->
 		<?php include('sidebar.php');?>
 		<div class="main-panel">
-			<div class="main-header"></div>
+			<div class="main-header">
+				<?php include('header.php');?>
+			</div>
 			<div class="container">
 				<div class="page-inner">
 					<div class="page-header">

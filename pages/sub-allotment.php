@@ -15,7 +15,7 @@ include('../config/utilityfunc.php');
 
 $obj = new DbFunction();
 $arr = $obj->get_allotment();
-
+$user = $obj->get_user($_SESSION['login']);
 ?> 
 
 <!DOCTYPE html>
@@ -65,7 +65,7 @@ $arr = $obj->get_allotment();
         <?php include('sidebar.php');?>
         <div class="main-panel">
             <div class="main-header">
-
+              <?php include('header.php');?>
             </div>
             <div class="container">
               <div class="page-inner">

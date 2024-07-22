@@ -53,7 +53,7 @@
                     Sub-allotment Status
                 </a>
             </li>
-            <?php if (isset ( $_SESSION ['login'] )  && ($_SESSION['login'] == 2)) { ?>
+            <?php if (isset ( $_SESSION ['login'] )  && ($_SESSION['login'] == 3)) { ?>
             <li class="nav-item">
                 <a href="cci-recurring-exp.php" class="">
                     <i class="far fa-list-alt"></i>
