@@ -389,50 +389,50 @@ $rs->close();
                 recalculateEstimate();
             });
 
-            // Submit the form
-            $('#fExpenditure').on('submit', function(e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-                $.ajax({
-                    url: "update_allotment.php",
-                    type: "POST",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    success: function(response) {
-                        // console.log(response);
-                        if (response.status) {
-                            swal({
-                                title: "Successfull!",
-                                text: "Allotment updated successfully.",
-                                icon: "success",
-                                buttons: {
-                                confirm: {
-                                className: "btn btn-success",
-                                },
-                                },
-                            }).then(function () {
-                                location.reload();
-                            });
-                        } else {
-                            swal({
-                                title: "Error!",
-                                text: "Error!" + response.message,
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        className: "btn btn-danger",
-                                    },
-                                },
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert("Error updating expenditure: " + error);
-                    }
-                });
-            });
+            // // Submit the form
+            // $('#fExpenditure').on('submit', function(e) {
+            //     e.preventDefault();
+            //     var formData = new FormData(this);
+            //     $.ajax({
+            //         url: "update_allotment.php",
+            //         type: "POST",
+            //         data: formData,
+            //         contentType: false,
+            //         processData: false,
+            //         dataType: 'json',
+            //         success: function(response) {
+            //             // console.log(response);
+            //             if (response.status) {
+            //                 swal({
+            //                     title: "Successfull!",
+            //                     text: "Allotment updated successfully.",
+            //                     icon: "success",
+            //                     buttons: {
+            //                     confirm: {
+            //                     className: "btn btn-success",
+            //                     },
+            //                     },
+            //                 }).then(function () {
+            //                     location.reload();
+            //                 });
+            //             } else {
+            //                 swal({
+            //                     title: "Error!",
+            //                     text: "Error!" + response.message,
+            //                     icon: "error",
+            //                     buttons: {
+            //                         confirm: {
+            //                             className: "btn btn-danger",
+            //                         },
+            //                     },
+            //                 });
+            //             }
+            //         },
+            //         error: function(xhr, status, error) {
+            //             alert("Error updating expenditure: " + error);
+            //         }
+            //     });
+            // });
         });
         // Restricts input for the given textbox to the given inputFilter function.
         function setInputFilter(textbox, inputFilter, errMsg) {

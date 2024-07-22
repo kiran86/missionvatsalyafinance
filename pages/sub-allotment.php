@@ -160,23 +160,23 @@ $arr = $obj->get_allotment();
                                     <i class="far fa-eye-slash"></i>
                                   </button>
                                 <?php } else if ($row[9] != NULL) { ?><!--Approved-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
+                                  <button type="button" class="btn btn-icon btn-round btn-black btnDataModal" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
                                     <i class="fas fa-eye"></i>
                                   </button>
                                 <?php } else if ($_SESSION['login'] == $row[3] && $_SESSION['login'] == 1) {?><!--Pending with this user of no revert privileges-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
+                                  <button type="button" class="btn btn-icon btn-round btn-black btnDataModal" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(0)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 <?php } else if ($_SESSION['login'] == $row[3] && $_SESSION['login'] == 3) { ?><!--Pending with this user of approval privileges-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
+                                  <button type="button" class="btn btn-icon btn-round btn-black btnDataModal" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTablePriv" onclick="addButton(2)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 <?php } else if ($_SESSION['login'] == $row[3]) { ?><!--Pending with this user of revert and forward privilage-->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
+                                  <button type="button" class="btn btn-icon btn-round btn-black btnDataModal" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalTable" onclick="addButton(1)">
                                     <i class="fas fa-table"></i>
                                   </button>
                                 <?php } else {?><!--Pending with other user -->
-                                  <button type="button" class="btn btn-icon btn-round btn-black" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
+                                  <button type="button" class="btn btn-icon btn-round btn-black btnDataModal" data-bs-toggle="modal" data-bs-target="#dataModal" data-bs-whatever="<?php echo $row[0] . ',' . $row[8]; ?>" id="btnModalView">
                                     <i class="fas fa-eye"></i>
                                   </button>
                                 <?php } ?>
@@ -378,8 +378,9 @@ $arr = $obj->get_allotment();
         const dataModal = document.getElementById('dataModal');
         const formModal = document.getElementById('formModal');
 
-        function populateDataModal(event) {
-          var data = event.relatedTarget.getAttribute('data-bs-whatever');
+        function populateDataModal() {
+          // var data = event.relatedTarget.getAttribute('data-bs-whatever');
+          var data = $('.btnDataModal').attr('data-bs-whatever');
           var formData = new FormData();
           formData.append('data', data);
           // clear old table
@@ -552,9 +553,56 @@ $arr = $obj->get_allotment();
         });
         
         function populateFormModal(data) {
-          $('#formModal .modal-body').load('allotment_edit_form.php?data=' + data);
-          $('#formModal .modal-body').css("overflow","hidden");
-          $('#formModal').modal('show');
+          $('#formModal .modal-body').load('allotment_edit_form.php?data=' + data, function() {
+            $('#formModal .modal-body').css("overflow","hidden");
+            $('#formModal').modal('show');
+
+            // Submit the form
+            $('#fExpenditure').on('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: "update_allotment.php",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        // console.log(response);
+                        if (response.status) {
+                            swal({
+                                title: "Successfull!",
+                                text: "Allotment updated successfully.",
+                                icon: "success",
+                                buttons: {
+                                confirm: {
+                                className: "btn btn-success",
+                                },
+                                },
+                            }).then(function () {
+                              $('#formModal').modal('hide');
+                              populateDataModal();
+                            });
+                        } else {
+                            swal({
+                                title: "Error!",
+                                text: "Error!" + response.message,
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error updating expenditure: " + error);
+                    }
+                });
+            });
+          });
         }
 
         formModal.addEventListener('hidden.bs.modal', function(event) {
