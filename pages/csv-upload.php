@@ -128,7 +128,7 @@ $rs_fy = $obj->get_fys();
                                     <h4 class="card-title">Upload District Recommendations</h4>
 								</div>
 								<div class="card-body" id="pdfUpload">
-									<input type="hidden" name="fy-id" id="hfyid" />
+									<input type="hidden" name="fy_id" id="hfyid" />
 								</div>
 								<div class="card-footer">
 								</div>
@@ -353,7 +353,15 @@ $rs_fy = $obj->get_fys();
                 data: formData,
 				dataType: 'json',
                 success: function(response){
-					console.log(response.districts);
+					// console.log(response.districts);
+					// Show invalid data first
+					if (response.invalid.length > 0) {
+						var msg = "\n";
+						response.invalid.forEach(function(i) {
+							msg += i + "\n";
+                        });
+						alert("Allotment for the following CCIs has already been made: " + msg);
+					}
 					$('#fy-id').val(response.fyid);
 					$('#hfyid').val(response.fyid);
 					$('#suballotment').text('Sub Allotment Data : '.concat(response.quarter));

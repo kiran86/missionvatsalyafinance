@@ -10,6 +10,7 @@
     $home_data = [];
 	$saa_data = [];
 	$os_data = [];
+	$invalid = [];
 
 	include('../config/DbFunction.php');
 	$obj=new DbFunction();
@@ -37,10 +38,17 @@
 		// skip header line
 		if ($key == 0)
 			continue;
+
         $row = str_getcsv($value);
 		// skip rows with empty children days
-		if (count($row) < 11 || $row[8] == '' || $row[9] == '' || $row[10] == '')
+		if (count($row) < 13 || $row[8] == '' || $row[9] == '' || $row[10] == '')
 			continue;
+
+		// skip rows with ccis whose allotment for the given quarter have been made already
+		if ($obj->is_allotment_exists($row[0], $row[7])) {
+			array_push($invalid, $row[1] . ' ' . $row[2] . ' ' . $row[5]);
+			continue;
+		}
 
 		$rs_fy = $obj->get_fy_qtr($row[7]);
 		while($res=$rs_fy->fetch_object()) {
@@ -157,5 +165,5 @@
                 break;
 		}
     }
-    echo json_encode(Array('fyid' => $_POST['fy-qtr'], 'quarter' => $quarter, 'districts' => $districts, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data));
+    echo json_encode(Array('fyid' => $_POST['fy-qtr'], 'quarter' => $quarter, 'districts' => $districts, 'homedata' => $home_data, 'saadata' => $saa_data, 'osdata' => $os_data, 'invalid' => $invalid));
 ?>

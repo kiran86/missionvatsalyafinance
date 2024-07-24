@@ -137,6 +137,14 @@ class DbFunction{
 		$rs->close();
 		return $arr;
 	}
+
+	function is_allotment_exists($cci_id, $fy_id) {
+		$db = Database::getInstance();
+        $mysqli = $db->getConnection();
+        $query = "SELECT * FROM `fund_release` WHERE `cci_id` = '". $cci_id . "' AND `fy_id` = '". $fy_id . "'";
+        $stmt= $mysqli->query($query);
+        return $stmt->num_rows > 0;
+	}
 	
 	function get_expense_structure($cci_id) {
 		$expenses = [];
