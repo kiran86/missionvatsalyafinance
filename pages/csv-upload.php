@@ -356,11 +356,19 @@ $rs_fy = $obj->get_fys();
 					// console.log(response.districts);
 					// Show invalid data first
 					if (response.invalid.length > 0) {
-						var msg = "\n";
+						var msg = "Allotment for the following CCIs for the given FY Quarter has already been made: \n";
+						var count = 1;
 						response.invalid.forEach(function(i) {
-							msg += i + "\n";
+							msg += "" + count + ". " + i + "\n";
                         });
-						alert("Allotment for the following CCIs has already been made: " + msg);
+						swal("Double Entry", msg, {
+							icon: "error",
+							buttons: {
+								confirm: {
+									className: "btn btn-danger",
+								},
+							},
+						});
 					}
 					$('#fy-id').val(response.fyid);
 					$('#hfyid').val(response.fyid);
