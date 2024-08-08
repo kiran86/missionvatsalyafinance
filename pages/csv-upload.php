@@ -162,13 +162,13 @@ $rs_fy = $obj->get_fys();
 												<th>No. of Months<br>(6)</th>
 												<th>Average No of Children days per month<br>(7)</th>
 												<th>Average No of CWSN Children days per month<br>(8)</th>
-												<th>Maintenance and Others Cost @ ₹3,000 per child per month<br>(9)</th>
-												<th>Bedding Cost @ ₹250 per child per quarter<br>(10)</th>
-												<th>CWSN fund @ ₹4,400 per child per month<br>(11)</th>
-												<th>Administrative cost @ ₹2,50,000 per quarter per unit<br>(12)</th>
-												<th>CWSN Equipment @ ₹1,00,000 per unit per quarter<br>(13)</th>
-												<th>Salary of staff @ ₹6,57,280 per quarter per unit<br>(14)</th>
-												<th>Salary for CWSN Staff @ ₹1,43,191 per quarter per unit<br>(15)</th>
+												<th>Maintenance and Others Cost<br>(9)</th>
+												<th>Bedding Cost<br>(10)</th>
+												<th>CWSN fund<br>(11)</th>
+												<th>Administrative cost<br>(12)</th>
+												<th>CWSN Equipment<br>(13)</th>
+												<th>Salary of staff<br>(14)</th>
+												<th>Salary for CWSN Staff<br>(15)</th>
 												<th>Total Salary<br>(16)</th>
 												<th>Total (Recurring Cost)<br>(17)</th>
 												<th>Amount Adjustment<br>(18)</th>
@@ -189,9 +189,9 @@ $rs_fy = $obj->get_fys();
 												<th>CCI run by<br>(5)</th>
 												<th>No. of Months<br>(6)</th>
 												<th>Average No of Children days per month<br>(7)</th>
-												<th>Maintenance Cost @ ₹2,500 per child per month<br>(8)</th>
-												<th>Administrative cost @ ₹56,250 per quarter per unit<br>(9)</th>
-												<th>Salary of staff @ ₹3,68,204 per quarter per unit<br>(10)</th>
+												<th>Maintenance Cost<br>(8)</th>
+												<th>Administrative cost<br>(9)</th>
+												<th>Salary of staff<br>(10)</th>
 												<th>Total (Recurring Cost)<br>(11)</th>
 												<th>Amount Adjustment<br>(18)</th>
 												<th>District Recommendation<br>(12)</th>
@@ -211,9 +211,9 @@ $rs_fy = $obj->get_fys();
 												<th>CCI run by<br>(5)</th>
 												<th>No. of Months<br>(6)</th>
 												<th>Average No of Children days per month<br>(7)</th>
-												<th>Maintenance Cost @ ₹2,500 per child per month<br>(8)</th>
-												<th>Administrative cost @ ₹1,25,000 per quarter per unit<br>(9)</th>
-												<th>Salary of staff @ ₹3,25,247 per quarter per unit<br>(10)</th>
+												<th>Maintenance Cost<br>(8)</th>
+												<th>Administrative cost<br>(9)</th>
+												<th>Salary of staff<br>(10)</th>
 												<th>Total (Recurring Cost)<br>(11)</th>
 												<th>Amount Adjustment<br>(18)</th>
 												<th>District Recommendation<br>(12)</th>
