@@ -92,9 +92,9 @@
 				// CWSN quip
 				$home_data[$n_home][14] = $n_quarter * $expenses[0][3];
 				// Staff salary
-				$home_data[$n_home][15] = $n_quarter * $expenses[0][6];
+				$home_data[$n_home][15] = $n_month * $expenses[0][6];
 				// CWSN staff salary
-				$home_data[$n_home][16] = $n_quarter * $expenses[0][7];
+				$home_data[$n_home][16] = $n_month * $expenses[0][7];
 				// Total salary
 				$home_data[$n_home][17] = $home_data[$n_home][15] + $home_data[$n_home][16];
 				// Total recurring
@@ -126,7 +126,7 @@
 				// Admin cost
 				$saa_data[$n_saa][10] = $expenses[0][2];
 				// Staff salary
-				$saa_data[$n_saa][11] = $expenses[0][6];
+				$saa_data[$n_saa][11] = $n_month * $expenses[0][6];
 				$saa_data[$n_saa][12] = floatval($saa_data[$n_saa][9]) + 
 										floatval($saa_data[$n_saa][10]) +
 										floatval($saa_data[$n_saa][11]);
@@ -152,7 +152,7 @@
 				// Administrative cost
 				$os_data[$n_os][10] = $expenses[0][2];
 				// Staff salary
-				$os_data[$n_os][11] = $expenses[0][6];
+				$os_data[$n_os][11] = $n_month * $expenses[0][6];
 				$os_data[$n_os][12] = 	floatval($os_data[$n_os][9]) + 
 										floatval($os_data[$n_os][10]) +
 										floatval($os_data[$n_os][11]);
