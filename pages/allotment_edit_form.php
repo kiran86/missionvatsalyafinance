@@ -20,7 +20,6 @@ $data = $_GET['data'];
 $fy_id = explode(',', $data)[0];
 $cci_id = explode(',', $data)[1];
 $init_dt = explode(',', $data)[2];
-// print_r($fy_id);
 // Get expenditure data
 $sql = "SELECT
             `cci`.`district`,
@@ -57,8 +56,10 @@ if ($stmt->execute()) {
     trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);
     die(E_USER_ERROR);
 }
-// If the file doesn't lies with the user, exit
-if ($_SESSION['login'] != $expenditure['at_user']) {
+// If the file doesn't lies with the user,
+// OR the file is already verified by upper user,
+// exit
+if ($_SESSION['login'] != $expenditure['at_user'] || $_SESSION['login'] < $expenditure['verified_by']) {
     die(E_USER_ERROR);
 }
 
@@ -108,8 +109,11 @@ $rs->close();
     </script>
     <style>
         .scrollable-card {
-            height: 90vh; /* Adjust height as needed */
+            height: 60vh; /* Adjust height as needed */
             overflow-y: auto;
+        }
+        .non-scrollable-card {
+            height: 90vh; /* Adjust height as needed */
         }
         .text-small {
             font-size: 12px;
@@ -121,8 +125,8 @@ $rs->close();
     <div class="row">
         <div class="col-sm-6 mb-3 mb-sm-0">
         <form id="fExpenditure" action="" method="">
-            <div class="card border-dark scrollable-card">
-                <div class="card-body">
+            <div class="card border-dark">
+                <div class="card-body scrollable-card">
                     <input type="hidden" class="form-control" name="cci-id" id="cci-id" value="<?php echo $cci_id ?>">
                     <input type="hidden" class="form-control" name="init-dt" id="init-dt" value="<?php echo $init_dt ?>">
                     <div class="row mb-3">
@@ -322,21 +326,39 @@ $rs->close();
                         <input type="text" class="form-control text-end text-small" id="inputFundReleased" name="inputFundReleased" value="<?php if (isset($fmt)) echo $fmt->format($expenditure["amnt_released"]); else echo IND_money_format($expenditure["amnt_released"]); ?>" readonly>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="inputRemarks" class="col-sm-6 col-form-label">Remarks</label>
-                        <div class="input-group col">
-                        <textarea rows="3" class="form-control" id="inputRemarks" name="inputRemarks" <?php if ($_SESSION['login'] == 1) echo "readonly"; ?>><?php echo $expenditure['remarks'] ?></textarea>
-                        </div>
+                </div><hr/>
+                <div class="card-text" style="height:25vh;">
+                    <!-- <label for="inputRemarks" class="col-sm-6 col-form-label">Remarks</label> -->
+                    <div class="input-group col">
+                    <textarea rows="6" class="form-control-plaintext bg-warning" id="" name="" readonly><?php echo $expenditure['remarks'] ?></textarea>
+                    </div><hr/>
+                    <div class="input-group col">
+                    <textarea rows="2" class="form-control" id="inputRemarks" name="inputRemarks" <?php if ($_SESSION['login'] == 1) echo "readonly"; ?>></textarea>
                     </div>
                 </div>
                 <div class="card-footer text-end">
-                    <button id="bSubmitExpenditure" type="submit" class="btn btn-primary" disabled>Save</button>
+                    <?php if ($_SESSION['login'] == 1 && $expenditure['verified_by'] == null) { ?>
+                    <button id="bVerifyExpenditure" type="submit" value="Deleted" class="btn btn-primary">
+                        <i class="fas fa-times-circle"></i>
+                        Delete
+                    </button>
+                    <?php }?>
+                    <?php if ($_SESSION['login'] > 1) { ?>
+                    <button id="bVerifyExpenditure" type="submit" value="Verified" class="btn btn-primary">
+                        <i class="fas fa-check"></i>
+                        Verified
+                    </button>
+                    <?php }?>
+                    <button id="bSubmitExpenditure" type="submit" value="Saved" class="btn btn-primary" disabled>
+                        <i class="fas fa-save"></i>
+                        Save
+                    </button>
                 </div>
             </div>
         </form>
         </div>
         <div class="col-sm-6">
-            <div class="card border-dark scrollable-card">
+            <div class="card border-dark text-bg-dark non-scrollable-card">
                 <div class="card-body">
                 <?php
                     if (isset($filename)) {
@@ -357,10 +379,10 @@ $rs->close();
                 })
                 .on('change input', function () {
                     $(this)
-                        .find('input:submit, button:submit')
+                        .find('#bSubmitExpenditure')
                             .prop('disabled', $(this).data('serialized') == $(this).serialize());
                 })
-                .find('input:submit, button:submit')
+                .find('#bSubmitExpenditure')
                     .prop('disabled', true);
 
             
@@ -391,6 +413,8 @@ $rs->close();
             $('#inputAmntAdjustment, #inputDistRecommendation').change(function() {
                 recalculateEstimate();
             });
+
+            // 
         });
         // Restricts input for the given textbox to the given inputFilter function.
         function setInputFilter(textbox, inputFilter, errMsg) {

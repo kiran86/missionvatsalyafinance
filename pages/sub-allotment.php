@@ -398,7 +398,7 @@ $user = $obj->get_user($_SESSION['login']);
                 home_table = $("#home-table").DataTable({
                   data: response.homedata,
                   columnDefs: [
-                    { targets: [0, 1, 22], visible: false },
+                    { targets: [0, 1, 22, 24], visible: false },
                     { 
                       targets: [5, 7, 8, 9],
                       createdCell: function (td) {
@@ -425,6 +425,10 @@ $user = $obj->get_user($_SESSION['login']);
                   createdRow: (row, data, dataIndex) => {
                     if (data[23] !== null && data[23].length > 0) {
                       $(row).addClass('table-warning');
+                    }
+                    if (data[24] !== null && data[24] >= <?php echo $_SESSION['login'] ?>) {
+                      $(row).removeClass('table-warning');
+                      $(row).addClass('table-success');
                     }
                   },
                   select: 'single',
@@ -466,6 +470,10 @@ $user = $obj->get_user($_SESSION['login']);
                     if (data[17] !== null && data[17].length > 0) {
                       $(row).addClass('table-warning');
                     }
+                    if (data[18] !== null && data[18] >= <?php echo $_SESSION['login'] ?>) {
+                      $(row).removeClass('table-warning');
+                      $(row).addClass('table-success');
+                    }
                   },
                   select: 'single',
                   searching: false,
@@ -504,6 +512,10 @@ $user = $obj->get_user($_SESSION['login']);
                     if (data[17] !== null && data[17].length > 0) {
                       $(row).addClass('table-warning');
                     }
+                    if (data[18] !== null && data[18] >= <?php echo $_SESSION['login'] ?>) {
+                      $(row).removeClass('table-warning');
+                      $(row).addClass('table-success');
+                    }
                   },
                   select: 'single',
                   searching: false,
@@ -524,15 +536,48 @@ $user = $obj->get_user($_SESSION['login']);
                 // Row selection
                 home_table.on('select', function (e, dt, type, indexes) {
                   var rowData = home_table.row(indexes).data();
-                  populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[22]);
+                  if (rowData[24] > <?php echo $_SESSION['login'] ?>) {
+                    swal("Verified", "Allotment already verified and cannot be modified!", {
+                      icon: "info",
+                      buttons: {
+                        confirm: {
+                          className: "btn btn-info",
+                        },
+                      }
+                    })
+                  } else {
+                    populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[22]);
+                  }
                 })
                 saa_table.on('select', function (e, dt, type, indexes) {
                   var rowData = saa_table.row(indexes).data();
-                  populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[16]);
+                  if (rowData[18] > <?php echo $_SESSION['login'] ?>) {
+                    swal("Verified", "Allotment already verified and cannot be modified!", {
+                      icon: "info",
+                      buttons: {
+                        confirm: {
+                          className: "btn btn-info",
+                        },
+                      }
+                    })
+                  } else {
+                    populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[16]);
+                  }
                 })
                 os_table.on('select', function (e, dt, type, indexes) {
                   var rowData = os_table.row(indexes).data();
-                  populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[16]);
+                  if (rowData[24] > <?php echo $_SESSION['login'] ?>) {
+                    swal("Verified", "Allotment already verified and cannot be modified!", {
+                      icon: "info",
+                      buttons: {
+                        confirm: {
+                          className: "btn btn-info",
+                        },
+                      }
+                    })
+                  } else {
+                    populateFormModal(rowData[0] + ',' + rowData[1] + ',' + rowData[16]);
+                  }
                 })
               },
               error: function(xhr, status, error) {
@@ -560,47 +605,68 @@ $user = $obj->get_user($_SESSION['login']);
             // Submit the form
             $('#fExpenditure').on('submit', function(e) {
                 e.preventDefault();
-                var formData = new FormData(this);
-                $.ajax({
-                    url: "update_allotment.php",
-                    type: "POST",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    success: function(response) {
-                        // console.log(response);
-                        if (response.status) {
-                            swal({
-                                title: "Successfull!",
-                                text: "Allotment updated successfully.",
-                                icon: "success",
-                                buttons: {
-                                confirm: {
-                                className: "btn btn-success",
-                                },
-                                },
-                            }).then(function () {
-                              $('#formModal').modal('hide');
-                              populateDataModal();
-                            });
-                        } else {
-                            swal({
-                                title: "Error!",
-                                text: "Error!" + response.message,
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        className: "btn btn-danger",
-                                    },
-                                },
-                            });
-                        }
+                var action = e.originalEvent.submitter.value;
+                swal({
+                  title: "Are you sure?",
+                  text: "You won't be able to revert this!",
+                  icon: "warning",
+                  buttons: {
+                    confirm: {
+                      text: "Yes, Confirm!",
+                      className: "btn btn-success",
                     },
-                    error: function(xhr, status, error) {
-                        alert("Error updating expenditure: " + error);
-                    }
-                });
+                    cancel: {
+                      visible: true,
+                      className: "btn btn-danger",
+                    },
+                  },
+                }).then((confirmed) => {
+                  if (confirmed) {
+                  e.preventDefault();
+                  var formData = new FormData(this);
+                  formData.append('b_id', action);
+                  $.ajax({
+                      url: "update_allotment.php",
+                      type: "POST",
+                      data: formData,
+                      contentType: false,
+                      processData: false,
+                      dataType: 'json',
+                      success: function(response) {
+                          // console.log(response);
+                          if (response.status) {
+                              swal({
+                                  title: "Successfull!",
+                                  text: "Allotment " + response.message + " successfully.",
+                                  icon: "success",
+                                  buttons: {
+                                  confirm: {
+                                  className: "btn btn-success",
+                                  },
+                                  },
+                              }).then(function () {
+                                $('#formModal').modal('hide');
+                                populateDataModal();
+                              });
+                          } else {
+                              swal({
+                                  title: "Error!",
+                                  text: "Some error occured. Operation failed.",
+                                  icon: "error",
+                                  buttons: {
+                                      confirm: {
+                                          className: "btn btn-danger",
+                                      },
+                                  },
+                              });
+                          }
+                      },
+                      error: function(xhr, status, error) {
+                          alert("Error updating expenditure: " + error);
+                      }
+                  });
+                }
+              });
             });
           });
         }

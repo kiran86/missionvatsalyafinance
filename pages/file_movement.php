@@ -10,7 +10,6 @@
 
 	$fy_id = $_POST['fy_id'];
 	$init_dt = isset($_POST['init_dt']) ? $_POST['init_dt'] : date('Y-m-d');
-	error_log($init_dt);
 	$user = $_SESSION['login'];
 	// Set CSV file location
 	$csvdir = "../csv/";
@@ -52,7 +51,7 @@
 					$flag = true;
 					foreach ($_FILES as $key => $val) {
 						if ($_SESSION['login'] == 1 && isset($_FILES[$key]) && $_FILES[$key]["error"] === UPLOAD_ERR_OK) {
-							$pdffile = $pdfdir . date('Ymd') . '_' . substr($key, 3) . "_" . $fy_id . ".pdf";
+							$pdffile = $pdfdir . date_format(date_create($init_dt), 'Ymd') . '_' . substr($key, 3) . "_" . $fy_id . ".pdf";
 							if (!move_uploaded_file($_FILES[$key]["tmp_name"], $pdffile)) {
 								$flag = false;
 							}
@@ -146,8 +145,8 @@
 	function move_file($user) {
 		global $fy_id, $init_dt;
 		global $mysqli;
-
-		$query = 'UPDATE `fund_release` SET `at_user` = ? WHERE `fy_id` = ? AND `init_dt` = ?';
+		
+		$query = 'UPDATE `fund_release` SET verified_by = IF(`verified_by` < `at_user`, null, `verified_by`), `at_user` = ? WHERE `fy_id` = ? AND `init_dt` = ?';
 		$stmt = $mysqli->prepare($query);
 		if (false === $stmt) {
 			trigger_error("Error in query: ". mysqli_connect_error(), E_USER_ERROR);

@@ -61,7 +61,8 @@
                 `fund_release`.`amnt_adjstmnt`,
                 `fund_release`.`dist_recommendation`,
                 `fund_release`.`amnt_released`,
-				`fund_release`.`remarks`
+				`fund_release`.`remarks`,
+				`fund_release`.`verified_by`
             FROM
                 `fund_release`
             LEFT JOIN
@@ -136,6 +137,8 @@
 				$home_data[$n_home][22] = $init_dt;
 				// Remarks
 				$home_data[$n_home][23] = $row[21];
+				// Verified by
+				$home_data[$n_home][24] = $row[22];
 				$n_home++;
                 break;
             case 'Specialized Adoption Agency':
@@ -162,6 +165,8 @@
 				$saa_data[$n_saa][16] = $init_dt;
 				// Remarks
 				$saa_data[$n_saa][17] = $row[21];
+				// Verified by
+				$saa_data[$n_saa][18] = $row[22];
 				$n_saa++;
                 break;
             case 'Open Shelter':
@@ -187,7 +192,9 @@
 				// Init date
 				$os_data[$n_os][16] = $init_dt;
 				// Remarks
-				$os_data[$n_os][17] = $row[20];
+				$os_data[$n_os][17] = $row[21];
+				// Verified by
+				$os_data[$n_os][18] = $row[22];
 				$n_os++;
                 break;
 		}
