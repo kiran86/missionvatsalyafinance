@@ -97,8 +97,8 @@
 						$cwsn_medical = $n_month * (int)$row[10] * $expenses[0][5];
 						$admin_cost = $n_quarter * $expenses[0][2];
 						$cwsn_equip = $n_quarter * $expenses[0][3];
-						$staff_sal = $n_quarter * $expenses[0][6];
-						$cwsn_staff_sal = $n_quarter * $expenses[0][7];
+						$staff_sal = $n_month * $expenses[0][6];
+						$cwsn_staff_sal = $n_month * $expenses[0][7];
 						$total_sal = $staff_sal + $cwsn_staff_sal;
 						$total_recurring = 	$maintanence_cost + 
 											$bedding_cost +
